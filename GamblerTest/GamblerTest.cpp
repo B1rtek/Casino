@@ -136,46 +136,40 @@ TEST(GamblerTest, GamblerSpectateAndStop) {
 }
 
 
-TEST(PlayerTest, TestPlayerCreateEmpty)
-{
+TEST(PlayerTest, TestPlayerCreateEmpty) {
     Player gracz;
     ASSERT_EQ("Player", gracz.getName());
     ASSERT_DOUBLE_EQ(0, gracz.getBalance());
 }
 
-TEST(PlayerTest, TestPlayerCreateOnlyName)
-{
+TEST(PlayerTest, TestPlayerCreateOnlyName) {
     Player gracz("Kamil");
     ASSERT_EQ(gracz.getName(), "Kamil");
     ASSERT_DOUBLE_EQ(gracz.getBalance(), 0);
     ASSERT_TRUE(gracz.getDeposits().empty());
 }
 
-TEST(PlayerTest, TestPlayerCreate)
-{
+TEST(PlayerTest, TestPlayerCreate) {
     Player gracz("Kamil", 5.50);
     ASSERT_EQ(gracz.getName(), "Kamil");
     ASSERT_DOUBLE_EQ(gracz.getBalance(), 5.5);
     ASSERT_DOUBLE_EQ(gracz.getDeposits()[0], 5.5);
 }
 
-TEST(PlayerTest, TestPlayerChangeName)
-{
+TEST(PlayerTest, TestPlayerChangeName) {
     Player gracz("Kamil", 5.50);
     gracz.changeName("Piotrek");
     ASSERT_EQ(gracz.getName(), "Piotrek");
 }
 
-TEST(PlayerTest, TestPlayerDepositBalanceToEmptyAcc)
-{
+TEST(PlayerTest, TestPlayerDepositBalanceToEmptyAcc) {
     Player gracz("Kamil");
     gracz.depositBalance(2.22);
     ASSERT_DOUBLE_EQ(gracz.getBalance(), 2.22);
     ASSERT_DOUBLE_EQ(gracz.getDeposits()[0], 2.22);
 }
 
-TEST(PlayerTest, TestPlayerDepositBalance)
-{
+TEST(PlayerTest, TestPlayerDepositBalance) {
     Player gracz("Kamil", 5.50);
     gracz.depositBalance(2.22);
     ASSERT_DOUBLE_EQ(gracz.getBalance(), 7.72);
@@ -183,24 +177,21 @@ TEST(PlayerTest, TestPlayerDepositBalance)
     ASSERT_DOUBLE_EQ(gracz.getDeposits()[1], 2.22);
 }
 
-TEST(PlayerTest, TestPlayerWithdrawBalance)
-{
+TEST(PlayerTest, TestPlayerWithdrawBalance) {
     Player gracz("Kamil", 5.50);
     gracz.withdrawBalance(2.20);
     ASSERT_DOUBLE_EQ(gracz.getBalance(), 3.30);
     ASSERT_DOUBLE_EQ(gracz.getWithdrawals()[0], 2.20);
 }
 
-TEST(PlayerTest, TestPlayerWithdrawTooManyBalance)
-{
+TEST(PlayerTest, TestPlayerWithdrawTooManyBalance) {
     Player gracz("Kamil", 5.50);
     gracz.withdrawBalance(20.11);
     ASSERT_DOUBLE_EQ(gracz.getBalance(), 5.50);
     ASSERT_TRUE(gracz.getWithdrawals().empty());
 }
 
-TEST(PlayerTest, TestPlayerALotTransactions)
-{
+TEST(PlayerTest, TestPlayerALotTransactions) {
     Player gracz("Kamil", 5.50);
     gracz.depositBalance(2.10);
     gracz.withdrawBalance(3.10);
@@ -212,8 +203,7 @@ TEST(PlayerTest, TestPlayerALotTransactions)
     ASSERT_DOUBLE_EQ(gracz.totalProfit(), -7.50);
 }
 
-TEST(PlayerTest, TestGuestCreate)
-{
+TEST(PlayerTest, TestGuestCreate) {
     Guest gosc("Kamil", 5.5);
     ASSERT_EQ("Kamil", gosc.getName());
     ASSERT_DOUBLE_EQ(5.5, gosc.getBalance());
@@ -223,8 +213,7 @@ TEST(PlayerTest, TestGuestCreate)
     ASSERT_DOUBLE_EQ(0, gosc2.getBalance());
 }
 
-TEST(PlayerTest, TestGuestDepositWithdrawTooMany)
-{
+TEST(PlayerTest, TestGuestDepositWithdrawTooMany) {
     Guest gosc("Kamil", 1500);
     gosc.depositBalance(110000);
     ASSERT_DOUBLE_EQ(1500, gosc.getBalance());
@@ -232,15 +221,13 @@ TEST(PlayerTest, TestGuestDepositWithdrawTooMany)
     ASSERT_DOUBLE_EQ(1500, gosc.getBalance());
 }
 
-TEST(PlayerTest, TestVIPCheckPlayerBalance)
-{
+TEST(PlayerTest, TestVIPCheckPlayerBalance) {
     Guest gosc("Kamil", 150);
     VIP vip("Elon", 25000);
     ASSERT_DOUBLE_EQ(150, vip.checkPlayerBalance(gosc));
 }
 
-TEST(PlayerTest, TestVIPUsingSafe)
-{
+TEST(PlayerTest, TestVIPUsingSafe) {
     VIP vip("Elon", 25000);
     vip.depositToSafe(1000);
     vip.withdrawFromSafe(200);
@@ -248,8 +235,7 @@ TEST(PlayerTest, TestVIPUsingSafe)
     ASSERT_DOUBLE_EQ(800, vip.getSafeValue());
 }
 
-TEST(PlayerTest, TestVIPResetStats)
-{
+TEST(PlayerTest, TestVIPResetStats) {
     VIP vip("Elon", 25000);
     vip.depositBalance(100);
     vip.withdrawBalance(200);
@@ -260,8 +246,7 @@ TEST(PlayerTest, TestVIPResetStats)
     ASSERT_TRUE(vip.getWithdrawals().empty());
 }
 
-TEST(PlayerTest, TestShopRemoveItem)
-{
+TEST(PlayerTest, TestShopRemoveItem) {
     Shop shop;
     shop.removeItem("Yacht");
     ASSERT_EQ(shop.getItems()[0].first, "Car");
