@@ -1,5 +1,151 @@
 #include "Gambler.h"
 
+#include <utility>
+
+/**
+ * Creates a Gambler with 0 balance
+ * @param name name of the Gambler, optional
+ */
+Gambler::Gambler(std::string name) noexcept: balance(0), name(std::move(name)) {}
+
+/**
+ * Creates a Gambler with the provided balance
+ * @param balance balance with which the gambler will be created
+ * @param name name of the Gambler, optional
+ */
+Gambler::Gambler(int balance, std::string name) noexcept: balance(balance), name(std::move(name)) {}
+
+/**
+ * Creates a Gambler with the provided balance and adds him to the provided game
+ * @param balance balance with which the gambler will be created
+ * @param game game that the Gambler will immediately join after creation
+ * @param name name of the Gambler, optional
+ */
+Gambler::Gambler(int balance, Game *game, std::string name) noexcept {
+    this->balance = balance;
+    this->name = std::move(name);
+    this->joinGame(game);
+}
+
+/**
+ * Method used by bots to move in games
+ * @param millisecondsPassed milliseconds passed since the last time the manager class
+ * sent an advancement message to all games
+ */
+void Gambler::makeAMove(int millisecondsPassed) noexcept {}
+
+/**
+ * Adds balance to the gambler's account
+ * @param amount amount of balance to add
+ */
+void Gambler::addBalance(int amount) noexcept {
+    this->balance += amount;
+}
+
+/**
+ * Subtracts balance from the gambler's account
+ * @param amount amount of balance to remove, the balance will be subtracted until it reaches zero
+ */
+void Gambler::subtractBalance(int amount) noexcept {
+    this->balance = std::max(this->balance - amount, 0);
+}
+
+/**
+ * Makes the gambler join the provided game
+ * @param game game to join
+ * @return true if the game has been successfully joined, false otherwise
+ */
+bool Gambler::joinGame(Game *game) noexcept {
+    if (game == nullptr || this->gamePlayed != nullptr || this->gameSpectated != nullptr) {
+        return false;
+    }
+    if (game->addPlayer(this)) {
+        this->gamePlayed = game;
+        return true;
+    }
+    return false;
+}
+
+/**
+ * Makes the gambler leave the current game
+ * @return true if the gambler successfully leaves the game, false otherwise
+ */
+bool Gambler::leaveGame() noexcept {
+    if(this->gamePlayed != nullptr) {
+        if (this->gamePlayed->removePlayer(this)) {
+            this->gamePlayed = nullptr;
+            return true;
+        }
+    }
+    return false;
+}
+
+/**
+ * Makes the gambler spectate a game
+ * @param game game to join as spectator
+ * @return true if the gambler successfully became a spectator, false otherwise
+ */
+bool Gambler::spectate(Game *game) noexcept {
+    if(this->gamePlayed == nullptr && game != nullptr) {
+        if(this->gameSpectated != nullptr) {
+            this->stopSpectating();
+        }
+        game->addSpectator(this);
+        this->gameSpectated = game;
+        return true;
+    }
+    return false;
+}
+
+/**
+ * Makes the gambler stop spectating the current game
+ * @return true if the game wass successfully left, false otherwise
+ */
+bool Gambler::stopSpectating() noexcept {
+    if(this->gameSpectated != nullptr) {
+        this->gameSpectated->removeSpectator(this);
+        this->gameSpectated = nullptr;
+        return true;
+    }
+    return false;
+}
+
+/**
+ * Method that will be used by bot subclasses to set themselves as bots
+ * @param toSet value that will be assigned to field bot
+ * It is defined in the base class because advanceGame() will be checking isBot() to
+ * determine what happens next
+ */
+void Gambler::setBot(bool toSet) noexcept {
+    this->bot = toSet;
+}
+
+void Gambler::setName(std::string newName) noexcept {
+    this->name = std::move(newName);
+}
+
+std::string Gambler::getName() const noexcept {
+    return this->name;
+}
+
+int Gambler::getBalance() const noexcept {
+    return this->balance;
+}
+
+Game *Gambler::getCurrentGame() const noexcept {
+    return this->gamePlayed;
+}
+
+Game *Gambler::getSpectatedGame() const noexcept {
+    return this->gameSpectated;
+}
+
+bool Gambler::isBot() const noexcept {
+    return this->bot;
+}
+
+#include "Gambler.h"
+
 // Shop
 Shop::Shop() noexcept
 {
@@ -88,7 +234,7 @@ std::vector<double> Player::specificTransactions(std::string game) noexcept
 
 bool Player::joinGame(Game* game) noexcept
 {
-    // na etapie projektu -> sprawdziæ warunek, czy gra pozwala na dostêp u¿ytkownikowi
+    // na etapie projektu -> sprawdziÄ‡ warunek, czy gra pozwala na dostÄ™p uÅ¼ytkownikowi
     this->playingGame = game;
     return true;
 }

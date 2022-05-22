@@ -1,0 +1,111 @@
+#include <ctime>
+#include <stdexcept>
+#include "Jackpot.h"
+
+/**
+ * All constructors inherit the base Game class constructor
+ * The only difference is that the minimumEntry is rounded down to the nearest multiple of 100
+ */
+Jackpot::Jackpot(int minimumEntry, const std::string &name) : Game(minimumEntry, name) {
+    if (minimumEntry % 100 != 0) {
+        throw std::invalid_argument("minimumEntry for Jackpot must be divisible by 100");
+    }
+}
+
+Jackpot::Jackpot(Gambler *gambler, int minimumEntry, const std::string &name) : Game(gambler, minimumEntry,
+                                                                                     name) {
+    if (minimumEntry % 100 != 0) {
+        throw std::invalid_argument("minimumEntry for Jackpot must be divisible by 100");
+    }
+}
+
+Jackpot::Jackpot(const std::vector<Gambler *> &gamblers, int minimumEntry, const std::string &name) :
+        Game(gamblers, minimumEntry, name) {
+    if (minimumEntry % 100 != 0) {
+        throw std::invalid_argument("minimumEntry for Jackpot must be divisible by 100");
+    }
+}
+
+/**
+ * Calculates winning chances for all gamblers
+ */
+void Jackpot::calculatePercent() {
+    this->preorderPercentages.clear();
+    int currentSum = 0;
+    for (auto &i: this->gamblersPlaying) {
+        currentSum += this->currentBets[i];
+        preorderPercentages.push_back(double(currentSum) / double(this->totalBet));
+    }
+}
+
+/**
+ * Chooses a winner randomly based on the calculated chances
+ */
+Gambler* Jackpot::chooseTheWinner() noexcept {
+    srand(time(nullptr));
+    double random = double(rand()) / double(RAND_MAX);
+    int i = 0;
+    while (random > preorderPercentages[i] && i < preorderPercentages.size()) {
+        ++i;
+    }
+    return this->gamblersPlaying[i];
+}
+
+/**
+ * Advances the game by telling bots to bet
+ */
+void Jackpot::advanceGame(int millisecondsPassed) {
+    if (this->inProgress) {
+        if (this->targetTime <= millisecondsPassed) { // time for betting ended
+            this->calculatePercent();
+            this->lastGameWinner = this->chooseTheWinner();
+            this->payTheWinner(this->lastGameWinner);
+            this->removeBankruptPlayers();
+            this->targetTime = millisecondsPassed + 30000; // new game begins in 30 seconds
+        } else {
+            for (auto &gambler: this->gamblersPlaying) {
+                if (gambler->isBot()) {
+                    gambler->makeAMove(millisecondsPassed);
+                }
+            }
+        }
+    } else {
+        if (this->targetTime <= millisecondsPassed) {
+            this->startGame();
+            // collect a minimum bet from everyone
+            for (auto &gambler: this->gamblersPlaying) {
+                this->bet(gambler, this->minimumEntry / 100);
+            }
+            // give everyone 60 seconds for betting
+            this->targetTime = millisecondsPassed + 60000;
+        }
+    }
+
+}
+
+/**
+ * Removes a gambler from players and places them on the spectators list when they
+ * run out of credits
+ */
+void Jackpot::removeBankruptPlayers() noexcept {
+    for (auto &gambler: this->gamblersPlaying) {
+        if (this->inGameMoney[gambler] < this->minimumEntry / 100) {
+            gambler->leaveGame();
+            gambler->spectate(this);
+        }
+    }
+}
+
+Gambler *Jackpot::getLastGameWinner() const noexcept {
+    return this->lastGameWinner;
+}
+
+std::map<Gambler *, double> Jackpot::getPercentages() noexcept {
+    std::map<Gambler *, double> percentages;
+    for (auto &gambler: this->gamblersPlaying) {
+        percentages[gambler] = double(this->currentBets[gambler]) / double(this->totalBet) * 100.0;
+    }
+    return percentages;
+}
+
+

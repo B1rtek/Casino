@@ -1,3 +1,57 @@
+#ifndef PROI_4_KASYNO_GRA_GAMBLER_H
+#define PROI_4_KASYNO_GRA_GAMBLER_H
+
+class Game;
+
+#include <string>
+
+#include "Game.h"
+
+/**
+ * Gambler class, represents a base casino player, bots and human player classes inherit from it
+ */
+class Gambler {
+protected:
+    int balance;
+    std::string name;
+    Game *gamePlayed{}, *gameSpectated{};
+    bool bot = false;
+public:
+    explicit Gambler(std::string name = "") noexcept;
+
+    explicit Gambler(int balance, std::string name = "") noexcept;
+
+    Gambler(int balance, Game *game, std::string name = "") noexcept;
+
+    virtual void makeAMove(int millisecondsPassed) noexcept;
+
+    void addBalance(int amount) noexcept;
+
+    void subtractBalance(int amount) noexcept;
+
+    bool joinGame(Game *game) noexcept;
+
+    bool leaveGame() noexcept;
+
+    bool spectate(Game *game) noexcept;
+
+    bool stopSpectating() noexcept;
+
+    void setName(std::string newName) noexcept;
+
+    void setBot(bool toSet) noexcept;
+
+    std::string getName() const noexcept;
+
+    int getBalance() const noexcept;
+
+    Game *getCurrentGame() const noexcept;
+
+    Game *getSpectatedGame() const noexcept;
+
+    bool isBot() const noexcept;
+};
+
 #pragma once
 #include <string>
 #include <utility>
@@ -73,9 +127,9 @@ private:
     double max_bet = 10000;
 public:
     // deposit max 100000
-    // wyp³aty do max 1000 w jednej transakcji
-    // ograniczenie widocznosci ostatnich wp³at do 10 (i wyp³at)
-    // zablokowaæ dostêp do totalProfit(), totaldeposited(), totalwithdrawed()
+    // wypÅ‚aty do max 1000 w jednej transakcji
+    // ograniczenie widocznosci ostatnich wpÅ‚at do 10 (i wypÅ‚at)
+    // zablokowaÄ‡ dostÄ™p do totalProfit(), totaldeposited(), totalwithdrawed()
 
     Guest() noexcept;
     Guest(std::string name, double balance = 0) noexcept;
@@ -99,10 +153,10 @@ private:
     double safe = 0;
     std::vector<std::string> items;
 public:
-    // dostêp do statystyk innych osób (iloœæ balansu)
-    // mo¿liwoœæ wp³acania i wyp³acania pieniêdzy do sejfu (brak œladu)
-    // mo¿liwoœæ resetowania statystyk (zacieranie œladów)
-    // mo¿liwoœæ kupowania ze sklepu nagród rzeczowych (bêdzie mo¿na je stawiaæ)
+    // dostÄ™p do statystyk innych osÃ³b (iloÅ›Ä‡ balansu)
+    // moÅ¼liwoÅ›Ä‡ wpÅ‚acania i wypÅ‚acania pieniÄ™dzy do sejfu (brak Å›ladu)
+    // moÅ¼liwoÅ›Ä‡ resetowania statystyk (zacieranie Å›ladÃ³w)
+    // moÅ¼liwoÅ›Ä‡ kupowania ze sklepu nagrÃ³d rzeczowych (bÄ™dzie moÅ¼na je stawiaÄ‡)
 
     VIP() noexcept;
     VIP(std::string name, double balance = 0) noexcept;
@@ -127,8 +181,8 @@ private:
     double max_bet = 100000;
     bool bot = true;
 public:
-    // brak mo¿liwoœci wyp³at
-    // mo¿e tylko byæ botem i graæ z botami <- g³êbsza implementajca na póŸniejszym etapie projektu
+    // brak moÅ¼liwoÅ›ci wypÅ‚at
+    // moÅ¼e tylko byÄ‡ botem i graÄ‡ z botami <- gÅ‚Ä™bsza implementajca na pÃ³Åºniejszym etapie projektu
     TrialMode() noexcept;
     TrialMode(std::string name, double balance = 0) noexcept;
 
@@ -144,9 +198,9 @@ private:
 public:
     // max deposit 300
     // max withdraw 100
-    // ograniczenie widocznosci ostatnich wp³at do 5 (i wyp³at)
-    // zablokowaæ dostêp do totalProfit(), totaldeposited(), totalwithdrawed()
-    // mo¿liwoœæ zablokowania grania
+    // ograniczenie widocznosci ostatnich wpÅ‚at do 5 (i wypÅ‚at)
+    // zablokowaÄ‡ dostÄ™p do totalProfit(), totaldeposited(), totalwithdrawed()
+    // moÅ¼liwoÅ›Ä‡ zablokowania grania
 
     SafePlayer() noexcept;
     SafePlayer(std::string name, double balance = 0) noexcept;
@@ -161,3 +215,5 @@ public:
     double totalWithdrawed() noexcept override { return -1; }
     double totalProfit() noexcept override { return -1; }
 };
+
+#endif //PROI_4_KASYNO_GRA_GAMBLER_H
