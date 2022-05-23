@@ -175,7 +175,7 @@ TexasHoldem::decideTwoPairTie(std::vector<std::pair<std::pair<TexasHoldemHand, C
     // find values of the lower pair
     std::vector<CardValue> maxHandedLowerPairs;
     int pairBuckets[14] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-    for (unsigned handIndexIndex = 1; handIndexIndex < maxHands.size(); handIndexIndex++) {
+    for (unsigned handIndexIndex = 0; handIndexIndex < maxHands.size(); handIndexIndex++) {
         std::vector<Card *> allHandCards = this->dealtCards;
         for (int i = 0; i < 2; i++)
             allHandCards.push_back(this->gamblersCards[this->gamblersPlaying[handIndexIndex]][i]);
@@ -205,7 +205,7 @@ TexasHoldem::decideTwoPairTie(std::vector<std::pair<std::pair<TexasHoldemHand, C
     }
     // if this fails as well, find the high card
     std::vector<Card *> highCards;
-    for (unsigned handIndexIndex = 1; handIndexIndex < maxHands.size(); handIndexIndex++) {
+    for (unsigned handIndexIndex = 0; handIndexIndex < maxHands.size(); handIndexIndex++) {
         std::vector<Card *> allHandCards = this->dealtCards;
         for (int i = 0; i < 2; i++)
             allHandCards.push_back(this->gamblersCards[this->gamblersPlaying[handIndexIndex]][i]);
@@ -222,7 +222,7 @@ TexasHoldem::decideTwoPairTie(std::vector<std::pair<std::pair<TexasHoldemHand, C
     }
     unsigned highestCardIndex = 0;
     for (unsigned i = 1; i < highCards.size(); i++) {
-        if (highCards[i] > highCards[highestCardIndex]) {
+        if (*highCards[i] > *highCards[highestCardIndex]) {
             highestCardIndex = i;
         }
     }
@@ -249,7 +249,7 @@ TexasHoldem::decideOnePairTie(std::vector<std::pair<std::pair<TexasHoldemHand, C
     }
     // otherwise find highest cards that DON'T belong to the pair
     std::vector<Card *> highCards;
-    for (unsigned handIndexIndex = 1; handIndexIndex < maxHands.size(); handIndexIndex++) {
+    for (unsigned handIndexIndex = 0; handIndexIndex < maxHands.size(); handIndexIndex++) {
         std::vector<Card *> allHandCards = this->dealtCards;
         for (int i = 0; i < 2; i++)
             allHandCards.push_back(this->gamblersCards[this->gamblersPlaying[handIndexIndex]][i]);
@@ -266,7 +266,7 @@ TexasHoldem::decideOnePairTie(std::vector<std::pair<std::pair<TexasHoldemHand, C
     }
     unsigned highestCardIndex = 0;
     for (unsigned i = 1; i < highCards.size(); i++) {
-        if (highCards[i] > highCards[highestCardIndex]) {
+        if (*highCards[i] > *highCards[highestCardIndex]) {
             highestCardIndex = i;
         }
     }
@@ -296,8 +296,8 @@ Gambler *TexasHoldem::chooseTheWinner() noexcept {
     }
     unsigned maxHandIndex = 0;
     for (unsigned i = 1; i < this->gamblersPlaying.size(); i++) {
-        if (hands[i].first > hands[maxHandIndex].first ||
-            (hands[i].first == hands[maxHandIndex].first && hands[i].second > hands[maxHandIndex].second)) {
+        if (hands[i].first.first > hands[maxHandIndex].first.first ||
+            (hands[i].first.first == hands[maxHandIndex].first.first && hands[i].first.second > hands[maxHandIndex].first.second)) {
             maxHandIndex = i;
         }
     }

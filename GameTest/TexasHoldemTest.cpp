@@ -544,3 +544,42 @@ TEST(TexasHoldemTest, GameEndInRiver) {
     ASSERT_EQ(texasHoldem->getInGameMoney()[bot1], 992);
     ASSERT_EQ(texasHoldem->getInGameMoney()[bot2], 992);
 }
+
+TEST(TexasHoldemTest, GameEndInRiverDoublePairTie) {
+    class FakeTexasHoldem : public TexasHoldem {
+    public:
+        FakeTexasHoldem(const vector<Gambler *> &gamblers, int minimumEntry, const string &name="") :
+                TexasHoldem(gamblers, minimumEntry, name) {};
+    private:
+        void shuffleCards() override { // 4 C, 7 D, 3 H, 3 S, 7 C
+            this->gameDeck = {CardGame::deck[3], CardGame::deck[19], CardGame::deck[41], CardGame::deck[28], CardGame::deck[6],
+                              CardGame::deck[22], CardGame::deck[20], //gambler1's cards (10 D, 8 D)
+                              CardGame::deck[34], CardGame::deck[33], //bot1's cards (9 S, 8 S)
+                              CardGame::deck[49], CardGame::deck[12]}; //bot2's cards (J H, K C)
+        } // expected: bot 2 wins by king kicker with double pair
+    };
+    auto *gambler1 = new Gambler(1337);
+    auto *bot1 = new TexasBot(1338), *bot2 = new TexasBot(1339);
+    vector<Gambler *> gamblers = {gambler1, bot1, bot2};
+    auto *texasHoldem = new FakeTexasHoldem(gamblers, 1000);
+    texasHoldem->advanceGame(30000); // game starts
+    texasHoldem->advanceGame(30001); // bot1's small blind
+    texasHoldem->advanceGame(30004); // bot2's big blind
+    texasHoldem->call(gambler1); // gambler1 calls
+    texasHoldem->advanceGame(30007); // bot1's call to make all bets equal, flop should happen now
+    texasHoldem->advanceGame(30010); // bot2 checks
+    texasHoldem->raise(gambler1, 2); // gambler1 raises
+    texasHoldem->advanceGame(30013); // bot1 calls
+    texasHoldem->advanceGame(30016); // bot2 calls, turn starts
+    texasHoldem->call(gambler1); // gambler1 checks
+    texasHoldem->advanceGame(30016); // bot1 checks
+    texasHoldem->advanceGame(30017); // bot2 raises by 2
+    texasHoldem->call(gambler1); // gambler1 calls
+    texasHoldem->advanceGame(30019); // bot1 calls, river should start
+    texasHoldem->advanceGame(30020); // bot 2 raises
+    texasHoldem->call(gambler1); // gambler1 calls
+    texasHoldem->advanceGame(30022); // bot 1 calls, the game should end
+    ASSERT_EQ(texasHoldem->getGameState(), SHOWDOWN);
+    ASSERT_FALSE(texasHoldem->isInProgress());
+    ASSERT_EQ(texasHoldem->getLastGameWinner(), bot2);
+}
