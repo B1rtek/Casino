@@ -78,6 +78,10 @@ std::ostream &operator<<(std::ostream &stream, Card card) {
             stream << "A ";
         }
         break;
+        case N10: {
+            stream << "10 ";
+        }
+        break;
         default: {
             stream << char(card.value+49) << ' ';
         }
