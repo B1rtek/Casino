@@ -67,6 +67,8 @@ public:
     bool isInProgress() const noexcept;
 
     int getTargetTime() const noexcept;
+
+    Gambler* getLastGameWinner() const noexcept;
 };
 
 

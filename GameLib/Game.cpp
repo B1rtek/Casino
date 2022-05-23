@@ -208,3 +208,7 @@ bool Game::isInProgress() const noexcept {
 int Game::getTargetTime() const noexcept {
     return this->targetTime;
 }
+
+Gambler *Game::getLastGameWinner() const noexcept {
+    return this->lastGameWinner;
+}
