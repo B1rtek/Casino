@@ -42,3 +42,14 @@ TEST(CardTest, CardOperatorEqualsEquals) {
     ASSERT_TRUE(card2 == card3);
     ASSERT_TRUE(card3 == card4);
 }
+
+TEST(CardTest, CardOperatorOstream) {
+    Card card1 = Card(), card2 = Card(JACK, CLUBS), card3 = Card(N3, HEARTS);
+    stringstream out, out2, out3;
+    out << card1;
+    ASSERT_EQ(out.str(), "[Hidden] [Hidden]");
+    out2 << card2;
+    ASSERT_EQ(out2.str(), "J Clubs");
+    out3 << card3;
+    ASSERT_EQ(out3.str(), "3 Hearts");
+}

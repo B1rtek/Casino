@@ -55,3 +55,54 @@ bool Card::operator<(const Card &other) const noexcept {
 bool Card::operator==(const Card &other) const noexcept {
     return this->value == other.getValue();
 }
+
+std::ostream &operator<<(std::ostream &stream, Card card) {
+    switch(card.value) {
+        case NOVALUE: {
+            stream << "[Hidden] ";
+        }
+        break;
+        case JACK: {
+            stream << "J ";
+        }
+        break;
+        case QUEEN: {
+            stream << "Q ";
+        }
+        break;
+        case KING: {
+            stream << "K ";
+        }
+        break;
+        case ACE: {
+            stream << "A ";
+        }
+        break;
+        default: {
+            stream << char(card.value+49) << ' ';
+        }
+    }
+    switch (card.color) {
+        case NOCOLOR: {
+            stream << "[Hidden]";
+        }
+        break;
+        case CLUBS: {
+            stream << "Clubs";
+        }
+        break;
+        case DIAMONDS: {
+            stream << "Diamonds";
+        }
+        break;
+        case SPADES: {
+            stream << "Spades";
+        }
+        break;
+        case HEARTS: {
+            stream << "Hearts";
+        }
+        break;
+    }
+    return stream;
+}

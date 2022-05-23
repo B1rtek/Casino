@@ -1,6 +1,8 @@
 #ifndef PROI_4_KASYNO_GRA_CARD_H
 #define PROI_4_KASYNO_GRA_CARD_H
 
+#include <ostream>
+
 enum CardColor {
     NOCOLOR,
     CLUBS,
@@ -46,6 +48,8 @@ public:
     bool operator<(const Card &other) const noexcept;
 
     bool operator==(const Card &other) const noexcept;
+
+    friend std::ostream &operator<<(std::ostream &stream, Card card);
 };
 
 
