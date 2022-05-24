@@ -65,17 +65,17 @@ class Game;
 
 class Shop {
 private:
-    std::vector<std::pair<std::string, double>> items;
+    std::vector<std::pair<std::string, int>> items;
 public:
     Shop() noexcept;
 
-    std::vector<std::pair<std::string, double>> getItems() noexcept { return this->items; }
+    std::vector<std::pair<std::string, int>> getItems() noexcept { return this->items; }
 
-    void addItem(std::pair<std::string, double> item) noexcept { this->items.push_back(item); }
+    void addItem(std::pair<std::string, int> item) noexcept { this->items.push_back(item); }
 
     void removeItem(std::string itemName) noexcept;
 
-    double findItemValue(std::string itemName) noexcept;
+    int findItemValue(std::string itemName) noexcept;
 
     friend std::ostream &operator<<(std::ostream &os, const Shop &shop) noexcept;
 };
@@ -83,10 +83,10 @@ public:
 class Player {
 protected:
     std::string name;
-    double balance;
-    std::vector<double> deposits;
-    std::vector<double> withdrawals;
-    std::vector<std::pair<double, std::string>> transactions;
+    int balance;
+    std::vector<int> deposits;
+    std::vector<int> withdrawals;
+    std::vector<std::pair<int, std::string>> transactions;
     Game *playingGame{};
     Game *watchingGame{};
     bool bot = false;
@@ -94,17 +94,17 @@ protected:
 public:
     Player() noexcept;
 
-    Player(std::string name, double balance = 0) noexcept;
+    Player(std::string name, int balance = 0) noexcept;
 
     std::string getName() const noexcept { return name; }
 
-    double getBalance() const noexcept { return balance; }
+    int getBalance() const noexcept { return balance; }
 
-    virtual std::vector<double> getDeposits() noexcept { return deposits; }
+    virtual std::vector<int> getDeposits() noexcept { return deposits; }
 
-    virtual std::vector<double> getWithdrawals() noexcept { return withdrawals; }
+    virtual std::vector<int> getWithdrawals() noexcept { return withdrawals; }
 
-    virtual std::vector<std::pair<double, std::string>> getTransactions() noexcept { return transactions; }
+    virtual std::vector<std::pair<int, std::string>> getTransactions() noexcept { return transactions; }
 
     Game *getGame() const noexcept { return this->playingGame; }
 
@@ -124,23 +124,23 @@ public:
 
     virtual void setBot(bool setted) noexcept { this->bot = setted; }
 
-    virtual void depositBalance(double amount) noexcept;
+    virtual void depositBalance(int amount) noexcept;
 
-    virtual void withdrawBalance(double amount) noexcept;
+    virtual void withdrawBalance(int amount) noexcept;
 
-    virtual double totalDeposited() noexcept;
+    virtual int totalDeposited() noexcept;
 
-    virtual double totalWithdrawed() noexcept;
+    virtual int totalWithdrawed() noexcept;
 
-    virtual double totalProfit() noexcept { return totalWithdrawed() - totalDeposited(); }
+    virtual int totalProfit() noexcept { return totalWithdrawed() - totalDeposited(); }
 
-    std::vector<double> specificTransactions(std::string game) noexcept;
+    std::vector<int> specificTransactions(std::string game) noexcept;
 };
 
 class Guest : public Player {
 private:
-    double min_bet = 0.01;
-    double max_bet = 10000;
+    int min_bet = 0.01;
+    int max_bet = 10000;
 public:
     // deposit max 100000
     // wypłaty do max 1000 w jednej transakcji
@@ -149,28 +149,28 @@ public:
 
     Guest() noexcept;
 
-    Guest(std::string name, double balance = 0) noexcept;
+    Guest(std::string name, int balance = 0) noexcept;
 
-    void depositBalance(double amount) noexcept override;
+    void depositBalance(int amount) noexcept override;
 
-    void withdrawBalance(double amount) noexcept override;
+    void withdrawBalance(int amount) noexcept override;
 
-    std::vector<double> getDeposits() noexcept override;
+    std::vector<int> getDeposits() noexcept override;
 
-    std::vector<double> getWithdrawals() noexcept override;
+    std::vector<int> getWithdrawals() noexcept override;
 
-    double totalDeposited() noexcept override { return -1; }
+    int totalDeposited() noexcept override { return -1; }
 
-    double totalWithdrawed() noexcept override { return -1; }
+    int totalWithdrawed() noexcept override { return -1; }
 
-    double totalProfit() noexcept override { return -1; }
+    int totalProfit() noexcept override { return -1; }
 };
 
 class VIP : public Player {
 private:
-    double min_bet = 1000;
-    double max_bet = 100000;
-    double safe = 0;
+    int min_bet = 1000;
+    int max_bet = 100000;
+    int safe = 0;
     std::vector<std::string> items;
 public:
     // dostęp do statystyk innych osób (ilość balansu)
@@ -180,9 +180,9 @@ public:
 
     VIP() noexcept;
 
-    VIP(std::string name, double balance = 0) noexcept;
+    VIP(std::string name, int balance = 0) noexcept;
 
-    double checkPlayerBalance(Player gracz) noexcept { return gracz.getBalance(); }
+    int checkPlayerBalance(Player gracz) noexcept { return gracz.getBalance(); }
 
     std::vector<std::string> getItems() noexcept { return this->items; }
 
@@ -190,36 +190,36 @@ public:
 
     void sellItem(Shop *shop, std::string itemName) noexcept;
 
-    void depositToSafe(double amount) noexcept;
+    void depositToSafe(int amount) noexcept;
 
-    void withdrawFromSafe(double amount) noexcept;
+    void withdrawFromSafe(int amount) noexcept;
 
-    double getSafeValue() noexcept { return safe; }
+    int getSafeValue() noexcept { return safe; }
 
     void resetStats() noexcept;
 };
 
 class TrialMode : public Player {
 private:
-    double min_bet = 0.01;
-    double max_bet = 100000;
+    int min_bet = 0.01;
+    int max_bet = 100000;
     bool bot = true;
 public:
     // brak możliwości wypłat
     // może tylko być botem i grać z botami <- głębsza implementajca na późniejszym etapie projektu
     TrialMode() noexcept;
 
-    TrialMode(std::string name, double balance = 0) noexcept;
+    TrialMode(std::string name, int balance = 0) noexcept;
 
     void setBot(bool setted) noexcept override {}
 
-    void withdrawBalance(double amount) noexcept override {}
+    void withdrawBalance(int amount) noexcept override {}
 };
 
 class SafePlayer : public Player {
 private:
-    double min_bet = 0.01;
-    double max_bet = 100;
+    int min_bet = 0.01;
+    int max_bet = 100;
 public:
     // max deposit 300
     // max withdraw 100
@@ -229,21 +229,21 @@ public:
 
     SafePlayer() noexcept;
 
-    SafePlayer(std::string name, double balance = 0) noexcept;
+    SafePlayer(std::string name, int balance = 0) noexcept;
 
-    void depositBalance(double amount) noexcept override;
+    void depositBalance(int amount) noexcept override;
 
-    void withdrawBalance(double amount) noexcept override;
+    void withdrawBalance(int amount) noexcept override;
 
-    std::vector<double> getDeposits() noexcept override;
+    std::vector<int> getDeposits() noexcept override;
 
-    std::vector<double> getWithdrawals() noexcept override;
+    std::vector<int> getWithdrawals() noexcept override;
 
-    double totalDeposited() noexcept override { return -1; }
+    int totalDeposited() noexcept override { return -1; }
 
-    double totalWithdrawed() noexcept override { return -1; }
+    int totalWithdrawed() noexcept override { return -1; }
 
-    double totalProfit() noexcept override { return -1; }
+    int totalProfit() noexcept override { return -1; }
 };
 
 #endif //PROI_4_KASYNO_GRA_GAMBLER_H
