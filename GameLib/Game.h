@@ -21,11 +21,11 @@ protected:
     int minimumEntry = 0, totalBet = 0, targetTime = 30000, maxPlayers = INT_MAX; // game starts 30 seconds after manager starts
     std::string name;
     bool inProgress = false;
-    Gambler* lastGameWinner = nullptr;
+    std::vector<Gambler*> lastGameWinners;
 
     virtual void removeBankruptPlayers() noexcept;
 
-    virtual Gambler* chooseTheWinner() noexcept;
+    virtual std::vector<Gambler*> chooseTheWinners() noexcept;
 
 public:
     explicit Game(int minimumEntry, std::string name="") noexcept;
@@ -40,7 +40,7 @@ public:
 
     bool bet(Gambler *gambler, int amount) noexcept;
 
-    void payTheWinner(Gambler *winner) noexcept;
+    void payTheWinners(const std::vector<Gambler *>& winners) noexcept;
 
     virtual bool addPlayer(Gambler *gambler) noexcept;
 
@@ -68,7 +68,7 @@ public:
 
     int getTargetTime() const noexcept;
 
-    Gambler* getLastGameWinner() const noexcept;
+    std::vector<Gambler*> getLastGameWinners() const noexcept;
 };
 
 

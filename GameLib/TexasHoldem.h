@@ -54,6 +54,9 @@ class TexasHoldem : public CardGame {
 
     bool onePlayerLeft();
 
+    Gambler*decideHighCardTie(std::vector<std::pair<std::pair<TexasHoldemHand, Card *>, std::vector<Card *>>> hands,
+                              unsigned int maxHandIndex);
+
     Gambler *decideTwoPairTie(std::vector<std::pair<std::pair<TexasHoldemHand, Card *>, std::vector<Card *>>> hands,
                               unsigned int maxHandIndex);
 
@@ -61,7 +64,7 @@ class TexasHoldem : public CardGame {
                               unsigned int maxHandIndex);
 
 protected:
-    Gambler *chooseTheWinner() noexcept override;
+    std::vector<Gambler *> chooseTheWinners() noexcept override;
 
 public:
     explicit TexasHoldem(int minimumEntry, const std::string &name="");

@@ -10,7 +10,7 @@ class Jackpot : public Game {
 
     void removeBankruptPlayers() noexcept override;
 
-    Gambler* chooseTheWinner() noexcept override;
+    std::vector<Gambler*> chooseTheWinners() noexcept override;
 
 public:
     explicit Jackpot(int minimumEntry, const std::string &name = "");
@@ -20,8 +20,6 @@ public:
     Jackpot(const std::vector<Gambler *> &gamblers, int minimumEntry, const std::string &name = "");
 
     void advanceGame(int millisecondsPassed) override;
-
-    Gambler* getLastGameWinner() const noexcept;
 
     std::map<Gambler*, double> getPercentages() noexcept;
 };

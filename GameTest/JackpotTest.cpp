@@ -16,7 +16,7 @@ TEST(JackpotTest, JackpotCreate) {
     ASSERT_EQ(jackpot.getName(), "");
     ASSERT_FALSE(jackpot.isInProgress());
     ASSERT_EQ(jackpot.getTotalBet(), 0);
-    ASSERT_EQ(jackpot.getLastGameWinner(), nullptr);
+    ASSERT_EQ(jackpot.getLastGameWinners().size(), 0);
     jackpot = Jackpot(100, "Jackpot");
     ASSERT_EQ(jackpot.getCurrentBets().size(), 0);
     ASSERT_EQ(jackpot.getInGameMoney().size(), 0);
@@ -26,7 +26,7 @@ TEST(JackpotTest, JackpotCreate) {
     ASSERT_EQ(jackpot.getName(), "Jackpot");
     ASSERT_FALSE(jackpot.isInProgress());
     ASSERT_EQ(jackpot.getTotalBet(), 0);
-    ASSERT_EQ(jackpot.getLastGameWinner(), nullptr);
+    ASSERT_EQ(jackpot.getLastGameWinners().size(), 0);
     ASSERT_THROW(Jackpot(99), std::invalid_argument);
 }
 
@@ -41,7 +41,7 @@ TEST(JackpotTest, JackpotCreateWithGambler) {
     ASSERT_EQ(jackpot->getName(), "Jackpot");
     ASSERT_FALSE(jackpot->isInProgress());
     ASSERT_EQ(jackpot->getTotalBet(), 0);
-    ASSERT_EQ(jackpot->getLastGameWinner(), nullptr);
+    ASSERT_EQ(jackpot->getLastGameWinners().size(), 0);
     delete jackpot;
     gambler->addBalance(100);
     jackpot = new Jackpot(gambler, 100);
@@ -55,7 +55,7 @@ TEST(JackpotTest, JackpotCreateWithGambler) {
     ASSERT_EQ(jackpot->getName(), "");
     ASSERT_FALSE(jackpot->isInProgress());
     ASSERT_EQ(jackpot->getTotalBet(), 0);
-    ASSERT_EQ(jackpot->getLastGameWinner(), nullptr);
+    ASSERT_EQ(jackpot->getLastGameWinners().size(), 0);
     delete jackpot;
     ASSERT_THROW(Jackpot(gambler, 78), std::invalid_argument);
     delete gambler;
@@ -159,9 +159,9 @@ TEST(JackpotTest, AdvanceGameFinishGame) {
     ASSERT_EQ(jackpot->getCurrentBets()[bot2], 3);
     int totalBet = jackpot->getTotalBet();
     jackpot->advanceGame(90000); //game ends
-    Gambler *lastWinner = jackpot->getLastGameWinner();
+    vector<Gambler *> lastWinners = jackpot->getLastGameWinners();
     for (auto &gambler: jackpot->getPlayers()) {
-        if (gambler != lastWinner) {
+        if (std::find(lastWinners.begin(), lastWinners.end(), gambler) == lastWinners.end()) {
             ASSERT_EQ(jackpot->getInGameMoney()[gambler], 97);
         } else {
             ASSERT_EQ(jackpot->getInGameMoney()[gambler], 97 + totalBet);
@@ -172,7 +172,7 @@ TEST(JackpotTest, AdvanceGameFinishGame) {
     // next game starts and the cycle continues
     jackpot->advanceGame(120000);
     for (auto &gambler: jackpot->getPlayers()) {
-        if (gambler != lastWinner) {
+        if (std::find(lastWinners.begin(), lastWinners.end(), gambler) == lastWinners.end()) {
             ASSERT_EQ(jackpot->getInGameMoney()[gambler], 96);
         } else {
             ASSERT_EQ(jackpot->getInGameMoney()[gambler], 96 + totalBet);
@@ -189,15 +189,16 @@ TEST(JackpotTest, AdvanceGameRemoveBankrupt) {
         public:
         MockJackpot(const vector<Gambler *> &gamblers, int minimumEntry, const string &name="") :
         Jackpot(gamblers, minimumEntry, name) {}
-        MOCK_METHOD(Gambler*, chooseTheWinner, (), (noexcept, override));
+        MOCK_METHOD(vector<Gambler*>, chooseTheWinners, (), (noexcept, override));
 
         MockJackpot(MockJackpot const &jackpot);
     };
     auto *bot1 = new JackpotBot(200);
     auto *gambler = new Gambler(500);
     vector<Gambler *> gamblers = {gambler, bot1};
+    vector<Gambler *> winners = {gambler};
     auto jackpot = MockJackpot(gamblers, 100);
-    EXPECT_CALL(jackpot, chooseTheWinner()).WillRepeatedly(testing::Return(gambler));
+    EXPECT_CALL(jackpot, chooseTheWinners()).WillRepeatedly(testing::Return(winners));
     jackpot.advanceGame(30000); // game starts, bots bet
     jackpot.bet(bot1, 99); // bot is all in
     jackpot.advanceGame(90000); // game ends, winner is chosen

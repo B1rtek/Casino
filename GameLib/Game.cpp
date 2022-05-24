@@ -35,9 +35,9 @@ Game::Game(const std::vector<Gambler *> &gamblers, int minimumEntry, std::string
 }
 
 /**
- * Function choosing the winner, to be implemented by subclasses
+ * Function choosing the winners, to be implemented by subclasses
  */
-Gambler* Game::chooseTheWinner() noexcept {return nullptr;}
+std::vector<Gambler *> Game::chooseTheWinners() noexcept { return {}; }
 
 /**
  * Function removing the bankrupt players
@@ -81,17 +81,18 @@ bool Game::bet(Gambler *gambler, int amount) noexcept {
 }
 
 /**
- * Gives winnings to the winner of the game and zeroes out the bets
+ * Gives winnings to the winners of the game and zeroes out the bets
  */
-void Game::payTheWinner(Gambler *winner) noexcept {
-    int total = 0;
-    for (auto &bet: this->currentBets) {
-        total += bet.second;
-        bet.second = 0;
+void Game::payTheWinners(const std::vector<Gambler *>& winners) noexcept {
+    int toPay = this->totalBet / int(winners.size());
+    for (auto &gambler: winners) {
+        this->inGameMoney[gambler] += toPay;
     }
-    this->inGameMoney[winner] += total;
+    for(auto &gambler: this->gamblersPlaying) {
+        this->currentBets[gambler] = 0;
+    }
     this->inProgress = false;
-    this->totalBet = 0;
+    this->totalBet = this->totalBet - toPay * int(winners.size());
 }
 
 /**
@@ -209,6 +210,6 @@ int Game::getTargetTime() const noexcept {
     return this->targetTime;
 }
 
-Gambler *Game::getLastGameWinner() const noexcept {
-    return this->lastGameWinner;
+std::vector<Gambler *> Game::getLastGameWinners() const noexcept {
+    return this->lastGameWinners;
 }

@@ -145,7 +145,7 @@ TEST(GameTest, PayTheWinner) {
     ASSERT_TRUE(game->bet(gambler2, 5));
     ASSERT_EQ(game->getTotalBet(), 10);
     // choose the winner (gambler1) and award them
-    game->payTheWinner(gambler1);
+    game->payTheWinners({gambler1});
     ASSERT_FALSE(game->isInProgress());
     ASSERT_EQ(game->getInGameMoney()[gambler1], 15);
     ASSERT_EQ(game->getInGameMoney()[gambler2], 5);
@@ -205,7 +205,7 @@ TEST(GameTest, RemovePlayer) {
     ASSERT_EQ(game->getPlayers()[0], gambler);
     ASSERT_EQ(gambler->getCurrentGame(), game);
     // they win so they can leave later
-    game->payTheWinner(gambler);
+    game->payTheWinners({gambler});
     // make them leave the game (not by calling Gambler's method)
     ASSERT_TRUE(game->removePlayer(gambler));
     ASSERT_EQ(game->getPlayers().size(), 0);

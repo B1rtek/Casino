@@ -165,7 +165,7 @@ TEST(PlayerTest, TestPlayerChangeName) {
 TEST(PlayerTest, TestPlayerDepositBalanceToEmptyAcc) {
     Player gracz("Kamil");
     gracz.depositBalance(2.22);
-    ASSERT_DOUBLE_EQ(gracz.getBalance(), 2.22);
+    ASSERT_NEAR(gracz.getBalance(), 2.22, 0.01);
     ASSERT_DOUBLE_EQ(gracz.getDeposits()[0], 2.22);
 }
 

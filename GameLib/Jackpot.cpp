@@ -41,14 +41,14 @@ void Jackpot::calculatePercent() {
 /**
  * Chooses a winner randomly based on the calculated chances
  */
-Gambler* Jackpot::chooseTheWinner() noexcept {
+std::vector<Gambler*> Jackpot::chooseTheWinners() noexcept {
     srand(time(nullptr));
     double random = double(rand()) / double(RAND_MAX);
     int i = 0;
     while (random > preorderPercentages[i] && i < preorderPercentages.size()) {
         ++i;
     }
-    return this->gamblersPlaying[i];
+    return {this->gamblersPlaying[i]};
 }
 
 /**
@@ -58,8 +58,8 @@ void Jackpot::advanceGame(int millisecondsPassed) {
     if (this->inProgress) {
         if (this->targetTime <= millisecondsPassed) { // time for betting ended
             this->calculatePercent();
-            this->lastGameWinner = this->chooseTheWinner();
-            this->payTheWinner(this->lastGameWinner);
+            this->lastGameWinners = this->chooseTheWinners();
+            this->payTheWinners(this->lastGameWinners);
             this->removeBankruptPlayers();
             this->targetTime = millisecondsPassed + 30000; // new game begins in 30 seconds
         } else {
@@ -94,10 +94,6 @@ void Jackpot::removeBankruptPlayers() noexcept {
             gambler->spectate(this);
         }
     }
-}
-
-Gambler *Jackpot::getLastGameWinner() const noexcept {
-    return this->lastGameWinner;
 }
 
 std::map<Gambler *, double> Jackpot::getPercentages() noexcept {

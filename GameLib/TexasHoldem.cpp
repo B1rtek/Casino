@@ -247,7 +247,7 @@ TexasHoldem::decideOnePairTie(std::vector<std::pair<std::pair<TexasHoldemHand, C
     if (maxHands.size() == 1) {
         return this->gamblersPlaying[maxHandIndex];
     }
-    // otherwise find highest cards that DON'T belong to the pair
+    // otherwise find the highest cards that DON'T belong to the pair
     std::vector<Card *> highCards;
     for (unsigned handIndexIndex = 0; handIndexIndex < maxHands.size(); handIndexIndex++) {
         std::vector<Card *> allHandCards = this->dealtCards;
@@ -274,10 +274,10 @@ TexasHoldem::decideOnePairTie(std::vector<std::pair<std::pair<TexasHoldemHand, C
 }
 
 /**
- * Chooses the winner by comparing hands
- * @return gambler who won
+ * Chooses the winners by comparing hands
+ * @return gamblers who won
  */
-Gambler *TexasHoldem::chooseTheWinner() noexcept {
+std::vector<Gambler *> TexasHoldem::chooseTheWinners() noexcept {
     // check if all but one player gave up
     int stillInGame = 0;
     Gambler *potentialWinner = nullptr;
@@ -288,7 +288,7 @@ Gambler *TexasHoldem::chooseTheWinner() noexcept {
         }
     }
     if(stillInGame == 1) { // if there is only one person in game, they are the winner
-        return potentialWinner;
+        return {potentialWinner};
     } // otherwise we check hands
     std::vector<std::pair<std::pair<TexasHoldemHand, Card *>, std::vector<Card *>>> hands;
     for (auto &gambler: this->gamblersPlaying) {
@@ -302,11 +302,11 @@ Gambler *TexasHoldem::chooseTheWinner() noexcept {
         }
     }
     if (hands[maxHandIndex].first.first == TWO_PAIRS) {
-        return this->decideTwoPairTie(hands, maxHandIndex);
+        return {this->decideTwoPairTie(hands, maxHandIndex)};
     } else if (hands[maxHandIndex].first.first == ONE_PAIR) {
-        return this->decideOnePairTie(hands, maxHandIndex);
+        return {this->decideOnePairTie(hands, maxHandIndex)};
     }
-    return this->gamblersPlaying[maxHandIndex];
+    return {this->gamblersPlaying[maxHandIndex]};
 }
 
 void TexasHoldem::assignNewDealer() {
@@ -359,8 +359,8 @@ void TexasHoldem::advanceGame(int millisecondsPassed) {
         }
         if (this->state == SHOWDOWN) {
             this->inProgress = false;
-            this->lastGameWinner = this->chooseTheWinner();
-            this->payTheWinner(this->lastGameWinner);
+            this->lastGameWinners = this->chooseTheWinners();
+            this->payTheWinners(this->lastGameWinners);
             this->targetTime = millisecondsPassed + 30000;
         }
     } else {
