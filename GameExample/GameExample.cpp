@@ -69,7 +69,14 @@ int main() {
     displayCurrentGameState(texasHoldem, "Gambler 1 calls");
     texasHoldem->advanceGame(30022); // bot 1 calls, the game should end
     displayCurrentGameState(texasHoldem, "Bot 1 calls, game ends");
-    cout << texasHoldem->getLastGameWinners()[0]->getName() << " wins!";
+    cout << "Winners: ";
+    for(auto &gambler:texasHoldem->getLastGameWinners()) {
+        cout << gambler->getName() << ", ";
+    }
+    cout << endl << "Winning hand: " << endl;
+    for(auto &card:texasHoldem->getLastWinningHand()) {
+        cout << *card << ", ";
+    }
     delete texasHoldem;
     delete bot1;
     delete bot2;
