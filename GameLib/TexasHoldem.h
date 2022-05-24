@@ -31,6 +31,7 @@ class TexasHoldem : public CardGame {
     int dealerIndex = 0, currentPlayerIndex = 0, currentHighest = 0;
     TexasHoldemState state = SMALL_BLIND;
     std::map<Gambler *, bool> notFolded, movedDuringThisPhase;
+    std::vector<Card*> lastWinningHand;
 
     std::pair<std::pair<TexasHoldemHand, Card *>, std::vector<Card *>> recognizeHandValue(Gambler *gambler);
 
@@ -54,14 +55,10 @@ class TexasHoldem : public CardGame {
 
     bool onePlayerLeft();
 
-    Gambler*decideHighCardTie(std::vector<std::pair<std::pair<TexasHoldemHand, Card *>, std::vector<Card *>>> hands,
-                              unsigned int maxHandIndex);
+    std::vector<Gambler *> decideKickers(std::map<Gambler *, std::vector<Card *>> mapForKickers);
 
-    Gambler *decideTwoPairTie(std::vector<std::pair<std::pair<TexasHoldemHand, Card *>, std::vector<Card *>>> hands,
-                              unsigned int maxHandIndex);
-
-    Gambler *decideOnePairTie(std::vector<std::pair<std::pair<TexasHoldemHand, Card *>, std::vector<Card *>>> hands,
-                              unsigned int maxHandIndex);
+    std::vector<Gambler *>
+    decideHighCardTie(std::map<Gambler *, std::pair<std::pair<TexasHoldemHand, Card *>, std::vector<Card *>>> hands);
 
 protected:
     std::vector<Gambler *> chooseTheWinners() noexcept override;
@@ -96,6 +93,14 @@ public:
     TexasHoldemState getGameState() const noexcept;
 
     std::map<Gambler *, std::vector<Card *>> getGamblersCards() noexcept override;
+
+    std::vector<Card*> getLastWinningHand() const noexcept;
+
+    std::vector<Gambler *>
+    decideOnePairTie(std::map<Gambler *, std::pair<std::pair<TexasHoldemHand, Card *>, std::vector<Card *>>> hands);
+
+    std::vector<Gambler *>
+    decideTwoPairTie(std::map<Gambler *, std::pair<std::pair<TexasHoldemHand, Card *>, std::vector<Card *>>> hands);
 };
 
 

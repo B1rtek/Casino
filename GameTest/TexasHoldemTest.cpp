@@ -595,7 +595,7 @@ TEST(TexasHoldemTest, GameEndInRiverSinglePairTie) {
                               CardGame::deck[34], CardGame::deck[33], //gambler1's cards (9 S, 8 S)
                               CardGame::deck[47], CardGame::deck[46], //bot1's cards (9 H, 8 H)
                               CardGame::deck[21], CardGame::deck[20]}; //bot2's cards (9 D, 8 D)
-        } // expected: bot 1 wins by 9 Hearts kicker with single pair
+        } // expected: threefold tie - all players choose the pair of aces and king kicker
     };
     auto *gambler1 = new Gambler(1337);
     auto *bot1 = new TexasBot(1338), *bot2 = new TexasBot(1339);
@@ -620,5 +620,5 @@ TEST(TexasHoldemTest, GameEndInRiverSinglePairTie) {
     texasHoldem->advanceGame(30022); // bot 1 calls, the game should end
     ASSERT_EQ(texasHoldem->getGameState(), SHOWDOWN);
     ASSERT_FALSE(texasHoldem->isInProgress());
-    ASSERT_EQ(texasHoldem->getLastGameWinners()[0], bot1);
+    ASSERT_EQ(texasHoldem->getLastGameWinners().size(), 3);
 }

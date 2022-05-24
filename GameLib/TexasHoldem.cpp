@@ -154,123 +154,130 @@ std::pair<TexasHoldemHand, Card *> TexasHoldem::calculateHand(std::vector<Card *
 }
 
 /**
- * Decides the two pair hand ties by finding the kicker card
- * @param hands best hands of all gamblers
- * @return pointer to a gambler who had the best hand
+ * Chooses winners by selecting hands (or their parts) with the highest kickers
+ * @param mapForKickers map with all potential winners' kickers
+ * @return vector with gamblers who won
  */
-Gambler *
-TexasHoldem::decideTwoPairTie(std::vector<std::pair<std::pair<TexasHoldemHand, Card *>, std::vector<Card *>>> hands,
-                              unsigned int maxHandIndex) {
-    std::vector<unsigned> maxHands;
-    for (unsigned i = 0; i < hands.size(); i++) {
-        if (hands[i].first.first == TWO_PAIRS &&
-            hands[i].first.second->getValue() == hands[maxHandIndex].first.second->getValue()) {
-            maxHands.push_back(i);
-        }
+std::vector<Gambler *> TexasHoldem::decideKickers(std::map<Gambler *, std::vector<Card *>> mapForKickers) {
+    // find highest kicker for each player
+    std::map<Gambler *, Card*> highestKickers;
+    for(auto &gamblerKickersPair:mapForKickers) {
+        highestKickers[gamblerKickersPair.first] = *std::max_element(gamblerKickersPair.second.begin(), gamblerKickersPair.second.end(), [](Card* one, Card* two){return *one < *two;});
     }
-    if (maxHands.size() == 1) {
-        return this->gamblersPlaying[maxHandIndex];
+    // find the highest kicker overall
+    Card* maxKicker = new Card();
+    for(auto &gamblerKickerPair:highestKickers) {
+        if(*gamblerKickerPair.second > *maxKicker) maxKicker = gamblerKickerPair.second;
     }
-    // if this failed, compare values of the second pair
-    // find values of the lower pair
-    std::vector<CardValue> maxHandedLowerPairs;
-    int pairBuckets[14] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-    for (unsigned handIndexIndex = 0; handIndexIndex < maxHands.size(); handIndexIndex++) {
-        std::vector<Card *> allHandCards = this->dealtCards;
-        for (int i = 0; i < 2; i++)
-            allHandCards.push_back(this->gamblersCards[this->gamblersPlaying[handIndexIndex]][i]);
-        int cardBuckets[14] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-        for (auto &card: allHandCards) {
-            ++cardBuckets[card->getValue()];
-        }
-        // find lower pair
-        int lowerPairIndex = 0;
-        while (cardBuckets[lowerPairIndex] != 2) {
-            ++lowerPairIndex;
-        }
-        ++pairBuckets[lowerPairIndex];
+    // gamblers with that kicker win
+    std::vector<Gambler*> winners;
+    for(auto &gamblerKickerPair:highestKickers) {
+        if(*gamblerKickerPair.second == *maxKicker) winners.push_back(gamblerKickerPair.first);
+    }
+    delete maxKicker;
+    return winners;
+}
 
-    }
-    // if there's only one highest lower pair, we have a winner
-    int highestLower = 13;
-    while (pairBuckets[highestLower] == 0) {
-        --highestLower;
-    }
-    if (pairBuckets[highestLower] == 1) { // we found them
-        int winnerIndex = 0;
-        while (maxHandedLowerPairs[winnerIndex] != highestLower) {
-            ++winnerIndex;
+
+/**
+ * Decides a tie between two or more tied high card hands
+ * @param hands hands to decide a tie between
+ * @return vector with all winners
+ */
+std::vector<Gambler *> TexasHoldem::decideHighCardTie(
+        std::map<Gambler *, std::pair<std::pair<TexasHoldemHand, Card *>, std::vector<Card *>>> hands) {
+    std::map<Gambler *, std::vector<Card *>> mapForKickers;
+    std::vector<Card*> temp;
+    for (auto &gamblerCardsPair: hands) {
+        temp = this->dealtCards;
+        for(auto &card:this->gamblersCards[gamblerCardsPair.first]) {
+            temp.push_back(card);
         }
-        return this->gamblersPlaying[maxHands[winnerIndex]];
+        // remove the card that is responsible for the hand
+        temp.erase(std::remove(temp.begin(), temp.end(), hands[gamblerCardsPair.first].first.second), temp.end());
+        // add the rest to the map for kickers
+        mapForKickers[gamblerCardsPair.first] = temp;
     }
-    // if this fails as well, find the high card
-    std::vector<Card *> highCards;
-    for (unsigned handIndexIndex = 0; handIndexIndex < maxHands.size(); handIndexIndex++) {
-        std::vector<Card *> allHandCards = this->dealtCards;
-        for (int i = 0; i < 2; i++)
-            allHandCards.push_back(this->gamblersCards[this->gamblersPlaying[handIndexIndex]][i]);
-        int cardBuckets[14] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-        for (auto &card: allHandCards) {
-            ++cardBuckets[card->getValue()];
-        }
-        std::sort(allHandCards.begin(), allHandCards.end());
-        int highestIndex = 6;
-        while (cardBuckets[allHandCards[highestIndex]->getValue()] == 2) {
-            --highestIndex;
-        }
-        highCards.push_back(allHandCards[highestIndex]);
-    }
-    unsigned highestCardIndex = 0;
-    for (unsigned i = 1; i < highCards.size(); i++) {
-        if (*highCards[i] > *highCards[highestCardIndex]) {
-            highestCardIndex = i;
-        }
-    }
-    return this->gamblersPlaying[maxHands[highestCardIndex]];
+    std::vector<Gambler*> winners = decideKickers(mapForKickers);
+    this->lastWinningHand = hands[winners[0]].second;
+    return winners;
 }
 
 /**
- * Decides the one pair hand ties by finding the kicker card
- * @param hands best hands of all gamblers
- * @return pointer to a gambler who had the best hand
+ * Decides a tie between two or more tied one pair hands
+ * @param hands hands to decide a tie between
+ * @return vector with all winners
  */
-Gambler *
-TexasHoldem::decideOnePairTie(std::vector<std::pair<std::pair<TexasHoldemHand, Card *>, std::vector<Card *>>> hands,
-                              unsigned int maxHandIndex) {
-    std::vector<unsigned> maxHands;
-    for (unsigned i = 0; i < hands.size(); i++) {
-        if (hands[i].first.first == ONE_PAIR &&
-            hands[i].first.second->getValue() == hands[maxHandIndex].first.second->getValue()) {
-            maxHands.push_back(i);
+std::vector<Gambler *> TexasHoldem::decideOnePairTie(
+        std::map<Gambler *, std::pair<std::pair<TexasHoldemHand, Card *>, std::vector<Card *>>> hands) {
+    std::map<Gambler *, std::vector<Card *>> mapForKickers;
+    std::vector<Card*> temp;
+    for (auto &gamblerCardsPair: hands) {
+        temp = this->dealtCards;
+        for(auto &card:this->gamblersCards[gamblerCardsPair.first]) {
+            temp.push_back(card);
+        }
+        // remove the cards that are responsible for the hand
+        temp.erase(std::remove_if(temp.begin(), temp.end(), [&gamblerCardsPair](Card* card){return card->getValue() == gamblerCardsPair.second.first.second->getValue();}), temp.end());
+        // add the rest to the map for kickers
+        mapForKickers[gamblerCardsPair.first] = temp;
+    }
+    std::vector<Gambler*> winners = decideKickers(mapForKickers);
+    this->lastWinningHand = hands[winners[0]].second;
+    return winners;
+}
+
+/**
+ * Decides a tie between two or more tied two pair hands
+ * @param hands hands to decide a tie between
+ * @return vector with all winners
+ */
+std::vector<Gambler *> TexasHoldem::decideTwoPairTie(
+        std::map<Gambler *, std::pair<std::pair<TexasHoldemHand, Card *>, std::vector<Card *>>> hands) {
+    std::map<Gambler *, std::vector<Card *>> mapForSecondPair;
+    std::vector<Card*> temp;
+    for (auto &gamblerCardsPair: hands) {
+        temp = this->dealtCards;
+        for(auto &card:this->gamblersCards[gamblerCardsPair.first]) {
+            temp.push_back(card);
+        }
+        // remove the cards that are responsible for the hand
+        temp.erase(std::remove_if(temp.begin(), temp.end(), [&gamblerCardsPair](Card* card){return card->getValue() == gamblerCardsPair.second.first.second->getValue();}), temp.end());
+        // add the rest to the map for kickers
+        mapForSecondPair[gamblerCardsPair.first] = temp;
+    }
+    // calculate second pairs and find the highest
+    std::map<Gambler *, std::pair<std::pair<TexasHoldemHand, Card *>, std::vector<Card *>>> calculatedHands, hands2;
+    Card * highestHandValue = new Card();
+    for(auto &gamblerCardsPair: mapForSecondPair) {
+        calculatedHands[gamblerCardsPair.first] = {TexasHoldem::calculateHand(gamblerCardsPair.second), gamblerCardsPair.second};
+        if(*calculatedHands[gamblerCardsPair.first].first.second > *highestHandValue) highestHandValue = calculatedHands[gamblerCardsPair.first].first.second;
+    }
+    // check how many gamblers still have the same hand
+    for(auto &gamblerCardsPair: calculatedHands) {
+        if(*gamblerCardsPair.second.first.second == *highestHandValue) {
+            hands2[gamblerCardsPair.first] = gamblerCardsPair.second;
         }
     }
-    if (maxHands.size() == 1) {
-        return this->gamblersPlaying[maxHandIndex];
+    delete highestHandValue;
+    // if only one gambler has the highest second pair, they are the winner
+    if(hands2.size() == 1) {
+        Gambler *winner = hands2.begin()->first;
+        this->lastWinningHand = hands[winner].second;
+        return {winner};
     }
-    // otherwise find the highest cards that DON'T belong to the pair
-    std::vector<Card *> highCards;
-    for (unsigned handIndexIndex = 0; handIndexIndex < maxHands.size(); handIndexIndex++) {
-        std::vector<Card *> allHandCards = this->dealtCards;
-        for (int i = 0; i < 2; i++)
-            allHandCards.push_back(this->gamblersCards[this->gamblersPlaying[handIndexIndex]][i]);
-        int cardBuckets[14] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-        for (auto &card: allHandCards) {
-            ++cardBuckets[card->getValue()];
-        }
-        std::sort(allHandCards.begin(), allHandCards.end());
-        int highestIndex = 6;
-        while (cardBuckets[allHandCards[highestIndex]->getValue()] == 2) {
-            --highestIndex;
-        }
-        highCards.push_back(allHandCards[highestIndex]);
+    // otherwise we'll search for a kicker
+    mapForSecondPair.clear();
+    for (auto &gamblerCardsPair: hands2) {
+        temp = gamblerCardsPair.second.second;
+        // remove the cards that are responsible for the hand
+        temp.erase(std::remove_if(temp.begin(), temp.end(), [&gamblerCardsPair](Card* card){return card->getValue() == gamblerCardsPair.second.first.second->getValue();}), temp.end());
+        // add the rest to the map for kickers
+        mapForSecondPair[gamblerCardsPair.first] = temp;
     }
-    unsigned highestCardIndex = 0;
-    for (unsigned i = 1; i < highCards.size(); i++) {
-        if (*highCards[i] > *highCards[highestCardIndex]) {
-            highestCardIndex = i;
-        }
-    }
-    return this->gamblersPlaying[maxHands[highestCardIndex]];
+    std::vector<Gambler*> winners = decideKickers(mapForSecondPair);
+    this->lastWinningHand = hands[winners[0]].second;
+    return winners;
 }
 
 /**
@@ -282,30 +289,63 @@ std::vector<Gambler *> TexasHoldem::chooseTheWinners() noexcept {
     int stillInGame = 0;
     Gambler *potentialWinner = nullptr;
     for (auto gambler: this->notFolded) {
-        if(gambler.second) {
+        if (gambler.second) {
             ++stillInGame;
             potentialWinner = gambler.first;
         }
     }
-    if(stillInGame == 1) { // if there is only one person in game, they are the winner
+    if (stillInGame == 1) { // if there is only one person in game, they are the winner
         return {potentialWinner};
     } // otherwise we check hands
     std::vector<std::pair<std::pair<TexasHoldemHand, Card *>, std::vector<Card *>>> hands;
+    std::map<Gambler *, std::pair<std::pair<TexasHoldemHand, Card *>, std::vector<Card *>>> maxHands;
     for (auto &gambler: this->gamblersPlaying) {
         hands.push_back(this->recognizeHandValue(gambler));
     }
+    // find the highest one
     unsigned maxHandIndex = 0;
     for (unsigned i = 1; i < this->gamblersPlaying.size(); i++) {
         if (hands[i].first.first > hands[maxHandIndex].first.first ||
-            (hands[i].first.first == hands[maxHandIndex].first.first && hands[i].first.second > hands[maxHandIndex].first.second)) {
+            (hands[i].first.first == hands[maxHandIndex].first.first &&
+             hands[i].first.second > hands[maxHandIndex].first.second)) {
             maxHandIndex = i;
         }
     }
-    if (hands[maxHandIndex].first.first == TWO_PAIRS) {
-        return {this->decideTwoPairTie(hands, maxHandIndex)};
-    } else if (hands[maxHandIndex].first.first == ONE_PAIR) {
-        return {this->decideOnePairTie(hands, maxHandIndex)};
+    // check if there is more than 1 gambler with a hand of the same strength
+    for (unsigned i = 0; i < this->gamblersPlaying.size(); i++) {
+        if (hands[i].first.first == hands[maxHandIndex].first.first &&
+            hands[i].first.second == hands[maxHandIndex].first.second) {
+            maxHands[this->gamblersPlaying[i]] = (hands[i]);
+        }
     }
+    // and if there is more than one, we need to decide the tie
+    if (maxHands.size() > 1) {
+        switch (hands[maxHandIndex].first.first) {
+            case HIGH_CARD: {
+                return this->decideHighCardTie(maxHands);
+            }
+            case ONE_PAIR: {
+                return this->decideOnePairTie(maxHands);
+            }
+            case TWO_PAIRS: {
+                return this->decideTwoPairTie(maxHands);
+            }
+                break;
+            case THREE_OF_A_KIND:
+                break;
+            case STRAIGHT:
+                break;
+            case FLUSH:
+                break;
+            case FULL_HOUSE:
+                break;
+            case FOUR_OF_A_KIND:
+                break;
+            case STRAIGHT_FLUSH:
+                break;
+        }
+    } // otherwise the winner is clear
+    this->lastWinningHand = hands[maxHandIndex].second;
     return {this->gamblersPlaying[maxHandIndex]};
 }
 
@@ -537,7 +577,7 @@ bool TexasHoldem::raise(Gambler *gambler, int amount) {
     this->bet(gambler, amount);
     this->currentHighest = std::max(this->currentBets[gambler], this->currentHighest);
     this->current = this->nextGambler();
-    for(auto &gamblerPlaying:this->gamblersPlaying) {
+    for (auto &gamblerPlaying: this->gamblersPlaying) {
         this->movedDuringThisPhase[gamblerPlaying] = false;
     }
     this->movedDuringThisPhase[gambler] = true;
@@ -575,8 +615,8 @@ std::vector<Card *> TexasHoldem::getCurrentDealtCards() const noexcept {
 
 std::map<Gambler *, std::vector<Card *>> TexasHoldem::getGamblersCards() noexcept {
     std::map<Gambler *, std::vector<Card *>> cards = CardGame::getGamblersCards();
-    if(this->state < PREFLOP) {
-        for(auto gambler:this->gamblersPlaying) {
+    if (this->state < PREFLOP) {
+        for (auto gambler: this->gamblersPlaying) {
             cards[gambler] = {CardGame::noneCard, CardGame::noneCard};
         }
         return cards;
@@ -599,4 +639,8 @@ bool TexasHoldem::addPlayer(Gambler *gambler) noexcept {
 
 TexasHoldemState TexasHoldem::getGameState() const noexcept {
     return this->state;
+}
+
+std::vector<Card *> TexasHoldem::getLastWinningHand() const noexcept {
+    return this->lastWinningHand;
 }
