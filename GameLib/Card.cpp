@@ -53,7 +53,7 @@ bool Card::operator<(const Card &other) const noexcept {
  * Cards are equal only if both their value and color is the same - colors have values as well
  */
 bool Card::operator==(const Card &other) const noexcept {
-    return this->value == other.getValue();
+    return this->value == other.getValue() && this->color == other.getColor();
 }
 
 std::ostream &operator<<(std::ostream &stream, Card card) {
