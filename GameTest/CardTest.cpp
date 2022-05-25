@@ -39,7 +39,7 @@ TEST(CardTest, CardOperatorSmaller) {
 TEST(CardTest, CardOperatorEqualsEquals) {
     Card card1 = Card(), card2 = Card(N2, HEARTS), card3 = Card(N2, SPADES), card4 = Card(N2, SPADES);
     ASSERT_FALSE(card1 == card2);
-    ASSERT_TRUE(card2 == card3);
+    ASSERT_FALSE(card2 == card3);
     ASSERT_TRUE(card3 == card4);
 }
 

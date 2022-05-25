@@ -60,6 +60,25 @@ class TexasHoldem : public CardGame {
     std::vector<Gambler *>
     decideHighCardTie(std::map<Gambler *, std::pair<std::pair<TexasHoldemHand, Card *>, std::vector<Card *>>> hands);
 
+    std::vector<Gambler *>
+    decideOnePairTie(std::map<Gambler *, std::pair<std::pair<TexasHoldemHand, Card *>, std::vector<Card *>>> hands);
+
+    std::vector<Gambler *>
+    decideTwoPairTie(std::map<Gambler *, std::pair<std::pair<TexasHoldemHand, Card *>, std::vector<Card *>>> hands);
+
+    std::vector<Gambler *>
+    decideThreeOfAKindTie(
+            std::map<Gambler *, std::pair<std::pair<TexasHoldemHand, Card *>, std::vector<Card *>>> hands);
+
+    std::vector<Gambler *>
+    decideStraightTie(std::map<Gambler *, std::pair<std::pair<TexasHoldemHand, Card *>, std::vector<Card *>>> hands);
+
+    std::vector<Gambler *>
+    decideFlushTie(std::map<Gambler *, std::pair<std::pair<TexasHoldemHand, Card *>, std::vector<Card *>>> hands);
+
+    std::vector<Gambler *>
+    decideFullHouseTie(std::map<Gambler *, std::pair<std::pair<TexasHoldemHand, Card *>, std::vector<Card *>>> hands);
+
 protected:
     std::vector<Gambler *> chooseTheWinners() noexcept override;
 
@@ -95,12 +114,6 @@ public:
     std::map<Gambler *, std::vector<Card *>> getGamblersCards() noexcept override;
 
     std::vector<Card*> getLastWinningHand() const noexcept;
-
-    std::vector<Gambler *>
-    decideOnePairTie(std::map<Gambler *, std::pair<std::pair<TexasHoldemHand, Card *>, std::vector<Card *>>> hands);
-
-    std::vector<Gambler *>
-    decideTwoPairTie(std::map<Gambler *, std::pair<std::pair<TexasHoldemHand, Card *>, std::vector<Card *>>> hands);
 };
 
 

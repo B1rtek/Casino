@@ -7,6 +7,14 @@
 /**
  * CardGame class, represents a game which is played with cards, subclass of Game
  */
+
+const std::vector<Card *> uncoloredDeck = {
+        new Card(), new Card(N2, NOCOLOR), new Card(N3, NOCOLOR), new Card(N4, NOCOLOR), new Card(N5, NOCOLOR),
+        new Card(N6, NOCOLOR), new Card(N7, NOCOLOR), new Card(N8, NOCOLOR), new Card(N9, NOCOLOR),
+        new Card(N10, NOCOLOR), new Card(JACK, NOCOLOR), new Card(QUEEN, NOCOLOR), new Card(KING, NOCOLOR),
+        new Card(ACE, NOCOLOR)
+};
+
 class CardGame : public Game {
 protected:
     // this instance's deck
@@ -18,7 +26,7 @@ public:
     // game specific decks
     const static std::vector<Card *> russianSchnapsenDeck;
     // none card
-    static Card * noneCard;
+    static Card *noneCard;
 
     explicit CardGame(int minimumEntry, std::vector<Card *> gameDeck = deck, const std::string &name = "") noexcept;
 
@@ -36,7 +44,7 @@ public:
 
     std::vector<Card *> getDeck() const noexcept;
 
-    virtual std::map<Gambler*, std::vector<Card *>> getGamblersCards() noexcept;
+    virtual std::map<Gambler *, std::vector<Card *>> getGamblersCards() noexcept;
 };
 
 
