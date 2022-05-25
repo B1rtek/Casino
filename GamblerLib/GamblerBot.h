@@ -17,6 +17,8 @@ public:
     GamblerBot(int balance, Game *game, const std::string &name="") noexcept;
 
     int getTargetTime() const noexcept;
+
+    void withdrawBalance(int amount) noexcept override {}
 };
 
 

@@ -52,11 +52,11 @@ TEST(GamblerTest, GamblerCreateWithBalanceAndGame) {
 TEST(GamblerTest, GamblerCreateWithBalanceGameAndName) {
     Game *game = new Game(0);
     Gambler gambler = Gambler(23, game, "Marcus Weir");
-    /*ASSERT_EQ(gambler.getBalance(), 23);
+    ASSERT_EQ(gambler.getBalance(), 23);
     ASSERT_EQ(gambler.getDeposits()[0], 23);
     ASSERT_EQ(gambler.getCurrentGame(), game);
     ASSERT_EQ(gambler.getName(), "Marcus Weir");
-    ASSERT_FALSE(gambler.isBot());*/
+    ASSERT_FALSE(gambler.isBot());
     delete game;
 }
 
@@ -192,40 +192,40 @@ TEST(GamblerTest, GamblerSpectateAndStop) {
     ASSERT_FALSE(gambler.spectate(game1));
 }
 
-TEST(PlayerTest, TestGuestCreate) {
-    Guest gosc("Kamil", 5);
-    ASSERT_EQ("Kamil", gosc.getName());
-    ASSERT_EQ(5, gosc.getBalance());
+TEST(GuestTest, TestGuestCreate) {
+    Guest gosc(5, "Kamil");
+    ASSERT_EQ(gosc.getName(), "Kamil");
+    ASSERT_EQ(gosc.getBalance(), 5);
 
     Guest gosc2;
-    ASSERT_EQ("Player", gosc2.getName());
-    ASSERT_EQ(0, gosc2.getBalance());
+    ASSERT_EQ(gosc2.getName(), "");
+    ASSERT_EQ(gosc2.getBalance(), 0);
 }
 
-TEST(PlayerTest, TestGuestDepositWithdrawTooMany) {
-    Guest gosc("Kamil", 1500);
+TEST(GuestTest, TestGuestDepositWithdrawTooMany) {
+    Guest gosc(1500, "Kamil");
     gosc.depositBalance(110000);
-    ASSERT_EQ(1500, gosc.getBalance());
+    ASSERT_EQ(gosc.getBalance(), 1500);
     gosc.withdrawBalance(1200);
-    ASSERT_EQ(1500, gosc.getBalance());
+    ASSERT_EQ(gosc.getBalance(), 1500);
 }
 
-TEST(PlayerTest, TestVIPCheckPlayerBalance) {
-    Guest gosc("Kamil", 150);
-    VIP vip("Elon", 25000);
-    ASSERT_EQ(150, vip.checkPlayerBalance(gosc));
+TEST(VIPTest, TestVIPCheckPlayerBalance) {
+    Guest gosc(150, "Kamil");
+    VIP vip(25000, "Elon");
+    ASSERT_EQ(vip.checkGamblerBalance(gosc), 150);
 }
 
-TEST(PlayerTest, TestVIPUsingSafe) {
-    VIP vip("Elon", 25000);
+TEST(VIPTest, TestVIPUsingSafe) {
+    VIP vip(25000, "Elon");
     vip.depositToSafe(1000);
     vip.withdrawFromSafe(200);
-    ASSERT_EQ(24200, vip.getBalance());
-    ASSERT_EQ(800, vip.getSafeValue());
+    ASSERT_EQ(vip.getBalance(), 24200);
+    ASSERT_EQ(vip.getSafeValue(), 800);
 }
 
-TEST(PlayerTest, TestVIPResetStats) {
-    VIP vip("Elon", 25000);
+TEST(VIPTest, TestVIPResetStats) {
+    VIP vip(25000, "Elon");
     vip.depositBalance(100);
     vip.withdrawBalance(200);
     vip.depositBalance(300);
@@ -235,7 +235,7 @@ TEST(PlayerTest, TestVIPResetStats) {
     ASSERT_TRUE(vip.getWithdrawals().empty());
 }
 
-TEST(PlayerTest, TestShopRemoveItem) {
+TEST(ShopTest, TestShopRemoveItem) {
     Shop shop;
     shop.removeItem("Yacht");
     ASSERT_EQ(shop.getItems()[0].first, "Car");

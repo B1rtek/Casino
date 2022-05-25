@@ -94,107 +94,54 @@ public:
     friend std::ostream &operator<<(std::ostream &os, const Shop &shop) noexcept;
 };
 
-class Player {
-protected:
-    std::string name;
-    int balance;
-    std::vector<int> deposits;
-    std::vector<int> withdrawals;
-    std::vector<std::pair<int, std::string>> transactions;
-    Game *playingGame{};
-    Game *watchingGame{};
-    bool bot = false;
-
-public:
-    Player() noexcept;
-
-    Player(std::string name, int balance = 0) noexcept;
-
-    std::string getName() const noexcept { return name; }
-
-    int getBalance() const noexcept { return balance; }
-
-    virtual std::vector<int> getDeposits() noexcept { return deposits; }
-
-    virtual std::vector<int> getWithdrawals() noexcept { return withdrawals; }
-
-    virtual std::vector<std::pair<int, std::string>> getTransactions() noexcept { return transactions; }
-
-    Game *getGame() const noexcept { return this->playingGame; }
-
-    Game *getWatchedGame() const noexcept { return this->watchingGame; }
-
-    bool isBot() const noexcept { return this->bot; }
-
-    bool joinGame(Game *game) noexcept;
-
-    bool leaveGame() noexcept;
-
-    bool watch(Game *game) noexcept;
-
-    bool stopWatching() noexcept;
-
-    void changeName(std::string name) noexcept { this->name = name; }
-
-    virtual void setBot(bool setted) noexcept { this->bot = setted; }
-
-    virtual void depositBalance(int amount) noexcept;
-
-    virtual void withdrawBalance(int amount) noexcept;
-
-    virtual int totalDeposited() noexcept;
-
-    virtual int totalWithdrawed() noexcept;
-
-    virtual int totalProfit() noexcept { return totalWithdrawed() - totalDeposited(); }
-
-    std::vector<int> specificTransactions(std::string game) noexcept;
-};
-
-class Guest : public Player {
+class Guest : public Gambler {
 private:
     int max_bet = 10000;
 public:
     // deposit max 100000
-    // wypłaty do max 1000 w jednej transakcji
-    // ograniczenie widocznosci ostatnich wpłat do 10 (i wypłat)
-    // zablokować dostęp do totalProfit(), totaldeposited(), totalwithdrawed()
+    // wyplaty do max 1000 w jednej transakcji
+    // ograniczenie widocznosci ostatnich wplat do 10 (i wyplat)
+    // zablokowany dostep do totalProfit(), totalDeposited(), totalWithdrawed()
 
-    Guest() noexcept;
+    explicit Guest(const std::string& name = "") noexcept;
 
-    Guest(std::string name, int balance = 0) noexcept;
+    explicit Guest(int balance, const std::string& name = "") noexcept;
+
+    Guest(int balance, Game* game, const std::string& name = "") noexcept;
 
     void depositBalance(int amount) noexcept override;
 
     void withdrawBalance(int amount) noexcept override;
 
-    std::vector<int> getDeposits() noexcept override;
+    std::vector<int> getDeposits() const noexcept override;
 
-    std::vector<int> getWithdrawals() noexcept override;
+    std::vector<int> getWithdrawals() const noexcept override;
 
-    int totalDeposited() noexcept override { return -1; }
+    int totalDeposited() const noexcept override { return -1; }
 
-    int totalWithdrawed() noexcept override { return -1; }
+    int totalWithdrawed() const noexcept override { return -1; }
 
-    int totalProfit() noexcept override { return -1; }
+    int totalProfit() const noexcept override { return -1; }
 };
 
-class VIP : public Player {
+class VIP : public Gambler {
 private:
     int max_bet = 100000;
     int safe = 0;
     std::vector<std::string> items;
 public:
-    // dostęp do statystyk innych osób (ilość balansu)
-    // możliwość wpłacania i wypłacania pieniędzy do sejfu (brak śladu)
-    // możliwość resetowania statystyk (zacieranie śladów)
-    // możliwość kupowania ze sklepu nagród rzeczowych (będzie można je stawiać)
+    // dostep do statystyk innych osob (ilosc balansu)
+    // mozliwosc wplacania i wyplacania pieniedzy do sejfu (brak sladu)
+    // mozliwosc resetowania statystyk (zacieranie sladow)
+    // mozliwosc kupowania ze sklepu nagrod rzeczowych (bedzie mozna nimi grac <- do implementacji)
 
-    VIP() noexcept;
+    explicit VIP(const std::string &name = "") noexcept;
 
-    VIP(std::string name, int balance = 0) noexcept;
+    explicit VIP(int balance, const std::string &name = "") noexcept;
 
-    int checkPlayerBalance(Player gracz) noexcept { return gracz.getBalance(); }
+    VIP(int balance, Game* game, const std::string &name = "") noexcept;
+
+    int checkGamblerBalance(Gambler gracz) noexcept { return gracz.getBalance(); }
 
     std::vector<std::string> getItems() noexcept { return this->items; }
 
@@ -211,49 +158,35 @@ public:
     void resetStats() noexcept;
 };
 
-class TrialMode : public Player {
-private:
-    int max_bet = 100000;
-    bool bot = true;
-public:
-    // brak możliwości wypłat
-    // może tylko być botem i grać z botami <- głębsza implementajca na późniejszym etapie projektu
-    TrialMode() noexcept;
-
-    TrialMode(std::string name, int balance = 0) noexcept;
-
-    void setBot(bool setted) noexcept override {}
-
-    void withdrawBalance(int amount) noexcept override {}
-};
-
-class SafePlayer : public Player {
+class SafeGambler : public Gambler {
 private:
     int max_bet = 100;
 public:
     // max deposit 300
     // max withdraw 100
-    // ograniczenie widocznosci ostatnich wpłat do 5 (i wypłat)
-    // zablokować dostęp do totalProfit(), totaldeposited(), totalwithdrawed()
-    // możliwość zablokowania grania
+    // ograniczenie widocznosci ostatnich wplat do 5 (i wyplat)
+    // zablokowany dostep do totalProfit(), totalDeposited(), totalWithdrawed()
+    // mozliwosc zablokowania grania
 
-    SafePlayer() noexcept;
+    explicit SafeGambler(const std::string& name = "") noexcept;
 
-    SafePlayer(std::string name, int balance = 0) noexcept;
+    explicit SafeGambler(int balance, const std::string& name = "") noexcept;
+
+    SafeGambler(int balance, Game* game, const std::string& name = "") noexcept;
 
     void depositBalance(int amount) noexcept override;
 
     void withdrawBalance(int amount) noexcept override;
 
-    std::vector<int> getDeposits() noexcept override;
+    std::vector<int> getDeposits() const const noexcept override;
 
-    std::vector<int> getWithdrawals() noexcept override;
+    std::vector<int> getWithdrawals() const noexcept override;
 
-    int totalDeposited() noexcept override { return -1; }
+    int totalDeposited() const noexcept override { return -1; }
 
-    int totalWithdrawed() noexcept override { return -1; }
+    int totalWithdrawed() const noexcept override { return -1; }
 
-    int totalProfit() noexcept override { return -1; }
+    int totalProfit() const noexcept override { return -1; }
 };
 
 #endif //PROI_4_KASYNO_GRA_GAMBLER_H

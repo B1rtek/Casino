@@ -238,87 +238,12 @@ std::ostream &operator<<(std::ostream &os, Shop &shop) noexcept {
 }
 
 
-// Player
-Player::Player() noexcept {
-    name = "Player";
-    balance = 0.0;
-}
-
-Player::Player(std::string name, int balance) noexcept {
-    this->name = name;
-    if (balance <= 0) this->balance = 0;
-    else {
-        this->balance = balance;
-        this->deposits.push_back(balance);
-    }
-}
-
-void Player::depositBalance(int amount) noexcept {
-    this->balance += abs(amount);
-    deposits.push_back(abs(amount));
-}
-
-void Player::withdrawBalance(int amount) noexcept {
-    if (abs(amount) <= this->balance) {
-        this->balance -= abs(amount);
-        withdrawals.push_back(abs(amount));
-    }
-}
-
-int Player::totalDeposited() noexcept {
-    int sum = 0;
-    for (int i = 0; i < deposits.size(); i++) sum += deposits[i];
-    return sum;
-}
-
-int Player::totalWithdrawed() noexcept {
-    int sum = 0;
-    for (int i = 0; i < withdrawals.size(); i++) sum += withdrawals[i];
-    return sum;
-}
-
-std::vector<int> Player::specificTransactions(std::string game) noexcept {
-    std::vector<int> specific_transactions;
-    for (int i = 0; i < transactions.size(); i++)
-        if (transactions[i].second == game) specific_transactions.push_back(transactions[i].first);
-    return specific_transactions;
-}
-
-bool Player::joinGame(Game *game) noexcept {
-    // na etapie projektu -> sprawdzić warunek, czy gra pozwala na dostęp użytkownikowi
-    this->playingGame = game;
-    return true;
-}
-
-bool Player::leaveGame() noexcept {
-    if (this->playingGame != nullptr) {
-        this->playingGame = nullptr;
-        return true;
-    }
-    return false;
-}
-
-bool Player::watch(Game *game) noexcept {
-    if (this->playingGame == nullptr) {
-        this->watchingGame = game;
-        return true;
-    }
-    return false;
-}
-
-bool Player::stopWatching() noexcept {
-    if (this->watchingGame != nullptr) {
-        this->watchingGame = nullptr;
-        return true;
-    }
-    return false;
-}
-
-
 // Guest
-Guest::Guest() noexcept: Player() {}
+Guest::Guest(const std::string& name) noexcept : Gambler(name) {}
 
-Guest::Guest(std::string name, int balance) noexcept: Player(name, balance) {}
+Guest::Guest(int balance, const std::string& name) noexcept : Gambler(balance, name) {}
+
+Guest::Guest(int balance, Game* game, const std::string& name) noexcept : Gambler(balance, game, name) {}
 
 void Guest::depositBalance(int amount) noexcept {
     if (abs(amount) <= 100000) {
@@ -334,7 +259,7 @@ void Guest::withdrawBalance(int amount) noexcept {
     }
 }
 
-std::vector<int> Guest::getDeposits() noexcept {
+std::vector<int> Guest::getDeposits() const noexcept {
     std::vector<int> deposits;
     for (int i = 0; i < this->deposits.size(); i++) {
         deposits.push_back(this->deposits[i]);
@@ -343,7 +268,7 @@ std::vector<int> Guest::getDeposits() noexcept {
     return deposits;
 }
 
-std::vector<int> Guest::getWithdrawals() noexcept {
+std::vector<int> Guest::getWithdrawals() const noexcept {
     std::vector<int> withdrawals;
     for (int i = 0; i < this->withdrawals.size(); i++) {
         withdrawals.push_back(this->withdrawals[i]);
@@ -353,9 +278,11 @@ std::vector<int> Guest::getWithdrawals() noexcept {
 }
 
 // VIP
-VIP::VIP() noexcept: Player() {}
+VIP::VIP(const std::string& name) noexcept : Gambler(name) {}
 
-VIP::VIP(std::string name, int balance) noexcept: Player(name, balance) {}
+VIP::VIP(int balance, const std::string& name) noexcept : Gambler(balance, name) {}
+
+VIP::VIP(int balance, Game* game, const std::string& name) noexcept : Gambler(balance, game, name) {}
 
 void VIP::buyItem(Shop *shop, std::string itemName) noexcept {
     int itemValue = shop->findItemValue(itemName);
@@ -397,31 +324,28 @@ void VIP::resetStats() noexcept {
     this->transactions = {};
 }
 
-// TrialMode
-TrialMode::TrialMode() noexcept: Player() {}
+// SafeGambler
+SafeGambler::SafeGambler(const std::string& name) noexcept : Gambler(name) {}
 
-TrialMode::TrialMode(std::string name, int balance) noexcept: Player(name, balance) {}
+SafeGambler::SafeGambler(int balance, const std::string& name) noexcept : Gambler(balance, name) {}
 
-// SafePlayer
-SafePlayer::SafePlayer() noexcept: Player() {}
+SafeGambler::SafeGambler(int balance, Game* game, const std::string& name) noexcept : Gambler(balance, game, name) {}
 
-SafePlayer::SafePlayer(std::string name, int balance) noexcept: Player(name, balance) {}
-
-void SafePlayer::depositBalance(int amount) noexcept {
+void SafeGambler::depositBalance(int amount) noexcept {
     if (abs(amount) <= 300) {
         this->balance += abs(amount);
         deposits.push_back(abs(amount));
     }
 }
 
-void SafePlayer::withdrawBalance(int amount) noexcept {
+void SafeGambler::withdrawBalance(int amount) noexcept {
     if (abs(amount) <= this->balance && abs(amount) <= 100) {
         this->balance -= abs(amount);
         withdrawals.push_back(abs(amount));
     }
 }
 
-std::vector<int> SafePlayer::getDeposits() noexcept {
+std::vector<int> SafeGambler::getDeposits() const noexcept {
     std::vector<int> deposits;
     for (int i = 0; i < this->deposits.size(); i++) {
         deposits.push_back(this->deposits[i]);
@@ -430,7 +354,7 @@ std::vector<int> SafePlayer::getDeposits() noexcept {
     return deposits;
 }
 
-std::vector<int> SafePlayer::getWithdrawals() noexcept {
+std::vector<int> SafeGambler::getWithdrawals() const noexcept {
     std::vector<int> withdrawals;
     for (int i = 0; i < this->withdrawals.size(); i++) {
         withdrawals.push_back(this->withdrawals[i]);
