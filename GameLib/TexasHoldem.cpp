@@ -165,7 +165,7 @@ std::vector<Gambler *> TexasHoldem::decideKickers(std::map<Gambler *, std::vecto
         highestKickers[gamblerKickersPair.first] = *std::max_element(gamblerKickersPair.second.begin(), gamblerKickersPair.second.end(), [](Card* one, Card* two){return *one < *two;});
     }
     // find the highest kicker overall
-    Card* maxKicker = new Card();
+    Card* maxKicker = CardGame::noneCard;
     for(auto &gamblerKickerPair:highestKickers) {
         if(*gamblerKickerPair.second > *maxKicker) maxKicker = gamblerKickerPair.second;
     }
@@ -174,7 +174,6 @@ std::vector<Gambler *> TexasHoldem::decideKickers(std::map<Gambler *, std::vecto
     for(auto &gamblerKickerPair:highestKickers) {
         if(*gamblerKickerPair.second == *maxKicker) winners.push_back(gamblerKickerPair.first);
     }
-    delete maxKicker;
     return winners;
 }
 
@@ -248,7 +247,7 @@ std::vector<Gambler *> TexasHoldem::decideTwoPairTie(
     }
     // calculate second pairs and find the highest
     std::map<Gambler *, std::pair<std::pair<TexasHoldemHand, Card *>, std::vector<Card *>>> calculatedHands, hands2;
-    Card * highestHandValue = new Card();
+    Card * highestHandValue = CardGame::noneCard;
     for(auto &gamblerCardsPair: mapForSecondPair) {
         calculatedHands[gamblerCardsPair.first] = {TexasHoldem::calculateHand(gamblerCardsPair.second), gamblerCardsPair.second};
         if(*calculatedHands[gamblerCardsPair.first].first.second > *highestHandValue) highestHandValue = calculatedHands[gamblerCardsPair.first].first.second;
@@ -259,7 +258,6 @@ std::vector<Gambler *> TexasHoldem::decideTwoPairTie(
             hands2[gamblerCardsPair.first] = gamblerCardsPair.second;
         }
     }
-    delete highestHandValue;
     // if only one gambler has the highest second pair, they are the winner
     if(hands2.size() == 1) {
         Gambler *winner = hands2.begin()->first;
