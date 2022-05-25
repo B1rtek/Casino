@@ -147,6 +147,9 @@ TEST(TexasHoldemTest, RemovePlayer) {
     ASSERT_EQ(texasHoldem->getGamblersCards().size(), 1);
     std::map<Gambler *, bool> notFolded = texasHoldem->getNotFolded();
     ASSERT_TRUE(notFolded.find(gambler) == notFolded.end());
+    delete gambler;
+    delete gambler2;
+    delete texasHoldem;
 }
 
 TEST(TexasHoldemTest, CalculateHand) {
@@ -260,6 +263,10 @@ TEST(TexasHoldemTest, AdvanceGameStart) {
     ASSERT_EQ(texasHoldem->getGameState(), SMALL_BLIND);
     ASSERT_EQ(texasHoldem->getCurrentPlayer(), gambler2);
     ASSERT_EQ(texasHoldem->getTargetTime(), 30000); // no target specified
+    delete gambler1;
+    delete gambler2;
+    delete gambler3;
+    delete texasHoldem;
 }
 
 TEST(TexasHoldemTest, AdvanceGameBlindsAndPreflop) {
@@ -364,6 +371,10 @@ TEST(TexasHoldemTest, AdvanceGameBlindsAndPreflop) {
     texasHoldem->advanceGame(60010); // next game starts
     ASSERT_EQ(texasHoldem->getCurrentPlayer(),
               bot1); // because bot1 is the dealer now - when 2 people play, dealer starts
+    delete gambler1;
+    delete bot1;
+    delete bot2;
+    delete texasHoldem;
 }
 
 TEST(TexasHoldemTest, GameEndInFlop) {
@@ -405,6 +416,10 @@ TEST(TexasHoldemTest, GameEndInFlop) {
     ASSERT_EQ(texasHoldem->getInGameMoney()[gambler1], 1004);
     ASSERT_EQ(texasHoldem->getInGameMoney()[bot1], 998);
     ASSERT_EQ(texasHoldem->getInGameMoney()[bot2], 998);
+    delete gambler1;
+    delete bot1;
+    delete bot2;
+    delete texasHoldem;
 }
 
 TEST(TexasHoldemTest, GameEndInTurn) {
@@ -455,6 +470,10 @@ TEST(TexasHoldemTest, GameEndInTurn) {
     ASSERT_EQ(texasHoldem->getInGameMoney()[gambler1], 996);
     ASSERT_EQ(texasHoldem->getInGameMoney()[bot1], 996);
     ASSERT_EQ(texasHoldem->getInGameMoney()[bot2], 1008);
+    delete gambler1;
+    delete bot1;
+    delete bot2;
+    delete texasHoldem;
 }
 
 TEST(TexasHoldemTest, GameEndInRiverByFold) {
@@ -502,6 +521,10 @@ TEST(TexasHoldemTest, GameEndInRiverByFold) {
     ASSERT_EQ(texasHoldem->getInGameMoney()[gambler1], 1014);
     ASSERT_EQ(texasHoldem->getInGameMoney()[bot1], 994);
     ASSERT_EQ(texasHoldem->getInGameMoney()[bot2], 992);
+    delete gambler1;
+    delete bot1;
+    delete bot2;
+    delete texasHoldem;
 }
 
 TEST(TexasHoldemTest, GameEndInRiver) {
@@ -543,6 +566,10 @@ TEST(TexasHoldemTest, GameEndInRiver) {
     ASSERT_EQ(texasHoldem->getInGameMoney()[gambler1], 1016); // should win with the straight flush
     ASSERT_EQ(texasHoldem->getInGameMoney()[bot1], 992);
     ASSERT_EQ(texasHoldem->getInGameMoney()[bot2], 992);
+    delete gambler1;
+    delete bot1;
+    delete bot2;
+    delete texasHoldem;
 }
 
 TEST(TexasHoldemTest, GameEndInRiverDoublePairTie) {
@@ -582,9 +609,13 @@ TEST(TexasHoldemTest, GameEndInRiverDoublePairTie) {
     ASSERT_EQ(texasHoldem->getGameState(), SHOWDOWN);
     ASSERT_FALSE(texasHoldem->isInProgress());
     ASSERT_EQ(texasHoldem->getLastGameWinners()[0], bot2);
+    delete gambler1;
+    delete bot1;
+    delete bot2;
+    delete texasHoldem;
 }
 
-TEST(TexasHoldemTest, GameEndInRiverSinglePairTie) {
+TEST(TexasHoldemTest, GameEndInRiverSinglePairTripleTie) {
     class FakeTexasHoldem : public TexasHoldem {
     public:
         FakeTexasHoldem(const vector<Gambler *> &gamblers, int minimumEntry, const string &name="") :
@@ -620,5 +651,53 @@ TEST(TexasHoldemTest, GameEndInRiverSinglePairTie) {
     texasHoldem->advanceGame(30022); // bot 1 calls, the game should end
     ASSERT_EQ(texasHoldem->getGameState(), SHOWDOWN);
     ASSERT_FALSE(texasHoldem->isInProgress());
-    ASSERT_EQ(texasHoldem->getLastGameWinners().size(), 3);
+    ASSERT_EQ(texasHoldem->getLastGameWinners().size(), 3); // everyone wins because the kicker is on the table
+    delete gambler1;
+    delete bot1;
+    delete bot2;
+    delete texasHoldem;
+}
+
+TEST(TexasHoldemTest, GameEndInRiverSinglePairTie) {
+    class FakeTexasHoldem : public TexasHoldem {
+    public:
+        FakeTexasHoldem(const vector<Gambler *> &gamblers, int minimumEntry, const string &name="") :
+                TexasHoldem(gamblers, minimumEntry, name) {};
+    private:
+        void shuffleCards() override { // A S, A H, 2 C, 3 C, 4 C
+            this->gameDeck = {CardGame::deck[26], CardGame::deck[39], CardGame::deck[1], CardGame::deck[2], CardGame::deck[3],
+                              CardGame::deck[34], CardGame::deck[33], //gambler1's cards (9 S, 8 S)
+                              CardGame::deck[47], CardGame::deck[46], //bot1's cards (9 H, 8 H)
+                              CardGame::deck[21], CardGame::deck[22]}; //bot2's cards (9 D, 10 D)
+        } // expected: bot2 wins by 10 D kicker
+    };
+    auto *gambler1 = new Gambler(1337);
+    auto *bot1 = new TexasBot(1338), *bot2 = new TexasBot(1339);
+    vector<Gambler *> gamblers = {gambler1, bot1, bot2};
+    auto *texasHoldem = new FakeTexasHoldem(gamblers, 1000);
+    texasHoldem->advanceGame(30000); // game starts
+    texasHoldem->advanceGame(30001); // bot1's small blind
+    texasHoldem->advanceGame(30004); // bot2's big blind
+    texasHoldem->call(gambler1); // gambler1 calls
+    texasHoldem->advanceGame(30007); // bot1's call to make all bets equal, flop should happen now
+    texasHoldem->advanceGame(30010); // bot2 checks
+    texasHoldem->raise(gambler1, 2); // gambler1 raises
+    texasHoldem->advanceGame(30013); // bot1 calls
+    texasHoldem->advanceGame(30016); // bot2 calls, turn starts
+    texasHoldem->call(gambler1); // gambler1 checks
+    texasHoldem->advanceGame(30016); // bot1 checks
+    texasHoldem->advanceGame(30017); // bot2 raises by 2
+    texasHoldem->call(gambler1); // gambler1 calls
+    texasHoldem->advanceGame(30019); // bot1 calls, river should start
+    texasHoldem->advanceGame(30020); // bot 2 raises
+    texasHoldem->call(gambler1); // gambler1 calls
+    texasHoldem->advanceGame(30022); // bot 1 calls, the game should end
+    ASSERT_EQ(texasHoldem->getGameState(), SHOWDOWN);
+    ASSERT_FALSE(texasHoldem->isInProgress());
+    ASSERT_EQ(texasHoldem->getLastGameWinners().size(), 1); // bot 2 wins by 10 D kicker
+    ASSERT_EQ(texasHoldem->getLastGameWinners()[0], bot2);
+    delete gambler1;
+    delete bot1;
+    delete bot2;
+    delete texasHoldem;
 }
