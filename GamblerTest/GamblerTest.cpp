@@ -61,7 +61,7 @@ TEST(GamblerTest, GamblerCreateWithBalanceGameAndName) {
 }
 
 TEST(GamblerTest, GamblerAddAndSubstractBalance) {
-    Game* game1 = new Game(0), *game2 = new Game(0);
+    Game* game1 = new Game(0, "Game 1"), *game2 = new Game(0);
     Gambler gambler = Gambler(23, game1, "Marcus Weir");
     gambler.addBalance(3);
     ASSERT_EQ(gambler.getBalance(), 26);
@@ -69,10 +69,10 @@ TEST(GamblerTest, GamblerAddAndSubstractBalance) {
     ASSERT_EQ(gambler.getBalance(), 14);
     gambler.subtractBalance(250);
     ASSERT_EQ(gambler.getBalance(), 0);
-    ASSERT_EQ(gambler.getTransactions()[0].first, 3);
-    ASSERT_EQ(gambler.getTransactions()[0].second, game1->getName());
-    ASSERT_EQ(gambler.getTransactions()[1].first, -12);
-    ASSERT_EQ(gambler.getTransactions()[2].first, -14);
+    ASSERT_EQ(gambler.getTransactions()[1].first, 3);
+    ASSERT_EQ(gambler.getTransactions()[1].second, "Game 1");
+    ASSERT_EQ(gambler.getTransactions()[2].first, -12);
+    ASSERT_EQ(gambler.getTransactions()[3].first, -14);
     ASSERT_EQ(gambler.totalProfit(), -23);
 
     gambler.leaveGame();

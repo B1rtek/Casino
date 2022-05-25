@@ -40,8 +40,9 @@ void Gambler::makeAMove(int millisecondsPassed) noexcept {}
  * @param amount amount of balance to add
  */
 void Gambler::addBalance(int amount) noexcept {
+    std::string gameName = this->gamePlayed == nullptr ? "Balance added" : this->gamePlayed->getName();
+    this->transactions.emplace_back(amount, gameName);
     this->balance += amount;
-    this->transactions.emplace_back(amount, this->getCurrentGame()->getName());
 }
 
 /**
@@ -49,7 +50,8 @@ void Gambler::addBalance(int amount) noexcept {
  * @param amount amount of balance to remove, the balance will be subtracted until it reaches zero
  */
 void Gambler::subtractBalance(int amount) noexcept {
-    this->transactions.emplace_back(-std::min(amount, this->balance), this->getCurrentGame()->getName());
+    std::string gameName = this->gamePlayed == nullptr ? "Joined Game" : this->gamePlayed->getName();
+    this->transactions.emplace_back(-std::min(amount, this->balance), gameName);
     this->balance = std::max(this->balance - amount, 0);
 }
 
@@ -165,7 +167,7 @@ int Gambler::totalDeposited() const noexcept {
     return sum;
 }
 
-std::vector<int> Gambler::getWithdrawals() const noexcept { 
+std::vector<int> Gambler::getWithdrawals() const noexcept {
     return this->withdrawals;
 }
 
@@ -179,8 +181,8 @@ int Gambler::totalProfit() const noexcept {
     return this->totalWithdrawed() - this->totalDeposited();
 }
 
-std::vector<std::pair<int, std::string>> Gambler::getTransactions() const noexcept { 
-    return this->transactions; 
+std::vector<std::pair<int, std::string>> Gambler::getTransactions() const noexcept {
+    return this->transactions;
 }
 
 /**
