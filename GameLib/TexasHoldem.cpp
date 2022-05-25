@@ -56,7 +56,7 @@ std::pair<std::pair<TexasHoldemHand, Card *>, std::vector<Card *>> TexasHoldem::
             std::pair<std::pair<TexasHoldemHand, Card *>, std::vector<Card *>> tempHand = {
                     TexasHoldem::calculateHand(tempCards), tempCards};
             if (tempHand.first.first > bestHand.first.first ||
-                (tempHand.first.first == bestHand.first.first && tempHand.first.second > bestHand.first.second)) {
+                (tempHand.first.first == bestHand.first.first && *tempHand.first.second > *bestHand.first.second)) {
                 bestHand = tempHand;
             }
         }
@@ -70,7 +70,7 @@ std::pair<std::pair<TexasHoldemHand, Card *>, std::vector<Card *>> TexasHoldem::
             std::pair<std::pair<TexasHoldemHand, Card *>, std::vector<Card *>> tempHand = {
                     TexasHoldem::calculateHand(tempCards), tempCards};
             if (tempHand.first.first > bestHand.first.first ||
-                (tempHand.first.first == bestHand.first.first && tempHand.first.second > bestHand.first.second)) {
+                (tempHand.first.first == bestHand.first.first && *tempHand.first.second > *bestHand.first.second)) {
                 bestHand = tempHand;
             }
         }
@@ -169,10 +169,10 @@ std::vector<Gambler *> TexasHoldem::decideKickers(std::map<Gambler *, std::vecto
     for(auto &gamblerKickerPair:highestKickers) {
         if(*gamblerKickerPair.second > *maxKicker) maxKicker = gamblerKickerPair.second;
     }
-    // gamblers with that kicker win
+    // gamblers with that kicker win - kickers are only compared by value!!!
     std::vector<Gambler*> winners;
     for(auto &gamblerKickerPair:highestKickers) {
-        if(*gamblerKickerPair.second == *maxKicker) winners.push_back(gamblerKickerPair.first);
+        if(gamblerKickerPair.second->getValue() == maxKicker->getValue()) winners.push_back(gamblerKickerPair.first);
     }
     return winners;
 }
