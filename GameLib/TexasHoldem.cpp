@@ -3,6 +3,7 @@
 #include <random>
 #include <stdexcept>
 #include <algorithm>
+#include <utility>
 
 /**
  * Constructors based on the CardGame constructor, they force the minimumEntry value to be divisible by 1000 (blinds depend on it)
@@ -75,6 +76,9 @@ std::pair<std::pair<TexasHoldemHand, Card *>, std::vector<Card *>> TexasHoldem::
             }
         }
     }
+    if(bestHand.first.first != FLUSH && bestHand.first.first != STRAIGHT_FLUSH && bestHand.first.first != HIGH_CARD) {
+        bestHand.first.second = uncoloredDeck[bestHand.first.second->getValue()]; // in the checked hands the color of the highest card matters
+    }
     return bestHand;
 }
 
@@ -87,7 +91,9 @@ std::pair<TexasHoldemHand, Card *> TexasHoldem::calculateHand(std::vector<Card *
     // some data analysis
     int cardBuckets[14] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
     for (auto &card: hand) {
-        ++cardBuckets[card->getValue()];
+        if(card->getValue() != NOVALUE) {
+            ++cardBuckets[card->getValue()];
+        }
     }
     CardColor firstColor = hand[0]->getColor();
     bool three = false, four = false, oneColor = std::all_of(++hand.begin(), hand.end(),
@@ -279,6 +285,86 @@ std::vector<Gambler *> TexasHoldem::decideTwoPairTie(
 }
 
 /**
+ * Decides a tie between two or more three of a kind hands
+ * @param hands hands to decide a tie between
+ * @return vector with all winners
+ */
+std::vector<Gambler *> TexasHoldem::decideThreeOfAKindTie(
+        std::map<Gambler *, std::pair<std::pair<TexasHoldemHand, Card *>, std::vector<Card *>>> hands) {
+    // this case is basically the same as in the single pair tie and can be solved in the exact same way
+    return this->decideOnePairTie(std::move(hands));
+}
+
+/**
+ * Decides a tie between two or more straight hands
+ * @param hands hands to decide a tie between
+ * @return vector with all winners
+ */
+std::vector<Gambler *> TexasHoldem::decideStraightTie(
+        std::map<Gambler *, std::pair<std::pair<TexasHoldemHand, Card *>, std::vector<Card *>>> hands) {
+    // nothing can be done as kickers don't play in straight hands
+    std::vector<Gambler*> winners;
+    Gambler* gamblerPlaying;
+    for(auto &gamblerCardsPair: hands) {
+        gamblerPlaying = gamblerCardsPair.first;
+        winners.push_back(gamblerCardsPair.first);
+    }
+    this->lastWinningHand = hands[gamblerPlaying].second;
+    return winners;
+}
+
+/**
+ * Decides a tie between two or more flush hands
+ * @param hands hands to decide a tie between
+ * @return vector with all winners
+ */
+std::vector<Gambler *> TexasHoldem::decideFlushTie(
+        std::map<Gambler *, std::pair<std::pair<TexasHoldemHand, Card *>, std::vector<Card *>>> hands) {
+    // same situation as in the straight case, all cards play so there are no kickers
+    return this->decideStraightTie(std::move(hands));
+}
+
+/**
+ * Decides a tie between two or more full house hands
+ * @param hands hands to decide a tie between
+ * @return vector with all winners
+ */
+std::vector<Gambler *> TexasHoldem::decideFullHouseTie(
+        std::map<Gambler *, std::pair<std::pair<TexasHoldemHand, Card *>, std::vector<Card *>>> hands) {
+    // case similar to double pair, first we remove cards that create three of a kind
+    std::map<Gambler *, std::vector<Card *>> mapForSecondPair;
+    std::vector<Card*> temp;
+    for (auto &gamblerCardsPair: hands) {
+        temp = this->dealtCards;
+        for(auto &card:this->gamblersCards[gamblerCardsPair.first]) {
+            temp.push_back(card);
+        }
+        // remove the cards that are responsible for the hand
+        temp.erase(std::remove_if(temp.begin(), temp.end(), [&gamblerCardsPair](Card* card){return card->getValue() == gamblerCardsPair.second.first.second->getValue();}), temp.end());
+        // because temp now has 4 cards, we'll add a noneCard at the end to make it 5
+        temp.push_back(CardGame::noneCard);
+        // and add the result to the map for kickers
+        mapForSecondPair[gamblerCardsPair.first] = temp;
+    }
+    // calculate second pairs and find the highest
+    std::map<Gambler *, std::pair<std::pair<TexasHoldemHand, Card *>, std::vector<Card *>>> calculatedHands, hands2;
+    Card * highestHandValue = CardGame::noneCard;
+    for(auto &gamblerCardsPair: mapForSecondPair) {
+        calculatedHands[gamblerCardsPair.first] = {TexasHoldem::calculateHand(gamblerCardsPair.second), gamblerCardsPair.second};
+        if(*calculatedHands[gamblerCardsPair.first].first.second > *highestHandValue) highestHandValue = calculatedHands[gamblerCardsPair.first].first.second;
+    }
+    // everyone with the highest hand is a winner because there are no kickers in full house
+    std::vector<Gambler*> winners;
+    for(auto &gamblerCardsPair: calculatedHands) {
+        if(*gamblerCardsPair.second.first.second == *highestHandValue) {
+            winners.push_back(gamblerCardsPair.first);
+        }
+    }
+    this->lastWinningHand = hands[winners[0]].second;
+    return winners;
+}
+
+/**
  * Chooses the winners by comparing hands
  * @return gamblers who won
  */
@@ -305,14 +391,14 @@ std::vector<Gambler *> TexasHoldem::chooseTheWinners() noexcept {
     for (unsigned i = 1; i < this->gamblersPlaying.size(); i++) {
         if (hands[i].first.first > hands[maxHandIndex].first.first ||
             (hands[i].first.first == hands[maxHandIndex].first.first &&
-             hands[i].first.second > hands[maxHandIndex].first.second)) {
+             *hands[i].first.second > *hands[maxHandIndex].first.second)) {
             maxHandIndex = i;
         }
     }
     // check if there is more than 1 gambler with a hand of the same strength
     for (unsigned i = 0; i < this->gamblersPlaying.size(); i++) {
         if (hands[i].first.first == hands[maxHandIndex].first.first &&
-            hands[i].first.second == hands[maxHandIndex].first.second) {
+            *hands[i].first.second == *hands[maxHandIndex].first.second) {
             maxHands[this->gamblersPlaying[i]] = (hands[i]);
         }
     }
@@ -328,15 +414,18 @@ std::vector<Gambler *> TexasHoldem::chooseTheWinners() noexcept {
             case TWO_PAIRS: {
                 return this->decideTwoPairTie(maxHands);
             }
-                break;
-            case THREE_OF_A_KIND:
-                break;
-            case STRAIGHT:
-                break;
-            case FLUSH:
-                break;
-            case FULL_HOUSE:
-                break;
+            case THREE_OF_A_KIND: {
+                return this->decideThreeOfAKindTie(maxHands);
+            }
+            case STRAIGHT: {
+                return this->decideStraightTie(maxHands);
+            }
+            case FLUSH: {
+                return this->decideFlushTie(maxHands);
+            }
+            case FULL_HOUSE: {
+                return this->decideFullHouseTie(maxHands);
+            }
             case FOUR_OF_A_KIND:
                 break;
             case STRAIGHT_FLUSH:
