@@ -365,6 +365,28 @@ std::vector<Gambler *> TexasHoldem::decideFullHouseTie(
 }
 
 /**
+ * Decides a tie between two or more four of a kind hands
+ * @param hands hands to decide a tie between
+ * @return vector with all winners
+ */
+std::vector<Gambler *> TexasHoldem::decideFourOfAKindTie(
+        std::map<Gambler *, std::pair<std::pair<TexasHoldemHand, Card *>, std::vector<Card *>>> hands) {
+    // procedure is the same as with three of a kind or a single pair
+    return this->decideOnePairTie(std::move(hands));
+}
+
+/**
+ * Decides a tie between two or more straight flush hands
+ * @param hands hands to decide a tie between
+ * @return vector with all winners
+ */
+std::vector<Gambler *> TexasHoldem::decideStraightFlushTie(
+        std::map<Gambler *, std::pair<std::pair<TexasHoldemHand, Card *>, std::vector<Card *>>> hands) {
+    // same situation as in the straight and flush case, all cards play so there are no kickers
+    return this->decideStraightTie(std::move(hands));
+}
+
+/**
  * Chooses the winners by comparing hands
  * @return gamblers who won
  */
@@ -426,10 +448,12 @@ std::vector<Gambler *> TexasHoldem::chooseTheWinners() noexcept {
             case FULL_HOUSE: {
                 return this->decideFullHouseTie(maxHands);
             }
-            case FOUR_OF_A_KIND:
-                break;
-            case STRAIGHT_FLUSH:
-                break;
+            case FOUR_OF_A_KIND: {
+                return this->decideFourOfAKindTie(maxHands);
+            }
+            case STRAIGHT_FLUSH: {
+                return this->decideStraightFlushTie(maxHands);
+            }
         }
     } // otherwise the winner is clear
     this->lastWinningHand = hands[maxHandIndex].second;

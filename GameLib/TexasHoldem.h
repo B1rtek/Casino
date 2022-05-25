@@ -114,6 +114,13 @@ public:
     std::map<Gambler *, std::vector<Card *>> getGamblersCards() noexcept override;
 
     std::vector<Card*> getLastWinningHand() const noexcept;
+
+    std::vector<Gambler *>
+    decideFourOfAKindTie(std::map<Gambler *, std::pair<std::pair<TexasHoldemHand, Card *>, std::vector<Card *>>> hands);
+
+    std::vector<Gambler *>
+    decideStraightFlushTie(
+            std::map<Gambler *, std::pair<std::pair<TexasHoldemHand, Card *>, std::vector<Card *>>> hands);
 };
 
 
