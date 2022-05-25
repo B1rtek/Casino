@@ -572,6 +572,400 @@ TEST(TexasHoldemTest, GameEndInRiver) {
     delete texasHoldem;
 }
 
+TEST(TexasHoldemTest, FullHouseTripleTie) {
+    class FakeTexasHoldem : public TexasHoldem {
+    public:
+        FakeTexasHoldem(const vector<Gambler *> &gamblers, int minimumEntry, const string &name="") :
+                TexasHoldem(gamblers, minimumEntry, name) {};
+    private:
+        void shuffleCards() override { // 2 C, 2 D, 3 S, 3 D, 3 C
+            this->gameDeck = {CardGame::deck[1], CardGame::deck[14], CardGame::deck[28], CardGame::deck[15], CardGame::deck[2],
+                              CardGame::deck[21], CardGame::deck[40], //gambler1's cards (2 H, 9 D)
+                              CardGame::deck[34], CardGame::deck[27], //bot1's cards (9 S, 2 S)
+                              CardGame::deck[49], CardGame::deck[9]}; //bot2's cards (J H, 10 C)
+        } // expected: everyone wins because a full house is already on the table and gamblers can't make it better
+    };
+    auto *gambler1 = new Gambler(1337);
+    auto *bot1 = new TexasBot(1338), *bot2 = new TexasBot(1339);
+    vector<Gambler *> gamblers = {gambler1, bot1, bot2};
+    auto *texasHoldem = new FakeTexasHoldem(gamblers, 1000);
+    texasHoldem->advanceGame(30000); // game starts
+    texasHoldem->advanceGame(30001); // bot1's small blind
+    texasHoldem->advanceGame(30004); // bot2's big blind
+    texasHoldem->call(gambler1); // gambler1 calls
+    texasHoldem->advanceGame(30007); // bot1's call to make all bets equal, flop should happen now
+    texasHoldem->advanceGame(30010); // bot2 checks
+    texasHoldem->raise(gambler1, 2); // gambler1 raises
+    texasHoldem->advanceGame(30013); // bot1 calls
+    texasHoldem->advanceGame(30016); // bot2 calls, turn starts
+    texasHoldem->call(gambler1); // gambler1 checks
+    texasHoldem->advanceGame(30016); // bot1 checks
+    texasHoldem->advanceGame(30017); // bot2 raises by 2
+    texasHoldem->call(gambler1); // gambler1 calls
+    texasHoldem->advanceGame(30019); // bot1 calls, river should start
+    texasHoldem->advanceGame(30020); // bot 2 raises
+    texasHoldem->call(gambler1); // gambler1 calls
+    texasHoldem->advanceGame(30022); // bot 1 calls, the game should end
+    ASSERT_EQ(texasHoldem->getGameState(), SHOWDOWN);
+    ASSERT_FALSE(texasHoldem->isInProgress());
+    ASSERT_EQ(texasHoldem->getLastGameWinners().size(), 3);
+    delete gambler1;
+    delete bot1;
+    delete bot2;
+    delete texasHoldem;
+}
+
+TEST(TexasHoldemTest, FullHouseDoubleTie) {
+    class FakeTexasHoldem : public TexasHoldem {
+    public:
+        FakeTexasHoldem(const vector<Gambler *> &gamblers, int minimumEntry, const string &name="") :
+                TexasHoldem(gamblers, minimumEntry, name) {};
+    private:
+        void shuffleCards() override { // 4 C, 2 D, 3 S, 3 D, 3 C
+            this->gameDeck = {CardGame::deck[3], CardGame::deck[14], CardGame::deck[28], CardGame::deck[15], CardGame::deck[2],
+                              CardGame::deck[14], CardGame::deck[40], //gambler1's cards (2 H, 9 D)
+                              CardGame::deck[34], CardGame::deck[27], //bot1's cards (9 S, 2 S)
+                              CardGame::deck[49], CardGame::deck[9]}; //bot2's cards (J H, 10 C)
+        } // expected: gambler1 and bot1 win because they can complete the full house
+    };
+    auto *gambler1 = new Gambler(1337);
+    auto *bot1 = new TexasBot(1338), *bot2 = new TexasBot(1339);
+    vector<Gambler *> gamblers = {gambler1, bot1, bot2};
+    auto *texasHoldem = new FakeTexasHoldem(gamblers, 1000);
+    texasHoldem->advanceGame(30000); // game starts
+    texasHoldem->advanceGame(30001); // bot1's small blind
+    texasHoldem->advanceGame(30004); // bot2's big blind
+    texasHoldem->call(gambler1); // gambler1 calls
+    texasHoldem->advanceGame(30007); // bot1's call to make all bets equal, flop should happen now
+    texasHoldem->advanceGame(30010); // bot2 checks
+    texasHoldem->raise(gambler1, 2); // gambler1 raises
+    texasHoldem->advanceGame(30013); // bot1 calls
+    texasHoldem->advanceGame(30016); // bot2 calls, turn starts
+    texasHoldem->call(gambler1); // gambler1 checks
+    texasHoldem->advanceGame(30016); // bot1 checks
+    texasHoldem->advanceGame(30017); // bot2 raises by 2
+    texasHoldem->call(gambler1); // gambler1 calls
+    texasHoldem->advanceGame(30019); // bot1 calls, river should start
+    texasHoldem->advanceGame(30020); // bot 2 raises
+    texasHoldem->call(gambler1); // gambler1 calls
+    texasHoldem->advanceGame(30022); // bot 1 calls, the game should end
+    ASSERT_EQ(texasHoldem->getGameState(), SHOWDOWN);
+    ASSERT_FALSE(texasHoldem->isInProgress());
+    ASSERT_EQ(texasHoldem->getLastGameWinners().size(), 2);
+    ASSERT_TRUE(texasHoldem->getLastGameWinners()[0] == gambler1 || texasHoldem->getLastGameWinners()[1] == gambler1);
+    ASSERT_TRUE(texasHoldem->getLastGameWinners()[0] == bot1 || texasHoldem->getLastGameWinners()[1] == bot1);
+    delete gambler1;
+    delete bot1;
+    delete bot2;
+    delete texasHoldem;
+}
+
+TEST(TexasHoldemTest, FullHouseDoubleTie2) {
+    class FakeTexasHoldem : public TexasHoldem {
+    public:
+        FakeTexasHoldem(const vector<Gambler *> &gamblers, int minimumEntry, const string &name="") :
+                TexasHoldem(gamblers, minimumEntry, name) {};
+    private:
+        void shuffleCards() override { // 2 C, 2 D, 4 S, 3 D, 3 C
+            this->gameDeck = {CardGame::deck[1], CardGame::deck[14], CardGame::deck[29], CardGame::deck[15], CardGame::deck[2],
+                              CardGame::deck[21], CardGame::deck[41], //gambler1's cards (3 H, 9 D)
+                              CardGame::deck[34], CardGame::deck[28], //bot1's cards (9 S, 3 S)
+                              CardGame::deck[49], CardGame::deck[9]}; //bot2's cards (J H, 10 C)
+        } // expected: both gambler1 and bot1 win because they can complete the full house
+    };
+    auto *gambler1 = new Gambler(1337);
+    auto *bot1 = new TexasBot(1338), *bot2 = new TexasBot(1339);
+    vector<Gambler *> gamblers = {gambler1, bot1, bot2};
+    auto *texasHoldem = new FakeTexasHoldem(gamblers, 1000);
+    texasHoldem->advanceGame(30000); // game starts
+    texasHoldem->advanceGame(30001); // bot1's small blind
+    texasHoldem->advanceGame(30004); // bot2's big blind
+    texasHoldem->call(gambler1); // gambler1 calls
+    texasHoldem->advanceGame(30007); // bot1's call to make all bets equal, flop should happen now
+    texasHoldem->advanceGame(30010); // bot2 checks
+    texasHoldem->raise(gambler1, 2); // gambler1 raises
+    texasHoldem->advanceGame(30013); // bot1 calls
+    texasHoldem->advanceGame(30016); // bot2 calls, turn starts
+    texasHoldem->call(gambler1); // gambler1 checks
+    texasHoldem->advanceGame(30016); // bot1 checks
+    texasHoldem->advanceGame(30017); // bot2 raises by 2
+    texasHoldem->call(gambler1); // gambler1 calls
+    texasHoldem->advanceGame(30019); // bot1 calls, river should start
+    texasHoldem->advanceGame(30020); // bot 2 raises
+    texasHoldem->call(gambler1); // gambler1 calls
+    texasHoldem->advanceGame(30022); // bot 1 calls, the game should end
+    ASSERT_EQ(texasHoldem->getGameState(), SHOWDOWN);
+    ASSERT_FALSE(texasHoldem->isInProgress());
+    ASSERT_EQ(texasHoldem->getLastGameWinners().size(), 2);
+    ASSERT_TRUE(texasHoldem->getLastGameWinners()[0] == gambler1 || texasHoldem->getLastGameWinners()[1] == gambler1);
+    ASSERT_TRUE(texasHoldem->getLastGameWinners()[0] == bot1 || texasHoldem->getLastGameWinners()[1] == bot1);
+    delete gambler1;
+    delete bot1;
+    delete bot2;
+    delete texasHoldem;
+}
+
+TEST(TexasHoldemTest, FlushTripleTie) {
+    class FakeTexasHoldem : public TexasHoldem {
+    public:
+        FakeTexasHoldem(const vector<Gambler *> &gamblers, int minimumEntry, const string &name="") :
+                TexasHoldem(gamblers, minimumEntry, name) {};
+    private:
+        void shuffleCards() override { // K C, 6 C, 5 C, 4 C, 3 C
+            this->gameDeck = {CardGame::deck[12], CardGame::deck[5], CardGame::deck[4], CardGame::deck[3], CardGame::deck[2],
+                              CardGame::deck[14], CardGame::deck[21], //gambler1's cards (2 D, 9 D)
+                              CardGame::deck[34], CardGame::deck[27], //bot1's cards (9 S, 2 S)
+                              CardGame::deck[49], CardGame::deck[9]}; //bot2's cards (J H, 10 C)
+        } // expected: everyone wins because a flush is already on the table
+    };
+    auto *gambler1 = new Gambler(1337);
+    auto *bot1 = new TexasBot(1338), *bot2 = new TexasBot(1339);
+    vector<Gambler *> gamblers = {gambler1, bot1, bot2};
+    auto *texasHoldem = new FakeTexasHoldem(gamblers, 1000);
+    texasHoldem->advanceGame(30000); // game starts
+    texasHoldem->advanceGame(30001); // bot1's small blind
+    texasHoldem->advanceGame(30004); // bot2's big blind
+    texasHoldem->call(gambler1); // gambler1 calls
+    texasHoldem->advanceGame(30007); // bot1's call to make all bets equal, flop should happen now
+    texasHoldem->advanceGame(30010); // bot2 checks
+    texasHoldem->raise(gambler1, 2); // gambler1 raises
+    texasHoldem->advanceGame(30013); // bot1 calls
+    texasHoldem->advanceGame(30016); // bot2 calls, turn starts
+    texasHoldem->call(gambler1); // gambler1 checks
+    texasHoldem->advanceGame(30016); // bot1 checks
+    texasHoldem->advanceGame(30017); // bot2 raises by 2
+    texasHoldem->call(gambler1); // gambler1 calls
+    texasHoldem->advanceGame(30019); // bot1 calls, river should start
+    texasHoldem->advanceGame(30020); // bot 2 raises
+    texasHoldem->call(gambler1); // gambler1 calls
+    texasHoldem->advanceGame(30022); // bot 1 calls, the game should end
+    ASSERT_EQ(texasHoldem->getGameState(), SHOWDOWN);
+    ASSERT_FALSE(texasHoldem->isInProgress());
+    ASSERT_EQ(texasHoldem->getLastGameWinners().size(), 3);
+    delete gambler1;
+    delete bot1;
+    delete bot2;
+    delete texasHoldem;
+}
+
+TEST(TexasHoldemTest, FlushDoubleTie) {
+    class FakeTexasHoldem : public TexasHoldem {
+    public:
+        FakeTexasHoldem(const vector<Gambler *> &gamblers, int minimumEntry, const string &name="") :
+                TexasHoldem(gamblers, minimumEntry, name) {};
+    private:
+        void shuffleCards() override { // K C, 6 C, 5 C, 4 C, 9 D
+            this->gameDeck = {CardGame::deck[12], CardGame::deck[5], CardGame::deck[4], CardGame::deck[3], CardGame::deck[21],
+                              CardGame::deck[14], CardGame::deck[2], //gambler1's cards (2 D, 3 C)
+                              CardGame::deck[34], CardGame::deck[27], //bot1's cards (9 S, 2 S)
+                              CardGame::deck[49], CardGame::deck[9]}; //bot2's cards (J H, 10 C)
+        } // expected: gambler1 and bot2 tie with a clubs flush with king being the highest card
+    };
+    auto *gambler1 = new Gambler(1337);
+    auto *bot1 = new TexasBot(1338), *bot2 = new TexasBot(1339);
+    vector<Gambler *> gamblers = {gambler1, bot1, bot2};
+    auto *texasHoldem = new FakeTexasHoldem(gamblers, 1000);
+    texasHoldem->advanceGame(30000); // game starts
+    texasHoldem->advanceGame(30001); // bot1's small blind
+    texasHoldem->advanceGame(30004); // bot2's big blind
+    texasHoldem->call(gambler1); // gambler1 calls
+    texasHoldem->advanceGame(30007); // bot1's call to make all bets equal, flop should happen now
+    texasHoldem->advanceGame(30010); // bot2 checks
+    texasHoldem->raise(gambler1, 2); // gambler1 raises
+    texasHoldem->advanceGame(30013); // bot1 calls
+    texasHoldem->advanceGame(30016); // bot2 calls, turn starts
+    texasHoldem->call(gambler1); // gambler1 checks
+    texasHoldem->advanceGame(30016); // bot1 checks
+    texasHoldem->advanceGame(30017); // bot2 raises by 2
+    texasHoldem->call(gambler1); // gambler1 calls
+    texasHoldem->advanceGame(30019); // bot1 calls, river should start
+    texasHoldem->advanceGame(30020); // bot 2 raises
+    texasHoldem->call(gambler1); // gambler1 calls
+    texasHoldem->advanceGame(30022); // bot 1 calls, the game should end
+    ASSERT_EQ(texasHoldem->getGameState(), SHOWDOWN);
+    ASSERT_FALSE(texasHoldem->isInProgress());
+    ASSERT_EQ(texasHoldem->getLastGameWinners().size(), 2);
+    ASSERT_TRUE(texasHoldem->getLastGameWinners()[0] == gambler1 || texasHoldem->getLastGameWinners()[1] == gambler1);
+    ASSERT_TRUE(texasHoldem->getLastGameWinners()[0] == bot2 || texasHoldem->getLastGameWinners()[1] == bot2);
+    delete gambler1;
+    delete bot1;
+    delete bot2;
+    delete texasHoldem;
+}
+
+TEST(TexasHoldemTest, StraightTripleTie) {
+    class FakeTexasHoldem : public TexasHoldem {
+    public:
+        FakeTexasHoldem(const vector<Gambler *> &gamblers, int minimumEntry, const string &name="") :
+                TexasHoldem(gamblers, minimumEntry, name) {};
+    private:
+        void shuffleCards() override { // 7 C, 6 D, 5 H, 3 S, 4 C
+            this->gameDeck = {CardGame::deck[6], CardGame::deck[18], CardGame::deck[43], CardGame::deck[3], CardGame::deck[28],
+                              CardGame::deck[14], CardGame::deck[21], //gambler1's cards (2 D, 9 D)
+                              CardGame::deck[34], CardGame::deck[27], //bot1's cards (9 S, 2 S)
+                              CardGame::deck[49], CardGame::deck[4]}; //bot2's cards (J H, 5 C)
+        } // expected: everyone wins because a straight is already on the table
+    };
+    auto *gambler1 = new Gambler(1337);
+    auto *bot1 = new TexasBot(1338), *bot2 = new TexasBot(1339);
+    vector<Gambler *> gamblers = {gambler1, bot1, bot2};
+    auto *texasHoldem = new FakeTexasHoldem(gamblers, 1000);
+    texasHoldem->advanceGame(30000); // game starts
+    texasHoldem->advanceGame(30001); // bot1's small blind
+    texasHoldem->advanceGame(30004); // bot2's big blind
+    texasHoldem->call(gambler1); // gambler1 calls
+    texasHoldem->advanceGame(30007); // bot1's call to make all bets equal, flop should happen now
+    texasHoldem->advanceGame(30010); // bot2 checks
+    texasHoldem->raise(gambler1, 2); // gambler1 raises
+    texasHoldem->advanceGame(30013); // bot1 calls
+    texasHoldem->advanceGame(30016); // bot2 calls, turn starts
+    texasHoldem->call(gambler1); // gambler1 checks
+    texasHoldem->advanceGame(30016); // bot1 checks
+    texasHoldem->advanceGame(30017); // bot2 raises by 2
+    texasHoldem->call(gambler1); // gambler1 calls
+    texasHoldem->advanceGame(30019); // bot1 calls, river should start
+    texasHoldem->advanceGame(30020); // bot 2 raises
+    texasHoldem->call(gambler1); // gambler1 calls
+    texasHoldem->advanceGame(30022); // bot 1 calls, the game should end
+    ASSERT_EQ(texasHoldem->getGameState(), SHOWDOWN);
+    ASSERT_FALSE(texasHoldem->isInProgress());
+    ASSERT_EQ(texasHoldem->getLastGameWinners().size(), 3);
+    delete gambler1;
+    delete bot1;
+    delete bot2;
+    delete texasHoldem;
+}
+
+TEST(TexasHoldemTest, StraightDoubleTie) {
+    class FakeTexasHoldem : public TexasHoldem {
+    public:
+        FakeTexasHoldem(const vector<Gambler *> &gamblers, int minimumEntry, const string &name="") :
+                TexasHoldem(gamblers, minimumEntry, name) {};
+    private:
+        void shuffleCards() override { // 7 C, 7 D, 7 H, 3 S, K C
+            this->gameDeck = {CardGame::deck[6], CardGame::deck[19], CardGame::deck[45], CardGame::deck[28], CardGame::deck[12],
+                              CardGame::deck[22], CardGame::deck[20], //gambler1's cards (10 D, 8 D)
+                              CardGame::deck[34], CardGame::deck[33], //bot1's cards (9 S, 8 S)
+                              CardGame::deck[49], CardGame::deck[3]}; //bot2's cards (J H, 4 C)
+        } // expected: triple tie because every player choose K C as kicker
+    };
+    auto *gambler1 = new Gambler(1337);
+    auto *bot1 = new TexasBot(1338), *bot2 = new TexasBot(1339);
+    vector<Gambler *> gamblers = {gambler1, bot1, bot2};
+    auto *texasHoldem = new FakeTexasHoldem(gamblers, 1000);
+    texasHoldem->advanceGame(30000); // game starts
+    texasHoldem->advanceGame(30001); // bot1's small blind
+    texasHoldem->advanceGame(30004); // bot2's big blind
+    texasHoldem->call(gambler1); // gambler1 calls
+    texasHoldem->advanceGame(30007); // bot1's call to make all bets equal, flop should happen now
+    texasHoldem->advanceGame(30010); // bot2 checks
+    texasHoldem->raise(gambler1, 2); // gambler1 raises
+    texasHoldem->advanceGame(30013); // bot1 calls
+    texasHoldem->advanceGame(30016); // bot2 calls, turn starts
+    texasHoldem->call(gambler1); // gambler1 checks
+    texasHoldem->advanceGame(30016); // bot1 checks
+    texasHoldem->advanceGame(30017); // bot2 raises by 2
+    texasHoldem->call(gambler1); // gambler1 calls
+    texasHoldem->advanceGame(30019); // bot1 calls, river should start
+    texasHoldem->advanceGame(30020); // bot 2 raises
+    texasHoldem->call(gambler1); // gambler1 calls
+    texasHoldem->advanceGame(30022); // bot 1 calls, the game should end
+    ASSERT_EQ(texasHoldem->getGameState(), SHOWDOWN);
+    ASSERT_FALSE(texasHoldem->isInProgress());
+    ASSERT_EQ(texasHoldem->getLastGameWinners().size(), 3);
+    delete gambler1;
+    delete bot1;
+    delete bot2;
+    delete texasHoldem;
+}
+
+TEST(TexasHoldemTest, ThreeOfAKindTripleTie) {
+    class FakeTexasHoldem : public TexasHoldem {
+    public:
+        FakeTexasHoldem(const vector<Gambler *> &gamblers, int minimumEntry, const string &name="") :
+                TexasHoldem(gamblers, minimumEntry, name) {};
+    private:
+        void shuffleCards() override { // 7 C, 7 D, 7 H, 3 S, K C
+            this->gameDeck = {CardGame::deck[6], CardGame::deck[19], CardGame::deck[45], CardGame::deck[28], CardGame::deck[12],
+                              CardGame::deck[22], CardGame::deck[20], //gambler1's cards (10 D, 8 D)
+                              CardGame::deck[34], CardGame::deck[33], //bot1's cards (9 S, 8 S)
+                              CardGame::deck[49], CardGame::deck[3]}; //bot2's cards (J H, 4 C)
+        } // expected: triple tie because every player choose K C as kicker
+    };
+    auto *gambler1 = new Gambler(1337);
+    auto *bot1 = new TexasBot(1338), *bot2 = new TexasBot(1339);
+    vector<Gambler *> gamblers = {gambler1, bot1, bot2};
+    auto *texasHoldem = new FakeTexasHoldem(gamblers, 1000);
+    texasHoldem->advanceGame(30000); // game starts
+    texasHoldem->advanceGame(30001); // bot1's small blind
+    texasHoldem->advanceGame(30004); // bot2's big blind
+    texasHoldem->call(gambler1); // gambler1 calls
+    texasHoldem->advanceGame(30007); // bot1's call to make all bets equal, flop should happen now
+    texasHoldem->advanceGame(30010); // bot2 checks
+    texasHoldem->raise(gambler1, 2); // gambler1 raises
+    texasHoldem->advanceGame(30013); // bot1 calls
+    texasHoldem->advanceGame(30016); // bot2 calls, turn starts
+    texasHoldem->call(gambler1); // gambler1 checks
+    texasHoldem->advanceGame(30016); // bot1 checks
+    texasHoldem->advanceGame(30017); // bot2 raises by 2
+    texasHoldem->call(gambler1); // gambler1 calls
+    texasHoldem->advanceGame(30019); // bot1 calls, river should start
+    texasHoldem->advanceGame(30020); // bot 2 raises
+    texasHoldem->call(gambler1); // gambler1 calls
+    texasHoldem->advanceGame(30022); // bot 1 calls, the game should end
+    ASSERT_EQ(texasHoldem->getGameState(), SHOWDOWN);
+    ASSERT_FALSE(texasHoldem->isInProgress());
+    ASSERT_EQ(texasHoldem->getLastGameWinners().size(), 3);
+    delete gambler1;
+    delete bot1;
+    delete bot2;
+    delete texasHoldem;
+}
+
+TEST(TexasHoldemTest, ThreeOfAKind) {
+    class FakeTexasHoldem : public TexasHoldem {
+    public:
+        FakeTexasHoldem(const vector<Gambler *> &gamblers, int minimumEntry, const string &name="") :
+                TexasHoldem(gamblers, minimumEntry, name) {};
+    private:
+        void shuffleCards() override { // 7 C, 7 D, 10 D, 3 S, 8 D
+            this->gameDeck = {CardGame::deck[6], CardGame::deck[19], CardGame::deck[22], CardGame::deck[28], CardGame::deck[20],
+                              CardGame::deck[45], CardGame::deck[12], //gambler1's cards (7 H, K C)
+                              CardGame::deck[32], CardGame::deck[34], //bot1's cards (7 S, 9 S)
+                              CardGame::deck[49], CardGame::deck[3]}; //bot2's cards (J H, 4 C)
+        } // expected: gambler1 wins with K C as kicker
+    };
+    auto *gambler1 = new Gambler(1337);
+    auto *bot1 = new TexasBot(1338), *bot2 = new TexasBot(1339);
+    vector<Gambler *> gamblers = {gambler1, bot1, bot2};
+    auto *texasHoldem = new FakeTexasHoldem(gamblers, 1000);
+    texasHoldem->advanceGame(30000); // game starts
+    texasHoldem->advanceGame(30001); // bot1's small blind
+    texasHoldem->advanceGame(30004); // bot2's big blind
+    texasHoldem->call(gambler1); // gambler1 calls
+    texasHoldem->advanceGame(30007); // bot1's call to make all bets equal, flop should happen now
+    texasHoldem->advanceGame(30010); // bot2 checks
+    texasHoldem->raise(gambler1, 2); // gambler1 raises
+    texasHoldem->advanceGame(30013); // bot1 calls
+    texasHoldem->advanceGame(30016); // bot2 calls, turn starts
+    texasHoldem->call(gambler1); // gambler1 checks
+    texasHoldem->advanceGame(30016); // bot1 checks
+    texasHoldem->advanceGame(30017); // bot2 raises by 2
+    texasHoldem->call(gambler1); // gambler1 calls
+    texasHoldem->advanceGame(30019); // bot1 calls, river should start
+    texasHoldem->advanceGame(30020); // bot 2 raises
+    texasHoldem->call(gambler1); // gambler1 calls
+    texasHoldem->advanceGame(30022); // bot 1 calls, the game should end
+    ASSERT_EQ(texasHoldem->getGameState(), SHOWDOWN);
+    ASSERT_FALSE(texasHoldem->isInProgress());
+    ASSERT_EQ(texasHoldem->getLastGameWinners().size(), 1);
+    ASSERT_EQ(texasHoldem->getLastGameWinners()[0], gambler1);
+    delete gambler1;
+    delete bot1;
+    delete bot2;
+    delete texasHoldem;
+}
+
 TEST(TexasHoldemTest, DoublePairTripleTie) {
     class FakeTexasHoldem : public TexasHoldem {
     public:
