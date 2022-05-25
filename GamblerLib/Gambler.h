@@ -1,9 +1,13 @@
 #ifndef PROI_4_KASYNO_GRA_GAMBLER_H
 #define PROI_4_KASYNO_GRA_GAMBLER_H
 
-class Game;
-
 #include <string>
+#include <vector>
+#include <cmath>
+#include <utility>
+#include <iostream>
+
+class Game;
 
 #include "Game.h"
 
@@ -14,6 +18,9 @@ class Gambler {
 protected:
     int balance;
     std::string name;
+    std::vector<int> deposits;
+    std::vector<int> withdrawals;
+    std::vector<std::pair<int, std::string>> transactions;
     Game *gamePlayed{}, *gameSpectated{};
     bool bot = false;
 public:
@@ -28,6 +35,10 @@ public:
     void addBalance(int amount) noexcept;
 
     void subtractBalance(int amount) noexcept;
+
+    virtual void depositBalance(int amount) noexcept;
+
+    virtual void withdrawBalance(int amount) noexcept;
 
     bool joinGame(Game *game) noexcept;
 
@@ -45,23 +56,26 @@ public:
 
     int getBalance() const noexcept;
 
+    virtual std::vector<int> getDeposits() const noexcept;
+
+    virtual int totalDeposited() const noexcept;
+    
+    virtual std::vector<int> getWithdrawals() const noexcept;
+
+    virtual int totalWithdrawed() const noexcept;
+    
+    virtual int totalProfit() const noexcept;
+    
+    virtual std::vector<std::pair<int, std::string>> getTransactions() const noexcept;
+
+    std::vector<int> specificTransactions(std::string game) noexcept;
+   
     Game *getCurrentGame() const noexcept;
 
     Game *getSpectatedGame() const noexcept;
 
     bool isBot() const noexcept;
 };
-
-#pragma once
-
-#include <string>
-#include <utility>
-#include <vector>
-#include <cmath>
-#include <iostream>
-#include <vector>
-
-class Game;
 
 class Shop {
 private:
@@ -139,7 +153,6 @@ public:
 
 class Guest : public Player {
 private:
-    int min_bet = 0.01;
     int max_bet = 10000;
 public:
     // deposit max 100000
@@ -168,7 +181,6 @@ public:
 
 class VIP : public Player {
 private:
-    int min_bet = 1000;
     int max_bet = 100000;
     int safe = 0;
     std::vector<std::string> items;
@@ -201,7 +213,6 @@ public:
 
 class TrialMode : public Player {
 private:
-    int min_bet = 0.01;
     int max_bet = 100000;
     bool bot = true;
 public:
@@ -218,7 +229,6 @@ public:
 
 class SafePlayer : public Player {
 private:
-    int min_bet = 0.01;
     int max_bet = 100;
 public:
     // max deposit 300

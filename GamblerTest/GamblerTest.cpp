@@ -7,6 +7,7 @@ using namespace std;
 TEST(GamblerTest, GamblerCreate) {
     Gambler gambler = Gambler();
     ASSERT_EQ(gambler.getBalance(), 0);
+    ASSERT_TRUE(gambler.getDeposits().empty());
     ASSERT_EQ(gambler.getCurrentGame(), nullptr);
     ASSERT_EQ(gambler.getName(), "");
     ASSERT_FALSE(gambler.isBot());
@@ -15,6 +16,7 @@ TEST(GamblerTest, GamblerCreate) {
 TEST(GamblerTest, GamblerCreateWithName) {
     Gambler gambler = Gambler("Marcus Weir");
     ASSERT_EQ(gambler.getBalance(), 0);
+    ASSERT_TRUE(gambler.getDeposits().empty());
     ASSERT_EQ(gambler.getCurrentGame(), nullptr);
     ASSERT_EQ(gambler.getName(), "Marcus Weir");
     ASSERT_FALSE(gambler.isBot());
@@ -23,6 +25,7 @@ TEST(GamblerTest, GamblerCreateWithName) {
 TEST(GamblerTest, GamblerCreateWithBalance) {
     Gambler gambler = Gambler(23);
     ASSERT_EQ(gambler.getBalance(), 23);
+    ASSERT_EQ(gambler.getDeposits()[0], 23);
     ASSERT_EQ(gambler.getCurrentGame(), nullptr);
     ASSERT_FALSE(gambler.isBot());
 }
@@ -30,6 +33,7 @@ TEST(GamblerTest, GamblerCreateWithBalance) {
 TEST(GamblerTest, GamblerCreateWithBalanceAndName) {
     Gambler gambler = Gambler(23, "Marcus Weir");
     ASSERT_EQ(gambler.getBalance(), 23);
+    ASSERT_EQ(gambler.getDeposits()[0], 23);
     ASSERT_EQ(gambler.getCurrentGame(), nullptr);
     ASSERT_EQ(gambler.getName(), "Marcus Weir");
     ASSERT_FALSE(gambler.isBot());
@@ -39,6 +43,7 @@ TEST(GamblerTest, GamblerCreateWithBalanceAndGame) {
     Game *game = new Game(0);
     Gambler gambler = Gambler(23, game);
     ASSERT_EQ(gambler.getBalance(), 23);
+    ASSERT_EQ(gambler.getDeposits()[0], 23);
     ASSERT_EQ(gambler.getCurrentGame(), game);
     ASSERT_FALSE(gambler.isBot());
     delete game;
@@ -47,30 +52,82 @@ TEST(GamblerTest, GamblerCreateWithBalanceAndGame) {
 TEST(GamblerTest, GamblerCreateWithBalanceGameAndName) {
     Game *game = new Game(0);
     Gambler gambler = Gambler(23, game, "Marcus Weir");
-    ASSERT_EQ(gambler.getBalance(), 23);
+    /*ASSERT_EQ(gambler.getBalance(), 23);
+    ASSERT_EQ(gambler.getDeposits()[0], 23);
     ASSERT_EQ(gambler.getCurrentGame(), game);
     ASSERT_EQ(gambler.getName(), "Marcus Weir");
-    ASSERT_FALSE(gambler.isBot());
+    ASSERT_FALSE(gambler.isBot());*/
     delete game;
 }
 
-TEST(GamblerTest, GamblerAddBalance) {
-    Gambler gambler = Gambler();
+TEST(GamblerTest, GamblerAddAndSubstractBalance) {
+    Game* game1 = new Game(0), *game2 = new Game(0);
+    Gambler gambler = Gambler(23, game1, "Marcus Weir");
     gambler.addBalance(3);
-    ASSERT_EQ(gambler.getBalance(), 3);
-    gambler = Gambler(45);
-    gambler.addBalance(5);
-    ASSERT_EQ(gambler.getBalance(), 50);
+    ASSERT_EQ(gambler.getBalance(), 26);
+    gambler.subtractBalance(12);
+    ASSERT_EQ(gambler.getBalance(), 14);
+    gambler.subtractBalance(250);
+    ASSERT_EQ(gambler.getBalance(), 0);
+    ASSERT_EQ(gambler.getTransactions()[0].first, 3);
+    ASSERT_EQ(gambler.getTransactions()[0].second, game1->getName());
+    ASSERT_EQ(gambler.getTransactions()[1].first, -12);
+    ASSERT_EQ(gambler.getTransactions()[2].first, -14);
+    ASSERT_EQ(gambler.totalProfit(), -23);
+
+    gambler.leaveGame();
+    gambler.depositBalance(5);
+    gambler.joinGame(game2);
+    gambler.addBalance(4);
+    ASSERT_EQ(gambler.getBalance(), 9);
+    ASSERT_EQ(gambler.specificTransactions(game1->getName())[1], -12);
+    ASSERT_EQ(gambler.specificTransactions(game2->getName())[0], 4);
+
+    delete game1;
+    delete game2;
 }
 
-TEST(GamblerTest, GamblerSubtractBalance) {
-    Gambler gambler = Gambler(20);
-    gambler.subtractBalance(4);
-    ASSERT_EQ(gambler.getBalance(), 16);
-    gambler = Gambler();
-    gambler.subtractBalance(45);
-    ASSERT_EQ(gambler.getBalance(), 0);
+TEST(GamblerTest, TestGamblerDepositBalanceToEmptyAcc) {
+    Gambler gracz("Kamil");
+    gracz.depositBalance(2);
+    ASSERT_EQ(gracz.getBalance(), 2);
+    ASSERT_EQ(gracz.getDeposits()[0], 2);
 }
+
+TEST(GamblerTest, TestGamblerDepositBalance) {
+    Gambler gracz(5, "Kamil");
+    gracz.depositBalance(2);
+    ASSERT_EQ(gracz.getBalance(), 7);
+    ASSERT_EQ(gracz.getDeposits()[0], 5);
+    ASSERT_EQ(gracz.getDeposits()[1], 2);
+}
+
+TEST(GamblerTest, TestGamblerWithdrawBalance) {
+    Gambler gracz(5, "Kamil");
+    gracz.withdrawBalance(2);
+    ASSERT_EQ(gracz.getBalance(), 3);
+    ASSERT_EQ(gracz.getWithdrawals()[0], 2);
+}
+
+TEST(GamblerTest, TestGamblerWithdrawTooManyBalance) {
+    Gambler gracz(5, "Kamil");
+    gracz.withdrawBalance(20);
+    ASSERT_EQ(gracz.getBalance(), 5);
+    ASSERT_TRUE(gracz.getWithdrawals().empty());
+}
+
+TEST(GamblerTest, TestGamblerALotTransactions) {
+    Gambler gracz(5, "Kamil");
+    gracz.depositBalance(2);
+    gracz.withdrawBalance(3);
+    gracz.depositBalance(8);
+    gracz.withdrawBalance(5);
+
+    ASSERT_EQ(gracz.totalDeposited(), 15);
+    ASSERT_EQ(gracz.totalWithdrawed(), 8);
+    ASSERT_EQ(gracz.totalProfit(), -7);
+}
+
 
 TEST(GamblerTest, GamblerJoinAndLeaveGame) {
     Game *game1 = new Game(0), *game2 = new Game(0);
@@ -79,7 +136,7 @@ TEST(GamblerTest, GamblerJoinAndLeaveGame) {
     ASSERT_FALSE(gambler.leaveGame());
     ASSERT_FALSE(gambler.joinGame(game1));
     ASSERT_EQ(gambler.getCurrentGame(), nullptr);
-    gambler.addBalance(1);
+    gambler.depositBalance(1);
     ASSERT_TRUE(gambler.joinGame(game1));
     ASSERT_EQ(gambler.getCurrentGame(), game1);
     //they can't join two games at once unless they leave
@@ -130,77 +187,9 @@ TEST(GamblerTest, GamblerSpectateAndStop) {
     ASSERT_EQ(gambler.getSpectatedGame(), nullptr);
     ASSERT_FALSE(gambler.stopSpectating());
     //they can't spectate a game if they are playing
-    gambler.addBalance(1);
+    gambler.depositBalance(1);
     gambler.joinGame(game1);
     ASSERT_FALSE(gambler.spectate(game1));
-}
-
-
-TEST(PlayerTest, TestPlayerCreateEmpty) {
-    Player gracz;
-    ASSERT_EQ("Player", gracz.getName());
-    ASSERT_EQ(0, gracz.getBalance());
-}
-
-TEST(PlayerTest, TestPlayerCreateOnlyName) {
-    Player gracz("Kamil");
-    ASSERT_EQ(gracz.getName(), "Kamil");
-    ASSERT_EQ(gracz.getBalance(), 0);
-    ASSERT_TRUE(gracz.getDeposits().empty());
-}
-
-TEST(PlayerTest, TestPlayerCreate) {
-    Player gracz("Kamil", 5);
-    ASSERT_EQ(gracz.getName(), "Kamil");
-    ASSERT_EQ(gracz.getBalance(), 5);
-    ASSERT_EQ(gracz.getDeposits()[0], 5);
-}
-
-TEST(PlayerTest, TestPlayerChangeName) {
-    Player gracz("Kamil", 5);
-    gracz.changeName("Piotrek");
-    ASSERT_EQ(gracz.getName(), "Piotrek");
-}
-
-TEST(PlayerTest, TestPlayerDepositBalanceToEmptyAcc) {
-    Player gracz("Kamil");
-    gracz.depositBalance(2);
-    ASSERT_EQ(gracz.getBalance(), 2);
-    ASSERT_EQ(gracz.getDeposits()[0], 2);
-}
-
-TEST(PlayerTest, TestPlayerDepositBalance) {
-    Player gracz("Kamil", 5);
-    gracz.depositBalance(2);
-    ASSERT_EQ(gracz.getBalance(), 7);
-    ASSERT_EQ(gracz.getDeposits()[0], 5);
-    ASSERT_EQ(gracz.getDeposits()[1], 2);
-}
-
-TEST(PlayerTest, TestPlayerWithdrawBalance) {
-    Player gracz("Kamil", 5);
-    gracz.withdrawBalance(2);
-    ASSERT_EQ(gracz.getBalance(), 3);
-    ASSERT_EQ(gracz.getWithdrawals()[0], 2);
-}
-
-TEST(PlayerTest, TestPlayerWithdrawTooManyBalance) {
-    Player gracz("Kamil", 5);
-    gracz.withdrawBalance(20);
-    ASSERT_EQ(gracz.getBalance(), 5);
-    ASSERT_TRUE(gracz.getWithdrawals().empty());
-}
-
-TEST(PlayerTest, TestPlayerALotTransactions) {
-    Player gracz("Kamil", 5);
-    gracz.depositBalance(2);
-    gracz.withdrawBalance(3);
-    gracz.depositBalance(8);
-    gracz.withdrawBalance(5);
-
-    ASSERT_EQ(gracz.totalDeposited(), 15);
-    ASSERT_EQ(gracz.totalWithdrawed(), 8);
-    ASSERT_EQ(gracz.totalProfit(), -7);
 }
 
 TEST(PlayerTest, TestGuestCreate) {

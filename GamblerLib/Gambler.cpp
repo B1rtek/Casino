@@ -1,7 +1,5 @@
 #include "Gambler.h"
 
-#include <utility>
-
 /**
  * Creates a Gambler with 0 balance
  * @param name name of the Gambler, optional
@@ -13,7 +11,9 @@ Gambler::Gambler(std::string name) noexcept: balance(0), name(std::move(name)) {
  * @param balance balance with which the gambler will be created
  * @param name name of the Gambler, optional
  */
-Gambler::Gambler(int balance, std::string name) noexcept: balance(balance), name(std::move(name)) {}
+Gambler::Gambler(int balance, std::string name) noexcept: balance(balance), name(std::move(name)) {
+    if (balance > 0) this->deposits.push_back(balance);
+}
 
 /**
  * Creates a Gambler with the provided balance and adds him to the provided game
@@ -23,6 +23,7 @@ Gambler::Gambler(int balance, std::string name) noexcept: balance(balance), name
  */
 Gambler::Gambler(int balance, Game *game, std::string name) noexcept {
     this->balance = balance;
+    if (balance > 0) this->deposits.push_back(balance);
     this->name = std::move(name);
     this->joinGame(game);
 }
@@ -40,6 +41,7 @@ void Gambler::makeAMove(int millisecondsPassed) noexcept {}
  */
 void Gambler::addBalance(int amount) noexcept {
     this->balance += amount;
+    this->transactions.emplace_back(amount, this->getCurrentGame()->getName());
 }
 
 /**
@@ -47,7 +49,28 @@ void Gambler::addBalance(int amount) noexcept {
  * @param amount amount of balance to remove, the balance will be subtracted until it reaches zero
  */
 void Gambler::subtractBalance(int amount) noexcept {
+    this->transactions.emplace_back(-std::min(amount, this->balance), this->getCurrentGame()->getName());
     this->balance = std::max(this->balance - amount, 0);
+}
+
+/**
+ * Depositing balance by the gambler
+ * @param amount amount of balance to deposit
+ */
+void Gambler::depositBalance(int amount) noexcept {
+    this->balance += abs(amount);
+    deposits.push_back(abs(amount));
+}
+
+/**
+ * Withdrawing balance by the gambler
+ * @param amount amount of balance to withdraw, must be lower than Gambler balance
+ */
+void Gambler::withdrawBalance(int amount) noexcept {
+    if (abs(amount) <= this->balance) {
+        this->balance -= abs(amount);
+        withdrawals.push_back(abs(amount));
+    }
 }
 
 /**
@@ -132,6 +155,46 @@ int Gambler::getBalance() const noexcept {
     return this->balance;
 }
 
+std::vector<int> Gambler::getDeposits() const noexcept {
+    return this->deposits;
+}
+
+int Gambler::totalDeposited() const noexcept {
+    int sum = 0;
+    for (int i = 0; i < deposits.size(); i++) sum += deposits[i];
+    return sum;
+}
+
+std::vector<int> Gambler::getWithdrawals() const noexcept { 
+    return this->withdrawals;
+}
+
+int Gambler::totalWithdrawed() const noexcept {
+    int sum = 0;
+    for (int i = 0; i < withdrawals.size(); i++) sum += withdrawals[i];
+    return sum;
+}
+
+int Gambler::totalProfit() const noexcept {
+    return this->totalWithdrawed() - this->totalDeposited();
+}
+
+std::vector<std::pair<int, std::string>> Gambler::getTransactions() const noexcept { 
+    return this->transactions; 
+}
+
+/**
+ * Method that returns vector of transactions in the selected game
+ * @param game name of the game (string)
+ * @return vector of ints (transactions' values)
+ */
+std::vector<int> Gambler::specificTransactions(std::string game) noexcept {
+    std::vector<int> specific_transactions;
+    for (int i = 0; i < transactions.size(); i++)
+        if (transactions[i].second == game) specific_transactions.push_back(transactions[i].first);
+    return specific_transactions;
+}
+
 Game *Gambler::getCurrentGame() const noexcept {
     return this->gamePlayed;
 }
@@ -143,8 +206,6 @@ Game *Gambler::getSpectatedGame() const noexcept {
 bool Gambler::isBot() const noexcept {
     return this->bot;
 }
-
-#include "Gambler.h"
 
 // Shop
 Shop::Shop() noexcept {

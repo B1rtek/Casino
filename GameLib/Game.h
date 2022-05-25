@@ -5,6 +5,7 @@
 #include <map>
 #include <set>
 #include <climits>
+#include <string>
 
 class Gambler;
 
