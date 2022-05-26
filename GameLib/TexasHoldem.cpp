@@ -486,14 +486,19 @@ void TexasHoldem::deal() {
 }
 
 /**
- * Returns the next gambler to the left of the current one
+ * Returns the next playing gambler to the left of the current one
  */
 Gambler *TexasHoldem::nextGambler() {
-    if (this->current == this->gamblersPlaying.back()) {
-        this->currentPlayerIndex = 1;
-        return this->gamblersPlaying.front();
-    }
-    return this->gamblersPlaying[this->currentPlayerIndex++];
+    Gambler* next = this->current;
+    do {
+        if (next == this->gamblersPlaying.back()) {
+            this->currentPlayerIndex = 1;
+            next = this->gamblersPlaying.front();
+        } else {
+            next = this->gamblersPlaying[this->currentPlayerIndex++];
+        }
+    } while(!this->notFolded[next]);
+    return next;
 }
 
 /**
