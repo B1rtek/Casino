@@ -3,7 +3,7 @@ project(CasinoGame)
 
 set(CMAKE_CXX_STANDARD 14)
 
-set(PATH_TO_QT5 "D:\\Kody\\Qt5\\5.15.2\\mingw81_64") # path to your Qt5 directory goes here
+set(PATH_TO_QT5 "D:\\Kody\\Qt5\\5.15.2\\msvc2019_64") # path to your Qt5 directory goes here
 if (WIN32)
     set(CMAKE_PREFIX_PATH ${PATH_TO_QT5})
 endif (WIN32)
@@ -20,7 +20,15 @@ target_link_libraries(GameExample PUBLIC GameLib GamblerLib)
 add_executable(TexasHoldemUITest GameExample/TexasHoldemUITest.cpp)
 target_link_libraries(TexasHoldemUITest PRIVATE GameLib GamblerLib Qt5::Widgets)
 if(WIN32)
-    add_custom_command(TARGET ${EXECUTABLE_NAME} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/WindowsQt5files ${CMAKE_CURRENT_BINARY_DIR})
+    if (CMAKE_BUILD_TYPE STREQUAL "Debug")
+        add_custom_command(TARGET TexasHoldemUITest POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/WindowsQt5files/Debug ${CMAKE_CURRENT_BINARY_DIR})
+    else()
+        add_custom_command(TARGET TexasHoldemUITest POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/WindowsQt5files/Release ${CMAKE_CURRENT_BINARY_DIR})
+    endif()
+    set(WIN_CPP_FILES libgcc_s_seh-1.dll libstdc++-6.dll libwinpthread-1.dll)
+    foreach(FILE IN LISTS WIN_CPP_FILES)
+        add_custom_command(TARGET TexasHoldemUITest POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/WindowsQt5files/${FILE} ${CMAKE_CURRENT_BINARY_DIR})
+    endforeach()
 endif()
 
 message("CLion > Visual Studio")
