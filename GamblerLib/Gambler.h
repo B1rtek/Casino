@@ -21,7 +21,7 @@ protected:
     std::vector<int> deposits;
     std::vector<int> withdrawals;
     std::vector<std::pair<int, std::string>> transactions;
-    Game *gamePlayed{}, *gameSpectated{};
+    Game *gamePlayed = nullptr, *gameSpectated = nullptr;
     bool bot = false;
 public:
     explicit Gambler(std::string name = "") noexcept;
