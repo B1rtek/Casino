@@ -48,6 +48,7 @@ public:
     QHBoxLayout *horizontalLayout;
     QPushButton *advanceTimeButton;
     QLineEdit *advanceTimeLineEdit;
+    QLabel *label_3;
     QSpacerItem *horizontalSpacer;
     QMenuBar *menubar;
     QStatusBar *statusbar;
@@ -153,6 +154,11 @@ public:
 
         horizontalLayout->addWidget(advanceTimeLineEdit);
 
+        label_3 = new QLabel(centralwidget);
+        label_3->setObjectName(QString::fromUtf8("label_3"));
+
+        horizontalLayout->addWidget(label_3);
+
         horizontalSpacer = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
 
         horizontalLayout->addItem(horizontalSpacer);
@@ -183,6 +189,7 @@ public:
         callButton->setText(QCoreApplication::translate("MainWindow", "Check/Call", nullptr));
         raiseButton->setText(QCoreApplication::translate("MainWindow", "Raise", nullptr));
         advanceTimeButton->setText(QCoreApplication::translate("MainWindow", "Advance Time", nullptr));
+        label_3->setText(QCoreApplication::translate("MainWindow", "%3: 0 = fold, 1 = call, 2 = raise(2)", nullptr));
     } // retranslateUi
 
 };
