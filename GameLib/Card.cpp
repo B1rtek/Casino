@@ -62,12 +62,11 @@ std::ostream &operator<<(std::ostream &stream, Card card) {
 }
 
 std::string Card::toString(Card card) noexcept {
+    if(card.value == NOVALUE && card.color == NOCOLOR) {
+        return "[Hidden]";
+    }
     std::string representation;
     switch(card.value) {
-        case NOVALUE: {
-            representation += "[Hidden] ";
-        }
-            break;
         case JACK: {
             representation += "J ";
         }
@@ -94,10 +93,6 @@ std::string Card::toString(Card card) noexcept {
         }
     }
     switch (card.color) {
-        case NOCOLOR: {
-            representation += "[Hidden]";
-        }
-            break;
         case CLUBS: {
             representation += "Clubs";
         }
