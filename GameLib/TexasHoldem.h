@@ -89,6 +89,8 @@ public:
 
     TexasHoldem(const std::vector<Gambler *> &gamblers, int minimumEntry, const std::string &name="");
 
+    void startGame() noexcept override;
+
     void advanceGame(int millisecondsPassed) override;
 
     bool addPlayer(Gambler *gambler) noexcept override;

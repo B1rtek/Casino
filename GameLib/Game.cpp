@@ -49,7 +49,6 @@ void Game::removeBankruptPlayers() noexcept {}
  */
 void Game::startGame() noexcept {
     this->inProgress = true;
-    this->totalBet = 0;
 }
 
 /**

@@ -35,7 +35,7 @@ public:
 
     Game(const std::vector<Gambler*>& gamblers, int minimumEntry, std::string name="") noexcept;
 
-    void startGame() noexcept;
+    virtual void startGame() noexcept;
 
     virtual void advanceGame(int millisecondsPassed);
 

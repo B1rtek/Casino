@@ -501,6 +501,13 @@ Gambler *TexasHoldem::nextGambler() {
     return next;
 }
 
+void TexasHoldem::startGame() noexcept {
+    Game::startGame();
+    for(auto &gambler: this->gamblersPlaying) {
+        this->notFolded[gambler] = true;
+    }
+}
+
 /**
  * Advances the game
  * @param millisecondsPassed milliseconds passed since the start of the casino
