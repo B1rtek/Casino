@@ -27,7 +27,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QListView" name="playerBalanceBetList"/>
+         <widget class="QListWidget" name="playerBalanceBetList"/>
         </item>
        </layout>
       </item>
@@ -41,7 +41,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QListView" name="tableCardsList"/>
+         <widget class="QListWidget" name="tableCardsList"/>
         </item>
        </layout>
       </item>

@@ -14,7 +14,7 @@
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QLineEdit>
-#include <QtWidgets/QListView>
+#include <QtWidgets/QListWidget>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QPushButton>
@@ -33,10 +33,10 @@ public:
     QHBoxLayout *horizontalLayout_4;
     QVBoxLayout *verticalLayout;
     QLabel *label;
-    QListView *playerBalanceBetList;
+    QListWidget *playerBalanceBetList;
     QVBoxLayout *verticalLayout_2;
     QLabel *label_2;
-    QListView *tableCardsList;
+    QListWidget *tableCardsList;
     QHBoxLayout *horizontalLayout_5;
     QPushButton *foldButton;
     QSpacerItem *horizontalSpacer_2;
@@ -70,7 +70,7 @@ public:
 
         verticalLayout->addWidget(label, 0, Qt::AlignHCenter);
 
-        playerBalanceBetList = new QListView(centralwidget);
+        playerBalanceBetList = new QListWidget(centralwidget);
         playerBalanceBetList->setObjectName(QString::fromUtf8("playerBalanceBetList"));
 
         verticalLayout->addWidget(playerBalanceBetList);
@@ -85,7 +85,7 @@ public:
 
         verticalLayout_2->addWidget(label_2, 0, Qt::AlignHCenter);
 
-        tableCardsList = new QListView(centralwidget);
+        tableCardsList = new QListWidget(centralwidget);
         tableCardsList->setObjectName(QString::fromUtf8("tableCardsList"));
 
         verticalLayout_2->addWidget(tableCardsList);
