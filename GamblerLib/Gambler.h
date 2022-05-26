@@ -178,7 +178,7 @@ public:
 
     void withdrawBalance(int amount) noexcept override;
 
-    std::vector<int> getDeposits() const const noexcept override;
+    std::vector<int> getDeposits() const noexcept override;
 
     std::vector<int> getWithdrawals() const noexcept override;
 
