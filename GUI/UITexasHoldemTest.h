@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'TexasHoldemTest.ui'
 **
-** Created by: Qt User Interface Compiler version 5.15.4
+** Created by: Qt User Interface Compiler version 5.15.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -49,6 +49,9 @@ public:
     QPushButton *advanceTimeButton;
     QLineEdit *advanceTimeLineEdit;
     QLabel *label_3;
+    QPushButton *botFoldButton;
+    QPushButton *botCallButton;
+    QPushButton *botRaiseButton;
     QSpacerItem *horizontalSpacer;
     QMenuBar *menubar;
     QStatusBar *statusbar;
@@ -159,6 +162,21 @@ public:
 
         horizontalLayout->addWidget(label_3);
 
+        botFoldButton = new QPushButton(centralwidget);
+        botFoldButton->setObjectName(QString::fromUtf8("botFoldButton"));
+
+        horizontalLayout->addWidget(botFoldButton);
+
+        botCallButton = new QPushButton(centralwidget);
+        botCallButton->setObjectName(QString::fromUtf8("botCallButton"));
+
+        horizontalLayout->addWidget(botCallButton);
+
+        botRaiseButton = new QPushButton(centralwidget);
+        botRaiseButton->setObjectName(QString::fromUtf8("botRaiseButton"));
+
+        horizontalLayout->addWidget(botRaiseButton);
+
         horizontalSpacer = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
 
         horizontalLayout->addItem(horizontalSpacer);
@@ -169,7 +187,7 @@ public:
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName(QString::fromUtf8("menubar"));
-        menubar->setGeometry(QRect(0, 0, 800, 27));
+        menubar->setGeometry(QRect(0, 0, 800, 21));
         MainWindow->setMenuBar(menubar);
         statusbar = new QStatusBar(MainWindow);
         statusbar->setObjectName(QString::fromUtf8("statusbar"));
@@ -190,6 +208,9 @@ public:
         raiseButton->setText(QCoreApplication::translate("MainWindow", "Raise", nullptr));
         advanceTimeButton->setText(QCoreApplication::translate("MainWindow", "Advance Time", nullptr));
         label_3->setText(QCoreApplication::translate("MainWindow", "%3: 0 = fold, 1 = call, 2 = raise(2)", nullptr));
+        botFoldButton->setText(QCoreApplication::translate("MainWindow", "BotFold", nullptr));
+        botCallButton->setText(QCoreApplication::translate("MainWindow", "BotCall", nullptr));
+        botRaiseButton->setText(QCoreApplication::translate("MainWindow", "BotRaise(2)", nullptr));
     } // retranslateUi
 
 };

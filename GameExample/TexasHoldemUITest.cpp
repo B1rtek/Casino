@@ -11,6 +11,7 @@ class TexasHoldemUITest : public QMainWindow {
     TexasHoldem *texasHoldem;
     std::vector<Gambler *> bots;
     Gambler *gambler;
+    int time = 30000;
 
     void refreshUI() {
         this->ui.tableCardsList->clear();
@@ -84,34 +85,67 @@ class TexasHoldemUITest : public QMainWindow {
         connect(this->ui.callButton, &QPushButton::clicked, this, &TexasHoldemUITest::texasHoldemCall);
         connect(this->ui.raiseButton, &QPushButton::clicked, this, &TexasHoldemUITest::texasHoldemRaise);
         connect(this->ui.advanceTimeButton, &QPushButton::clicked, this, &TexasHoldemUITest::advanceGame);
+        connect(this->ui.botFoldButton, &QPushButton::clicked, this, &TexasHoldemUITest::botFold);
+        connect(this->ui.botCallButton, &QPushButton::clicked, this, &TexasHoldemUITest::botCall);
+        connect(this->ui.botRaiseButton, &QPushButton::clicked, this, &TexasHoldemUITest::botRaise);
     }
 
     void texasHoldemFold() {
-        int time = stoi(this->ui.advanceTimeLineEdit->text().toStdString());
-        this->ui.advanceTimeLineEdit->setText(QString(to_string(time).c_str()));
+        this->time = stoi(this->ui.advanceTimeLineEdit->text().toStdString());
+        this->ui.advanceTimeLineEdit->setText(QString(to_string(this->time).c_str()));
         this->texasHoldem->fold(this->gambler);
         this->refreshUI();
     }
 
     void texasHoldemCall() {
-        int time = stoi(this->ui.advanceTimeLineEdit->text().toStdString());
-        this->ui.advanceTimeLineEdit->setText(QString(to_string(time).c_str()));
+        this->time = stoi(this->ui.advanceTimeLineEdit->text().toStdString());
+        this->ui.advanceTimeLineEdit->setText(QString(to_string(this->time++).c_str()));
         this->texasHoldem->call(this->gambler);
         this->refreshUI();
     }
 
     void texasHoldemRaise() {
-        int time = stoi(this->ui.advanceTimeLineEdit->text().toStdString());
-        this->ui.advanceTimeLineEdit->setText(QString(to_string(time).c_str()));
+        this->time = stoi(this->ui.advanceTimeLineEdit->text().toStdString());
+        this->ui.advanceTimeLineEdit->setText(QString(to_string(this->time++).c_str()));
         int amount = stoi(this->ui.raiseLineEdit->text().toStdString());
         this->texasHoldem->raise(this->gambler, amount);
         this->refreshUI();
     }
 
     void advanceGame() {
-        int time = stoi(this->ui.advanceTimeLineEdit->text().toStdString());
-        this->texasHoldem->advanceGame(time++);
-        this->ui.advanceTimeLineEdit->setText(QString(to_string(time).c_str()));
+        this->time = stoi(this->ui.advanceTimeLineEdit->text().toStdString());
+        this->texasHoldem->advanceGame(this->time++);
+        this->ui.advanceTimeLineEdit->setText(QString(to_string(this->time++).c_str()));
+        this->refreshUI();
+    }
+
+    void botFold() {
+        this->time = stoi(this->ui.advanceTimeLineEdit->text().toStdString());
+        while(this->time % 3 != 0) {
+            ++this->time;
+        }
+        this->texasHoldem->advanceGame(this->time++);
+        this->ui.advanceTimeLineEdit->setText(QString(to_string(this->time).c_str()));
+        this->refreshUI();
+    }
+
+    void botCall() {
+        this->time = stoi(this->ui.advanceTimeLineEdit->text().toStdString());
+        while(this->time % 3 != 1) {
+            ++this->time;
+        }
+        this->texasHoldem->advanceGame(this->time++);
+        this->ui.advanceTimeLineEdit->setText(QString(to_string(this->time).c_str()));
+        this->refreshUI();
+    }
+
+    void botRaise() {
+        this->time = stoi(this->ui.advanceTimeLineEdit->text().toStdString());
+        while(this->time % 3 != 2) {
+            ++this->time;
+        }
+        this->texasHoldem->advanceGame(this->time++);
+        this->ui.advanceTimeLineEdit->setText(QString(to_string(this->time).c_str()));
         this->refreshUI();
     }
 
