@@ -3,13 +3,25 @@ project(CasinoGame)
 
 set(CMAKE_CXX_STANDARD 14)
 
-include_directories(GameLib GamblerLib)
+set(PATH_TO_QT5 "D:\\Kody\\Qt5\\5.15.2\\mingw81_64") # path to your Qt5 directory goes here
+if (WIN32)
+    set(CMAKE_PREFIX_PATH ${PATH_TO_QT5})
+endif (WIN32)
+find_package(Qt5Widgets REQUIRED)
+
+include_directories(GameLib GamblerLib GUI)
 
 add_library(GameLib GameLib/Game.cpp GameLib/Game.h GameLib/CardGame.cpp GameLib/CardGame.h GameLib/Card.cpp GameLib/Card.h GameLib/TexasHoldem.cpp GameLib/TexasHoldem.h GameLib/Jackpot.cpp GameLib/Jackpot.h)
 add_library(GamblerLib GamblerLib/Gambler.cpp GamblerLib/Gambler.h GamblerLib/JackpotBot.cpp GamblerLib/JackpotBot.h GamblerLib/GamblerBot.cpp GamblerLib/GamblerBot.h GamblerLib/TexasBot.cpp GamblerLib/TexasBot.h)
 
 add_executable(GameExample GameExample/GameExample.cpp)
 target_link_libraries(GameExample PUBLIC GameLib GamblerLib)
+
+add_executable(TexasHoldemUITest GameExample/TexasHoldemUITest.cpp)
+target_link_libraries(TexasHoldemUITest PRIVATE GameLib GamblerLib Qt5::Widgets)
+if(WIN32)
+    add_custom_command(TARGET ${EXECUTABLE_NAME} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/WindowsQt5files ${CMAKE_CURRENT_BINARY_DIR})
+endif()
 
 message("CLion > Visual Studio")
 
