@@ -50,6 +50,8 @@ public:
     bool operator==(const Card &other) const noexcept;
 
     friend std::ostream &operator<<(std::ostream &stream, Card card);
+
+    static std::string toString(Card card) noexcept;
 };
 
 

@@ -57,56 +57,63 @@ bool Card::operator==(const Card &other) const noexcept {
 }
 
 std::ostream &operator<<(std::ostream &stream, Card card) {
+    stream << Card::toString(card);
+    return stream;
+}
+
+std::string Card::toString(Card card) noexcept {
+    std::string representation;
     switch(card.value) {
         case NOVALUE: {
-            stream << "[Hidden] ";
+            representation += "[Hidden] ";
         }
-        break;
+            break;
         case JACK: {
-            stream << "J ";
+            representation += "J ";
         }
-        break;
+            break;
         case QUEEN: {
-            stream << "Q ";
+            representation += "Q ";
         }
-        break;
+            break;
         case KING: {
-            stream << "K ";
+            representation += "K ";
         }
-        break;
+            break;
         case ACE: {
-            stream << "A ";
+            representation += "A ";
         }
-        break;
+            break;
         case N10: {
-            stream << "10 ";
+            representation += "10 ";
         }
-        break;
+            break;
         default: {
-            stream << char(card.value+49) << ' ';
+            representation += char(card.value+49);
+            representation += ' ';
         }
     }
     switch (card.color) {
         case NOCOLOR: {
-            stream << "[Hidden]";
+            representation += "[Hidden]";
         }
-        break;
+            break;
         case CLUBS: {
-            stream << "Clubs";
+            representation += "Clubs";
         }
-        break;
+            break;
         case DIAMONDS: {
-            stream << "Diamonds";
+            representation += "Diamonds";
         }
-        break;
+            break;
         case SPADES: {
-            stream << "Spades";
+            representation += "Spades";
         }
-        break;
+            break;
         case HEARTS: {
-            stream << "Hearts";
+            representation += "Hearts";
         }
-        break;
+            break;
     }
-    return stream;
+    return representation;
 }
