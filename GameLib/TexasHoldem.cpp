@@ -696,8 +696,7 @@ void TexasHoldem::check(Gambler *gambler) {}
  * @return
  */
 bool TexasHoldem::fold(Gambler *gambler) {
-    if (!this->notFolded[gambler]) return false;
-    if (this->state < PREFLOP) return false; // you can't fold during blinds
+    if (!this->notFolded[gambler] || this->state < PREFLOP || this->current != gambler) return false; // you can't fold during blinds
     this->notFolded[gambler] = false;
     this->current = this->nextGambler();
     return true;
@@ -710,7 +709,8 @@ bool TexasHoldem::fold(Gambler *gambler) {
  * @return
  */
 bool TexasHoldem::raise(Gambler *gambler, int amount) {
-    if (this->currentBets[gambler] + amount < this->currentHighest || !this->notFolded[gambler]) {
+    if (this->currentBets[gambler] + amount < this->currentHighest || !this->notFolded[gambler] ||
+        this->current != gambler) {
         return false;
     }
     if (this->state < PREFLOP) return false; // you can't raise during the blinds
@@ -790,7 +790,7 @@ std::string TexasHoldem::getGameStateString() const noexcept {
 }
 
 std::string TexasHoldem::getLastWinningHandString() const noexcept {
-    if(this->lastWinningHand.size() == 5) {
+    if (this->lastWinningHand.size() == 5) {
         return this->texasHoldemHandStrings[TexasHoldem::calculateHand(this->lastWinningHand).first];
     }
     return "other players folding";
