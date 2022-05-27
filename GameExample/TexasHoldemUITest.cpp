@@ -1,8 +1,10 @@
 #include <QApplication>
 #include <QtWidgets/QMainWindow>
+#include <QTimer>
+#include <QStyleFactory>
 #include "UITexasHoldemTest.h"
 #include "TexasHoldem.h"
-#include "TexasBot.h"
+#include "TestTexasBot.h"
 
 using namespace std;
 
@@ -11,11 +13,12 @@ class TexasHoldemUITest : public QMainWindow {
     TexasHoldem *texasHoldem;
     std::vector<Gambler *> bots;
     Gambler *gambler;
-    int time = 30000;
+    int time = 25000;
+    chrono::time_point<chrono::steady_clock> chronoTime;
 
     void refreshUI() {
-        this->ui.tableCardsList->clear();
         this->ui.playerBalanceBetList->clear();
+        this->ui.tableCardsList->clear();
         // player info
         map<Gambler *, string> items;
         auto foldStatus = this->texasHoldem->getNotFolded();
@@ -73,10 +76,38 @@ class TexasHoldemUITest : public QMainWindow {
         for(auto &gamblerItemPair: items) {
             this->ui.playerBalanceBetList->addItem(QString(gamblerItemPair.second.c_str()));
         }
-        // table info
-        auto table = this->texasHoldem->getCurrentDealtCards();
-        for(auto &card:table) {
-            this->ui.tableCardsList->addItem(QString(Card::toString(*card).c_str()));
+        if(this->texasHoldem->isInProgress()) {
+            // table info
+            auto table = this->texasHoldem->getCurrentDealtCards();
+            for(auto &card:table) {
+                this->ui.tableCardsList->addItem(QString(Card::toString(*card).c_str()));
+            }
+            this->ui.gameStateLabel->setText(QString(this->texasHoldem->getGameStateString().c_str()));
+        } else {
+            int timeToStart = (this->texasHoldem->getTargetTime() - this->time)/1000;
+            string toDisplay = "Next game starts in " + to_string(timeToStart) + " seconds";
+            this->ui.tableCardsList->addItem(QString(toDisplay.c_str()));
+            if(!this->texasHoldem->getLastGameWinners().empty()) {
+                toDisplay = "Last game won by ";
+                for(auto &winner:this->texasHoldem->getLastGameWinners()) {
+                    toDisplay += winner->getName();
+                    toDisplay += ", ";
+                }
+                toDisplay.pop_back();
+                toDisplay.pop_back();
+                toDisplay += " with " + this->texasHoldem->getLastWinningHandString();
+                this->ui.tableCardsList->addItem(QString(toDisplay.c_str()));
+                toDisplay.clear();
+                if(!this->texasHoldem->getLastWinningHand().empty()) {
+                    for(auto &card:this->texasHoldem->getLastWinningHand()) {
+                        toDisplay += Card::toString(*card);
+                        toDisplay += ", ";
+                    }
+                    toDisplay.pop_back();
+                    toDisplay.pop_back();
+                    this->ui.tableCardsList->addItem(QString(toDisplay.c_str()));
+                }
+            }
         }
     }
 
@@ -88,6 +119,14 @@ class TexasHoldemUITest : public QMainWindow {
         connect(this->ui.botFoldButton, &QPushButton::clicked, this, &TexasHoldemUITest::botFold);
         connect(this->ui.botCallButton, &QPushButton::clicked, this, &TexasHoldemUITest::botCall);
         connect(this->ui.botRaiseButton, &QPushButton::clicked, this, &TexasHoldemUITest::botRaise);
+    }
+
+    void setupObjects() {
+        this->ui.advanceTimeLineEdit->setText("30000");
+        this->gambler = new Gambler(1001, "B1rtek");
+        this->bots = {this->gambler, new TestTexasBot(1001, "Marcus"), new TestTexasBot(1001, "Tyler"), new TestTexasBot(1001, "Lina")};
+        this->texasHoldem = new TexasHoldem(bots, 1000);
+        this->chronoTime = chrono::steady_clock::now();
     }
 
     void texasHoldemFold() {
@@ -149,21 +188,59 @@ class TexasHoldemUITest : public QMainWindow {
         this->refreshUI();
     }
 
+    void setDarkMode() {
+        // Thank you Jorgen (https://stackoverflow.com/users/6847516/jorgen) for sharing your dark mode palette ^^
+        // https://stackoverflow.com/questions/15035767/is-the-qt-5-dark-fusion-theme-available-for-windows
+        QApplication::setStyle(QStyleFactory::create("Fusion"));
+        QPalette darkPalette;
+        darkPalette.setColor(QPalette::Window, QColor(53, 53, 53));
+        darkPalette.setColor(QPalette::WindowText, Qt::white);
+        darkPalette.setColor(QPalette::Disabled, QPalette::WindowText, QColor(127, 127, 127));
+        darkPalette.setColor(QPalette::Base, QColor(42, 42, 42));
+        darkPalette.setColor(QPalette::AlternateBase, QColor(66, 66, 66));
+        darkPalette.setColor(QPalette::ToolTipBase, Qt::white);
+        darkPalette.setColor(QPalette::ToolTipText, Qt::white);
+        darkPalette.setColor(QPalette::Text, Qt::white);
+        darkPalette.setColor(QPalette::Disabled, QPalette::Text, QColor(127, 127, 127));
+        darkPalette.setColor(QPalette::Dark, QColor(35, 35, 35));
+        darkPalette.setColor(QPalette::Shadow, QColor(20, 20, 20));
+        darkPalette.setColor(QPalette::Button, QColor(53, 53, 53));
+        darkPalette.setColor(QPalette::ButtonText, Qt::white);
+        darkPalette.setColor(QPalette::Disabled, QPalette::ButtonText, QColor(127, 127, 127));
+        darkPalette.setColor(QPalette::BrightText, Qt::red);
+        darkPalette.setColor(QPalette::Link, QColor(42, 130, 218));
+        darkPalette.setColor(QPalette::Highlight, QColor(42, 130, 218));
+        darkPalette.setColor(QPalette::Disabled, QPalette::Highlight, QColor(80, 80, 80));
+        darkPalette.setColor(QPalette::HighlightedText, Qt::white);
+        darkPalette.setColor(QPalette::Disabled, QPalette::HighlightedText, QColor(127, 127, 127));
+        QApplication::setPalette(darkPalette);
+    }
+
 public:
     explicit TexasHoldemUITest(QWidget *parent = nullptr) {
         this->ui = Ui_MainWindow();
         this->ui.setupUi(this);
 
         this->linkButtons();
+        this->setupObjects();
+        this->setDarkMode();
 
-        this->ui.advanceTimeLineEdit->setText("30000");
-        this->gambler = new Gambler(1001, "B1rtek");
-        this->bots = {this->gambler, new TexasBot(1001, "Marcus"), new TexasBot(1001, "Tyler"), new TexasBot(1001, "Lina")};
-        this->texasHoldem = new TexasHoldem(bots, 1000);
+        auto *timer = new QTimer(this);
+        connect(timer, &QTimer::timeout, this, &TexasHoldemUITest::testThreadFunction);
+        timer->start(500);
     }
 
     TexasHoldemUITest(TexasHoldemUITest const &test) {
         this->ui = test.ui;
+    }
+
+public slots:
+    void testThreadFunction() {
+        auto elapsed = chrono::duration_cast<chrono::milliseconds>(chrono::steady_clock::now() - this->chronoTime);
+        this->time = elapsed.count();
+        this->ui.advanceTimeLineEdit->setText(to_string(this->time).c_str());
+        this->texasHoldem->advanceGame(this->time);
+        this->refreshUI();
     }
 
 //    ~TexasHoldemUITest() override {
@@ -179,6 +256,7 @@ int main(int argc, char **argv) {
     QApplication app(argc, argv);
     QApplication::setStyle("fusion");
     TexasHoldemUITest window = TexasHoldemUITest();
+
     window.show();
     return QApplication::exec();
 }
