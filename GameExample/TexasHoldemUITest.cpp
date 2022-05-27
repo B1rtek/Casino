@@ -74,8 +74,8 @@ class TexasHoldemUITest : public QMainWindow {
                 gamblerItemPair.second += "[C]";
             }
         }
-        for(auto &gamblerItemPair: items) {
-            this->ui.playerBalanceBetList->addItem(QString(gamblerItemPair.second.c_str()));
+        for(auto &gamblerPlaying: this->texasHoldem->getPlayers()) {
+            this->ui.playerBalanceBetList->addItem(QString(items[gamblerPlaying].c_str()));
         }
         if(this->texasHoldem->isInProgress()) {
             // table info
@@ -159,7 +159,7 @@ class TexasHoldemUITest : public QMainWindow {
     }
 
     void botFold() {
-        while(this->time % 3 != 0) {
+        while(this->time % 21 != 0) {
             ++this->time;
         }
         this->texasHoldem->advanceGame(this->time++);
@@ -220,7 +220,7 @@ public:
         this->setDarkMode();
 
         auto *timer = new QTimer(this);
-        connect(timer, &QTimer::timeout, this, &TexasHoldemUITest::testThreadFunction);
+        connect(timer, &QTimer::timeout, this, &TexasHoldemUITest::sendClockSignal);
         timer->start(100);
     }
 
@@ -229,8 +229,7 @@ public:
     }
 
 public slots:
-    void testThreadFunction() {
-        return;
+    void sendClockSignal() {
         auto elapsed = chrono::duration_cast<chrono::milliseconds>(chrono::steady_clock::now() - this->chronoTime);
         this->time = elapsed.count();
         this->ui.advanceTimeLineEdit->setText(to_string(this->time).c_str());
