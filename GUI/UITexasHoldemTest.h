@@ -48,11 +48,11 @@ public:
     QHBoxLayout *horizontalLayout;
     QPushButton *advanceTimeButton;
     QLineEdit *advanceTimeLineEdit;
-    QLabel *label_3;
     QPushButton *botFoldButton;
     QPushButton *botCallButton;
     QPushButton *botRaiseButton;
     QSpacerItem *horizontalSpacer;
+    QLabel *gameStateLabel;
     QMenuBar *menubar;
     QStatusBar *statusbar;
 
@@ -157,11 +157,6 @@ public:
 
         horizontalLayout->addWidget(advanceTimeLineEdit);
 
-        label_3 = new QLabel(centralwidget);
-        label_3->setObjectName(QString::fromUtf8("label_3"));
-
-        horizontalLayout->addWidget(label_3);
-
         botFoldButton = new QPushButton(centralwidget);
         botFoldButton->setObjectName(QString::fromUtf8("botFoldButton"));
 
@@ -180,6 +175,11 @@ public:
         horizontalSpacer = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
 
         horizontalLayout->addItem(horizontalSpacer);
+
+        gameStateLabel = new QLabel(centralwidget);
+        gameStateLabel->setObjectName(QString::fromUtf8("gameStateLabel"));
+
+        horizontalLayout->addWidget(gameStateLabel);
 
 
         verticalLayout_3->addLayout(horizontalLayout);
@@ -207,10 +207,10 @@ public:
         callButton->setText(QCoreApplication::translate("MainWindow", "Check/Call", nullptr));
         raiseButton->setText(QCoreApplication::translate("MainWindow", "Raise", nullptr));
         advanceTimeButton->setText(QCoreApplication::translate("MainWindow", "Advance Time", nullptr));
-        label_3->setText(QCoreApplication::translate("MainWindow", "%3: 0 = fold, 1 = call, 2 = raise(2)", nullptr));
         botFoldButton->setText(QCoreApplication::translate("MainWindow", "BotFold", nullptr));
         botCallButton->setText(QCoreApplication::translate("MainWindow", "BotCall", nullptr));
         botRaiseButton->setText(QCoreApplication::translate("MainWindow", "BotRaise(2)", nullptr));
+        gameStateLabel->setText(QCoreApplication::translate("MainWindow", "GameState", nullptr));
     } // retranslateUi
 
 };
