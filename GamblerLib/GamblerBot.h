@@ -9,6 +9,7 @@
 class GamblerBot : public Gambler {
 protected:
     int targetTime = 0;
+    bool moveScheduled = false;
 public:
     explicit GamblerBot(const std::string &name="") noexcept;
 
