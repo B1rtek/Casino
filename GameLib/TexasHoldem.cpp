@@ -523,6 +523,7 @@ void TexasHoldem::startGame() noexcept {
     }
     this->state = SMALL_BLIND;
     this->lastWinningHand.clear();
+    this->currentHighest = 0;
 }
 
 /**
@@ -709,7 +710,7 @@ bool TexasHoldem::fold(Gambler *gambler) {
  * @return
  */
 bool TexasHoldem::raise(Gambler *gambler, int amount) {
-    if (this->currentBets[gambler] + amount < this->currentHighest || !this->notFolded[gambler] ||
+    if (this->currentBets[gambler] + amount <= this->currentHighest || !this->notFolded[gambler] ||
         this->current != gambler) {
         return false;
     }
