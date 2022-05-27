@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 
 #include "TexasHoldem.h"
-#include "TexasBot.h"
+#include "TestTexasBot.h"
 
 using namespace std;
 
@@ -271,7 +271,7 @@ TEST(TexasHoldemTest, AdvanceGameStart) {
 
 TEST(TexasHoldemTest, AdvanceGameBlindsAndPreflop) {
     auto *gambler1 = new Gambler(1337);
-    auto *bot1 = new TexasBot(1338), *bot2 = new TexasBot(1339);
+    auto *bot1 = new TestTexasBot(1338), *bot2 = new TestTexasBot(1339);
     vector<Gambler *> gamblers = {gambler1, bot1, bot2};
     auto *texasHoldem = new TexasHoldem(gamblers, 1000);
     texasHoldem->advanceGame(30000); // game starts
@@ -379,7 +379,7 @@ TEST(TexasHoldemTest, AdvanceGameBlindsAndPreflop) {
 
 TEST(TexasHoldemTest, GameEndInFlop) {
     auto *gambler1 = new Gambler(1337);
-    auto *bot1 = new TexasBot(1338), *bot2 = new TexasBot(1339);
+    auto *bot1 = new TestTexasBot(1338), *bot2 = new TestTexasBot(1339);
     vector<Gambler *> gamblers = {gambler1, bot1, bot2};
     auto *texasHoldem = new TexasHoldem(gamblers, 1000);
     texasHoldem->advanceGame(30000); // game starts
@@ -424,7 +424,7 @@ TEST(TexasHoldemTest, GameEndInFlop) {
 
 TEST(TexasHoldemTest, GameEndInTurn) {
     auto *gambler1 = new Gambler(1337);
-    auto *bot1 = new TexasBot(1338), *bot2 = new TexasBot(1339);
+    auto *bot1 = new TestTexasBot(1338), *bot2 = new TestTexasBot(1339);
     vector<Gambler *> gamblers = {gambler1, bot1, bot2};
     auto *texasHoldem = new TexasHoldem(gamblers, 1000);
     texasHoldem->advanceGame(30000); // game starts
@@ -478,7 +478,7 @@ TEST(TexasHoldemTest, GameEndInTurn) {
 
 TEST(TexasHoldemTest, GameEndInRiverByFold) {
     auto *gambler1 = new Gambler(1337);
-    auto *bot1 = new TexasBot(1338), *bot2 = new TexasBot(1339);
+    auto *bot1 = new TestTexasBot(1338), *bot2 = new TestTexasBot(1339);
     vector<Gambler *> gamblers = {gambler1, bot1, bot2};
     auto *texasHoldem = new TexasHoldem(gamblers, 1000);
     texasHoldem->advanceGame(30000); // game starts
@@ -541,7 +541,7 @@ TEST(TexasHoldemTest, GameEndInRiver) {
         }
     };
     auto *gambler1 = new Gambler(1337);
-    auto *bot1 = new TexasBot(1338), *bot2 = new TexasBot(1339);
+    auto *bot1 = new TestTexasBot(1338), *bot2 = new TestTexasBot(1339);
     vector<Gambler *> gamblers = {gambler1, bot1, bot2};
     auto *texasHoldem = new FakeTexasHoldem(gamblers, 1000);
     texasHoldem->advanceGame(30000); // game starts
@@ -586,7 +586,7 @@ TEST(TexasHoldemTest, StraightFlushTripleTie) {
         } // expected: everyone wins because a straight flush is already on the table
     };
     auto *gambler1 = new Gambler(1337);
-    auto *bot1 = new TexasBot(1338), *bot2 = new TexasBot(1339);
+    auto *bot1 = new TestTexasBot(1338), *bot2 = new TestTexasBot(1339);
     vector<Gambler *> gamblers = {gambler1, bot1, bot2};
     auto *texasHoldem = new FakeTexasHoldem(gamblers, 1000);
     texasHoldem->advanceGame(30000); // game starts
@@ -629,7 +629,7 @@ TEST(TexasHoldemTest, StraightFlush) {
         } // expected: bot2 wins with a higher straight flush than gambler1
     };
     auto *gambler1 = new Gambler(1337);
-    auto *bot1 = new TexasBot(1338), *bot2 = new TexasBot(1339);
+    auto *bot1 = new TestTexasBot(1338), *bot2 = new TestTexasBot(1339);
     vector<Gambler *> gamblers = {gambler1, bot1, bot2};
     auto *texasHoldem = new FakeTexasHoldem(gamblers, 1000);
     texasHoldem->advanceGame(30000); // game starts
@@ -674,7 +674,7 @@ TEST(TexasHoldemTest, FourOfAKindTripleTie) {
         } // expected: everyone wins because a four of a kind is already on the table with a kicker ace hearts
     };
     auto *gambler1 = new Gambler(1337);
-    auto *bot1 = new TexasBot(1338), *bot2 = new TexasBot(1339);
+    auto *bot1 = new TestTexasBot(1338), *bot2 = new TestTexasBot(1339);
     vector<Gambler *> gamblers = {gambler1, bot1, bot2};
     auto *texasHoldem = new FakeTexasHoldem(gamblers, 1000);
     texasHoldem->advanceGame(30000); // game starts
@@ -717,7 +717,7 @@ TEST(TexasHoldemTest, FourOfAKindDoubleTie) {
         } // expected: bot1 and bot2 win by kicker 10s
     };
     auto *gambler1 = new Gambler(1337);
-    auto *bot1 = new TexasBot(1338), *bot2 = new TexasBot(1339);
+    auto *bot1 = new TestTexasBot(1338), *bot2 = new TestTexasBot(1339);
     vector<Gambler *> gamblers = {gambler1, bot1, bot2};
     auto *texasHoldem = new FakeTexasHoldem(gamblers, 1000);
     texasHoldem->advanceGame(30000); // game starts
@@ -762,7 +762,7 @@ TEST(TexasHoldemTest, FullHouseTripleTie) {
         } // expected: everyone wins because a full house is already on the table and gamblers can't make it better
     };
     auto *gambler1 = new Gambler(1337);
-    auto *bot1 = new TexasBot(1338), *bot2 = new TexasBot(1339);
+    auto *bot1 = new TestTexasBot(1338), *bot2 = new TestTexasBot(1339);
     vector<Gambler *> gamblers = {gambler1, bot1, bot2};
     auto *texasHoldem = new FakeTexasHoldem(gamblers, 1000);
     texasHoldem->advanceGame(30000); // game starts
@@ -805,7 +805,7 @@ TEST(TexasHoldemTest, FullHouseDoubleTie) {
         } // expected: gambler1 and bot1 win because they can complete the full house
     };
     auto *gambler1 = new Gambler(1337);
-    auto *bot1 = new TexasBot(1338), *bot2 = new TexasBot(1339);
+    auto *bot1 = new TestTexasBot(1338), *bot2 = new TestTexasBot(1339);
     vector<Gambler *> gamblers = {gambler1, bot1, bot2};
     auto *texasHoldem = new FakeTexasHoldem(gamblers, 1000);
     texasHoldem->advanceGame(30000); // game starts
@@ -850,7 +850,7 @@ TEST(TexasHoldemTest, FullHouseDoubleTie2) {
         } // expected: both gambler1 and bot1 win because they can complete the full house
     };
     auto *gambler1 = new Gambler(1337);
-    auto *bot1 = new TexasBot(1338), *bot2 = new TexasBot(1339);
+    auto *bot1 = new TestTexasBot(1338), *bot2 = new TestTexasBot(1339);
     vector<Gambler *> gamblers = {gambler1, bot1, bot2};
     auto *texasHoldem = new FakeTexasHoldem(gamblers, 1000);
     texasHoldem->advanceGame(30000); // game starts
@@ -895,7 +895,7 @@ TEST(TexasHoldemTest, FlushTripleTie) {
         } // expected: everyone wins because a flush is already on the table
     };
     auto *gambler1 = new Gambler(1337);
-    auto *bot1 = new TexasBot(1338), *bot2 = new TexasBot(1339);
+    auto *bot1 = new TestTexasBot(1338), *bot2 = new TestTexasBot(1339);
     vector<Gambler *> gamblers = {gambler1, bot1, bot2};
     auto *texasHoldem = new FakeTexasHoldem(gamblers, 1000);
     texasHoldem->advanceGame(30000); // game starts
@@ -938,7 +938,7 @@ TEST(TexasHoldemTest, FlushDoubleTie) {
         } // expected: gambler1 and bot2 tie with a clubs flush with king being the highest card
     };
     auto *gambler1 = new Gambler(1337);
-    auto *bot1 = new TexasBot(1338), *bot2 = new TexasBot(1339);
+    auto *bot1 = new TestTexasBot(1338), *bot2 = new TestTexasBot(1339);
     vector<Gambler *> gamblers = {gambler1, bot1, bot2};
     auto *texasHoldem = new FakeTexasHoldem(gamblers, 1000);
     texasHoldem->advanceGame(30000); // game starts
@@ -983,7 +983,7 @@ TEST(TexasHoldemTest, StraightTripleTie) {
         } // expected: everyone wins because a straight is already on the table
     };
     auto *gambler1 = new Gambler(1337);
-    auto *bot1 = new TexasBot(1338), *bot2 = new TexasBot(1339);
+    auto *bot1 = new TestTexasBot(1338), *bot2 = new TestTexasBot(1339);
     vector<Gambler *> gamblers = {gambler1, bot1, bot2};
     auto *texasHoldem = new FakeTexasHoldem(gamblers, 1000);
     texasHoldem->advanceGame(30000); // game starts
@@ -1026,7 +1026,7 @@ TEST(TexasHoldemTest, StraightDoubleTie) {
         } // expected: triple tie because every player choose K C as kicker
     };
     auto *gambler1 = new Gambler(1337);
-    auto *bot1 = new TexasBot(1338), *bot2 = new TexasBot(1339);
+    auto *bot1 = new TestTexasBot(1338), *bot2 = new TestTexasBot(1339);
     vector<Gambler *> gamblers = {gambler1, bot1, bot2};
     auto *texasHoldem = new FakeTexasHoldem(gamblers, 1000);
     texasHoldem->advanceGame(30000); // game starts
@@ -1069,7 +1069,7 @@ TEST(TexasHoldemTest, ThreeOfAKindTripleTie) {
         } // expected: triple tie because every player choose K C as kicker
     };
     auto *gambler1 = new Gambler(1337);
-    auto *bot1 = new TexasBot(1338), *bot2 = new TexasBot(1339);
+    auto *bot1 = new TestTexasBot(1338), *bot2 = new TestTexasBot(1339);
     vector<Gambler *> gamblers = {gambler1, bot1, bot2};
     auto *texasHoldem = new FakeTexasHoldem(gamblers, 1000);
     texasHoldem->advanceGame(30000); // game starts
@@ -1112,7 +1112,7 @@ TEST(TexasHoldemTest, ThreeOfAKind) {
         } // expected: gambler1 wins with K C as kicker
     };
     auto *gambler1 = new Gambler(1337);
-    auto *bot1 = new TexasBot(1338), *bot2 = new TexasBot(1339);
+    auto *bot1 = new TestTexasBot(1338), *bot2 = new TestTexasBot(1339);
     vector<Gambler *> gamblers = {gambler1, bot1, bot2};
     auto *texasHoldem = new FakeTexasHoldem(gamblers, 1000);
     texasHoldem->advanceGame(30000); // game starts
@@ -1156,7 +1156,7 @@ TEST(TexasHoldemTest, DoublePairTripleTie) {
         } // expected: triple tie because every player choose K C as kicker
     };
     auto *gambler1 = new Gambler(1337);
-    auto *bot1 = new TexasBot(1338), *bot2 = new TexasBot(1339);
+    auto *bot1 = new TestTexasBot(1338), *bot2 = new TestTexasBot(1339);
     vector<Gambler *> gamblers = {gambler1, bot1, bot2};
     auto *texasHoldem = new FakeTexasHoldem(gamblers, 1000);
     texasHoldem->advanceGame(30000); // game starts
@@ -1199,7 +1199,7 @@ TEST(TexasHoldemTest, DoublePairTie) {
         } // expected: bot 2 wins by king kicker with double pair
     };
     auto *gambler1 = new Gambler(1337);
-    auto *bot1 = new TexasBot(1338), *bot2 = new TexasBot(1339);
+    auto *bot1 = new TestTexasBot(1338), *bot2 = new TestTexasBot(1339);
     vector<Gambler *> gamblers = {gambler1, bot1, bot2};
     auto *texasHoldem = new FakeTexasHoldem(gamblers, 1000);
     texasHoldem->advanceGame(30000); // game starts
@@ -1243,7 +1243,7 @@ TEST(TexasHoldemTest, SinglePairTripleTie) {
         } // expected: threefold tie - all players choose the pair of aces and king kicker
     };
     auto *gambler1 = new Gambler(1337);
-    auto *bot1 = new TexasBot(1338), *bot2 = new TexasBot(1339);
+    auto *bot1 = new TestTexasBot(1338), *bot2 = new TestTexasBot(1339);
     vector<Gambler *> gamblers = {gambler1, bot1, bot2};
     auto *texasHoldem = new FakeTexasHoldem(gamblers, 1000);
     texasHoldem->advanceGame(30000); // game starts
@@ -1286,7 +1286,7 @@ TEST(TexasHoldemTest, SinglePairTie) {
         } // expected: bot2 wins by 10 D kicker
     };
     auto *gambler1 = new Gambler(1337);
-    auto *bot1 = new TexasBot(1338), *bot2 = new TexasBot(1339);
+    auto *bot1 = new TestTexasBot(1338), *bot2 = new TestTexasBot(1339);
     vector<Gambler *> gamblers = {gambler1, bot1, bot2};
     auto *texasHoldem = new FakeTexasHoldem(gamblers, 1000);
     texasHoldem->advanceGame(30000); // game starts
@@ -1330,7 +1330,7 @@ TEST(TexasHoldemTest, HighCardDoubleTie) {
         } // expected: bot 1 and bot 2 tie with high card A S and their kicker 10s
     };
     auto *gambler1 = new Gambler(1337);
-    auto *bot1 = new TexasBot(1338), *bot2 = new TexasBot(1339);
+    auto *bot1 = new TestTexasBot(1338), *bot2 = new TestTexasBot(1339);
     vector<Gambler *> gamblers = {gambler1, bot1, bot2};
     auto *texasHoldem = new FakeTexasHoldem(gamblers, 1000);
     texasHoldem->advanceGame(30000); // game starts

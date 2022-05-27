@@ -1,7 +1,7 @@
 #include <iostream>
 
 #include "Gambler.h"
-#include "TexasBot.h"
+#include "TestTexasBot.h"
 #include "TexasHoldem.h"
 
 using namespace std;
@@ -32,7 +32,7 @@ void displayCurrentGameState(TexasHoldem *game, const string& what) {
 int main() {
     // game copied from TexasHoldemTest.GameEndInRiver without rigged shuffling
     auto *gambler1 = new Gambler(1337, "Gambler 1");
-    auto *bot1 = new TexasBot(1338, "Bot 1"), *bot2 = new TexasBot(1339, "Bot 2");
+    auto *bot1 = new TestTexasBot(1338, "Bot 1"), *bot2 = new TestTexasBot(1339, "Bot 2");
     vector<Gambler *> gamblers = {gambler1, bot1, bot2};
     auto *texasHoldem = new TexasHoldem(gamblers, 1000);
     texasHoldem->advanceGame(30000); // game starts
