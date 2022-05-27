@@ -17,6 +17,7 @@ class TexasHoldemUITest : public QMainWindow {
     chrono::time_point<chrono::steady_clock> chronoTime;
 
     void refreshUI() {
+        this->ui.advanceTimeLineEdit->setText(QString(to_string(this->time++).c_str()));
         this->ui.playerBalanceBetList->clear();
         this->ui.tableCardsList->clear();
         // player info
@@ -130,61 +131,54 @@ class TexasHoldemUITest : public QMainWindow {
     }
 
     void texasHoldemFold() {
-        this->time = stoi(this->ui.advanceTimeLineEdit->text().toStdString());
-        this->ui.advanceTimeLineEdit->setText(QString(to_string(this->time).c_str()));
         this->texasHoldem->fold(this->gambler);
         this->refreshUI();
     }
 
     void texasHoldemCall() {
-        this->time = stoi(this->ui.advanceTimeLineEdit->text().toStdString());
-        this->ui.advanceTimeLineEdit->setText(QString(to_string(this->time++).c_str()));
         this->texasHoldem->call(this->gambler);
         this->refreshUI();
     }
 
     void texasHoldemRaise() {
-        this->time = stoi(this->ui.advanceTimeLineEdit->text().toStdString());
-        this->ui.advanceTimeLineEdit->setText(QString(to_string(this->time++).c_str()));
-        int amount = stoi(this->ui.raiseLineEdit->text().toStdString());
-        this->texasHoldem->raise(this->gambler, amount);
-        this->refreshUI();
+        string toRaiseAmount = this->ui.raiseLineEdit->text().toStdString();
+        if(!toRaiseAmount.empty()) {
+            int amount = stoi(toRaiseAmount);
+            this->texasHoldem->raise(this->gambler, amount);
+            this->refreshUI();
+        }
     }
 
     void advanceGame() {
-        this->time = stoi(this->ui.advanceTimeLineEdit->text().toStdString());
-        this->texasHoldem->advanceGame(this->time++);
-        this->ui.advanceTimeLineEdit->setText(QString(to_string(this->time++).c_str()));
-        this->refreshUI();
+        string newTime = this->ui.advanceTimeLineEdit->text().toStdString();
+        if(!newTime.empty()) {
+            this->time = stoi(this->ui.advanceTimeLineEdit->text().toStdString());
+            this->texasHoldem->advanceGame(this->time++);
+            this->refreshUI();
+        }
     }
 
     void botFold() {
-        this->time = stoi(this->ui.advanceTimeLineEdit->text().toStdString());
         while(this->time % 3 != 0) {
             ++this->time;
         }
         this->texasHoldem->advanceGame(this->time++);
-        this->ui.advanceTimeLineEdit->setText(QString(to_string(this->time).c_str()));
         this->refreshUI();
     }
 
     void botCall() {
-        this->time = stoi(this->ui.advanceTimeLineEdit->text().toStdString());
         while(this->time % 3 != 1) {
             ++this->time;
         }
         this->texasHoldem->advanceGame(this->time++);
-        this->ui.advanceTimeLineEdit->setText(QString(to_string(this->time).c_str()));
         this->refreshUI();
     }
 
     void botRaise() {
-        this->time = stoi(this->ui.advanceTimeLineEdit->text().toStdString());
         while(this->time % 3 != 2) {
             ++this->time;
         }
         this->texasHoldem->advanceGame(this->time++);
-        this->ui.advanceTimeLineEdit->setText(QString(to_string(this->time).c_str()));
         this->refreshUI();
     }
 
@@ -227,7 +221,7 @@ public:
 
         auto *timer = new QTimer(this);
         connect(timer, &QTimer::timeout, this, &TexasHoldemUITest::testThreadFunction);
-        timer->start(500);
+        timer->start(100);
     }
 
     TexasHoldemUITest(TexasHoldemUITest const &test) {
@@ -236,6 +230,7 @@ public:
 
 public slots:
     void testThreadFunction() {
+        return;
         auto elapsed = chrono::duration_cast<chrono::milliseconds>(chrono::steady_clock::now() - this->chronoTime);
         this->time = elapsed.count();
         this->ui.advanceTimeLineEdit->setText(to_string(this->time).c_str());
