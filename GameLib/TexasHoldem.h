@@ -33,6 +33,28 @@ class TexasHoldem : public CardGame {
     std::map<Gambler *, bool> notFolded, movedDuringThisPhase;
     std::vector<Card*> lastWinningHand;
 
+    std::string texasHoldemStateStrings[7] = {
+            "Small blind",
+            "Big blind",
+            "Preflop",
+            "Flop",
+            "Turn",
+            "River",
+            "Showdown"
+    };
+
+    std::string texasHoldemHandStrings[9] = {
+            "High card",
+            "One pair",
+            "Two pairs",
+            "Three of a kind",
+            "Straight",
+            "Flush",
+            "Full house",
+            "Four of a kind",
+            "Straight flush"
+    };
+
     std::pair<std::pair<TexasHoldemHand, Card *>, std::vector<Card *>> recognizeHandValue(Gambler *gambler);
 
     void assignNewDealer();
@@ -79,6 +101,13 @@ class TexasHoldem : public CardGame {
     std::vector<Gambler *>
     decideFullHouseTie(std::map<Gambler *, std::pair<std::pair<TexasHoldemHand, Card *>, std::vector<Card *>>> hands);
 
+    std::vector<Gambler *>
+    decideFourOfAKindTie(std::map<Gambler *, std::pair<std::pair<TexasHoldemHand, Card *>, std::vector<Card *>>> hands);
+
+    std::vector<Gambler *>
+    decideStraightFlushTie(
+            std::map<Gambler *, std::pair<std::pair<TexasHoldemHand, Card *>, std::vector<Card *>>> hands);
+
 protected:
     std::vector<Gambler *> chooseTheWinners() noexcept override;
 
@@ -113,16 +142,13 @@ public:
 
     TexasHoldemState getGameState() const noexcept;
 
+    std::string getGameStateString() const noexcept;
+
     std::map<Gambler *, std::vector<Card *>> getGamblersCards() noexcept override;
 
     std::vector<Card*> getLastWinningHand() const noexcept;
 
-    std::vector<Gambler *>
-    decideFourOfAKindTie(std::map<Gambler *, std::pair<std::pair<TexasHoldemHand, Card *>, std::vector<Card *>>> hands);
-
-    std::vector<Gambler *>
-    decideStraightFlushTie(
-            std::map<Gambler *, std::pair<std::pair<TexasHoldemHand, Card *>, std::vector<Card *>>> hands);
+    std::string getLastWinningHandString() const noexcept;
 };
 
 

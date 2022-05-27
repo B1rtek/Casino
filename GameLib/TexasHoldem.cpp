@@ -521,6 +521,8 @@ void TexasHoldem::startGame() noexcept {
     for (auto &gambler: this->gamblersPlaying) {
         this->notFolded[gambler] = true;
     }
+    this->state = SMALL_BLIND;
+    this->lastWinningHand.clear();
 }
 
 /**
@@ -781,4 +783,15 @@ TexasHoldemState TexasHoldem::getGameState() const noexcept {
 
 std::vector<Card *> TexasHoldem::getLastWinningHand() const noexcept {
     return this->lastWinningHand;
+}
+
+std::string TexasHoldem::getGameStateString() const noexcept {
+    return this->texasHoldemStateStrings[this->state];
+}
+
+std::string TexasHoldem::getLastWinningHandString() const noexcept {
+    if(this->lastWinningHand.size() == 5) {
+        return this->texasHoldemHandStrings[TexasHoldem::calculateHand(this->lastWinningHand).first];
+    }
+    return "other players folding";
 }
