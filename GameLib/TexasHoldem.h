@@ -55,8 +55,6 @@ class TexasHoldem : public CardGame {
             "Straight flush"
     };
 
-    std::pair<std::pair<TexasHoldemHand, Card *>, std::vector<Card *>> recognizeHandValue(Gambler *gambler);
-
     void assignNewDealer();
 
     virtual void shuffleCards();
@@ -128,6 +126,8 @@ public:
 
     static std::pair<TexasHoldemHand, Card *> calculateHand(std::vector<Card *> hand);
 
+    std::pair<std::pair<TexasHoldemHand, Card *>, std::vector<Card *>> recognizeHandValue(Gambler *gambler);
+
     bool call(Gambler *gambler);
 
     bool fold(Gambler *gambler);
@@ -149,6 +149,8 @@ public:
     std::vector<Card*> getLastWinningHand() const noexcept;
 
     std::string getLastWinningHandString() const noexcept;
+
+    int getCurrentHighest() const noexcept;
 };
 
 

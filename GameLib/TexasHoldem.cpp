@@ -46,35 +46,60 @@ TexasHoldem::TexasHoldem(const std::vector<Gambler *> &gamblers, int minimumEntr
  * @return maximum value calculated by calculateHand()
  */
 std::pair<std::pair<TexasHoldemHand, Card *>, std::vector<Card *>> TexasHoldem::recognizeHandValue(Gambler *gambler) {
-    // initialize with the base set
-    std::pair<std::pair<TexasHoldemHand, Card *>, std::vector<Card *>> bestHand = {
-            TexasHoldem::calculateHand(this->dealtCards), this->dealtCards};
-    std::vector<Card *> tempCards;
-    for (int i = 0; i < 5; i++) { // places one card at a time at every place and checks for patterns
-        for (int j = 0; j < 2; j++) {
-            tempCards = this->dealtCards;
-            tempCards[i] = this->gamblersCards[gambler][j];
-            std::pair<std::pair<TexasHoldemHand, Card *>, std::vector<Card *>> tempHand = {
-                    TexasHoldem::calculateHand(tempCards), tempCards};
-            if (tempHand.first.first > bestHand.first.first ||
-                (tempHand.first.first == bestHand.first.first && *tempHand.first.second > *bestHand.first.second)) {
-                bestHand = tempHand;
+    std::pair<std::pair<TexasHoldemHand, Card *>, std::vector<Card *>> bestHand;
+    if (this->state == FLOP) {
+        std::vector<Card *> onlyPossibleHand = this->getCurrentDealtCards();
+        onlyPossibleHand[3] = this->getGamblersCards()[gambler][0];
+        onlyPossibleHand[3] = this->getGamblersCards()[gambler][1];
+        bestHand = {TexasHoldem::calculateHand(onlyPossibleHand), onlyPossibleHand};
+    } else if (this->state == TURN) {
+        bestHand = {{HIGH_CARD, CardGame::noneCard}, {}};
+        std::vector<Card *> cards = this->getGamblersCards()[gambler], tempCards;
+        for (int i = 0; i < 2; i++) {
+            for (int j = 0; j < 4; j++) {
+                tempCards = cards;
+                tempCards[4] = cards[i];
+                tempCards[j] = cards[1 - i];
+                std::pair<std::pair<TexasHoldemHand, Card *>, std::vector<Card *>> tempHand = {
+                        TexasHoldem::calculateHand(tempCards), tempCards};
+                if (tempHand.first.first > bestHand.first.first ||
+                    (tempHand.first.first == bestHand.first.first && *tempHand.first.second > *bestHand.first.second)) {
+                    bestHand = tempHand;
+                }
             }
         }
-    }
-    for (int i = 0; i < 5; i++) { // places two cards at a time at every place and checks for patterns
-        for (int j = 0; j < 5; j++) {
-            if (i == j) continue;
-            tempCards = this->dealtCards;
-            tempCards[i] = this->gamblersCards[gambler][0];
-            tempCards[j] = this->gamblersCards[gambler][1];
-            std::pair<std::pair<TexasHoldemHand, Card *>, std::vector<Card *>> tempHand = {
-                    TexasHoldem::calculateHand(tempCards), tempCards};
-            if (tempHand.first.first > bestHand.first.first ||
-                (tempHand.first.first == bestHand.first.first && *tempHand.first.second > *bestHand.first.second)) {
-                bestHand = tempHand;
+    } else if (this->state == RIVER || this->state == SHOWDOWN) {
+        // initialize with the base set
+        bestHand = {TexasHoldem::calculateHand(this->dealtCards), this->dealtCards};
+        std::vector<Card *> tempCards;
+        for (int i = 0; i < 5; i++) { // places one card at a time at every place and checks for patterns
+            for (int j = 0; j < 2; j++) {
+                tempCards = this->dealtCards;
+                tempCards[i] = this->gamblersCards[gambler][j];
+                std::pair<std::pair<TexasHoldemHand, Card *>, std::vector<Card *>> tempHand = {
+                        TexasHoldem::calculateHand(tempCards), tempCards};
+                if (tempHand.first.first > bestHand.first.first ||
+                    (tempHand.first.first == bestHand.first.first && *tempHand.first.second > *bestHand.first.second)) {
+                    bestHand = tempHand;
+                }
             }
         }
+        for (int i = 0; i < 5; i++) { // places two cards at a time at every place and checks for patterns
+            for (int j = 0; j < 5; j++) {
+                if (i == j) continue;
+                tempCards = this->dealtCards;
+                tempCards[i] = this->gamblersCards[gambler][0];
+                tempCards[j] = this->gamblersCards[gambler][1];
+                std::pair<std::pair<TexasHoldemHand, Card *>, std::vector<Card *>> tempHand = {
+                        TexasHoldem::calculateHand(tempCards), tempCards};
+                if (tempHand.first.first > bestHand.first.first ||
+                    (tempHand.first.first == bestHand.first.first && *tempHand.first.second > *bestHand.first.second)) {
+                    bestHand = tempHand;
+                }
+            }
+        }
+    } else {
+        return {{HIGH_CARD, CardGame::noneCard}, {}};
     }
     if (bestHand.first.first != FLUSH && bestHand.first.first != STRAIGHT_FLUSH && bestHand.first.first != HIGH_CARD) {
         bestHand.first.second = uncoloredDeck[bestHand.first.second->getValue()]; // in the checked hands the color of the highest card matters
@@ -697,7 +722,8 @@ void TexasHoldem::check(Gambler *gambler) {}
  * @return
  */
 bool TexasHoldem::fold(Gambler *gambler) {
-    if (!this->notFolded[gambler] || this->state < PREFLOP || this->current != gambler) return false; // you can't fold during blinds
+    if (!this->notFolded[gambler] || this->state < PREFLOP || this->current != gambler)
+        return false; // you can't fold during blinds
     this->notFolded[gambler] = false;
     this->current = this->nextGambler();
     return true;
@@ -795,4 +821,8 @@ std::string TexasHoldem::getLastWinningHandString() const noexcept {
         return this->texasHoldemHandStrings[TexasHoldem::calculateHand(this->lastWinningHand).first];
     }
     return "other players folding";
+}
+
+int TexasHoldem::getCurrentHighest() const noexcept {
+    return this->currentHighest;
 }
