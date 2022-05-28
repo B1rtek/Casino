@@ -4,7 +4,7 @@
 #include <QStyleFactory>
 #include "UIJackpotTest.h"
 #include "Jackpot.h"
-#include "TestTexasBot.h"
+#include "TestJackpotBot.h"
 
 using namespace std;
 
@@ -42,6 +42,9 @@ class JackpotUITest : public QMainWindow {
         }
         if (this->jackpot->isInProgress()) {
             // bet info
+            int timeToStart = (this->jackpot->getTargetTime() - this->time) / 1000;
+            string toDisplay = "Betting ends in " + to_string(timeToStart) + " seconds";
+            this->ui.percentagesList->addItem(QString(toDisplay.c_str()));
             auto percentages = this->jackpot->getPercentages();
             vector<pair<double, string>> sortedPerecentages;
             for (auto &gamblerPercentagePair: percentages) {
@@ -51,7 +54,6 @@ class JackpotUITest : public QMainWindow {
                  [](const pair<double, string> &one, const pair<double, string> &two) {
                      return one.first < two.first;
                  });
-            string toDisplay;
             for (auto &percentageGamblerPair: sortedPerecentages) {
                 toDisplay = percentageGamblerPair.second;
                 toDisplay.append(": ").append(to_string(percentageGamblerPair.first)).append("%");
@@ -77,8 +79,8 @@ class JackpotUITest : public QMainWindow {
     void setupObjects() {
         this->ui.advanceTimeLineEdit->setText("30000");
         this->gambler = new Gambler(1001, "B1rtek");
-        this->bots = {this->gambler, new TestTexasBot(1001, "Marcus"), new TestTexasBot(1001, "Tyler"),
-                      new TestTexasBot(1001, "Lina")};
+        this->bots = {this->gambler, new TestJackpotBot(1001, "Marcus"), new TestJackpotBot(1001, "Tyler"),
+                      new TestJackpotBot(1001, "Lina")};
         this->jackpot = new Jackpot(bots, 1000);
         this->chronoTime = chrono::steady_clock::now();
     }
