@@ -2,9 +2,26 @@
 #include <gmock/gmock.h>
 
 #include "Jackpot.h"
-#include "JackpotBot.h"
+#include "TestJackpotBot.h"
 
 using namespace std;
+
+class FakeJackpotBot : public GamblerBot {
+public:
+    explicit FakeJackpotBot(const std::string &name="") : GamblerBot(name) {}
+
+    FakeJackpotBot(int balance, const std::string &name="") : GamblerBot(balance, name) {}
+
+    FakeJackpotBot(int balance, Game *game, const std::string &name="") : GamblerBot(balance, game, name) {}
+
+/**
+ * Makes the bot bet additional money if the algorithm decides to do so
+ * @param millisecondsPassed
+ */
+    void makeAMove(int millisecondsPassed) noexcept override {
+        this->gamePlayed->bet(this, 2);
+    }
+};
 
 TEST(JackpotTest, JackpotCreate) {
     Jackpot jackpot = Jackpot(100);
@@ -116,7 +133,7 @@ TEST(JackpotTest, AdvanceGameStart) {
 }
 
 TEST(JackpotTest, AdvanceGameBotBet) {
-    auto *bot1 = new JackpotBot(500), *bot2 = new JackpotBot(420);
+    auto *bot1 = new FakeJackpotBot(500), *bot2 = new FakeJackpotBot(420);
     auto *gambler = new Gambler(400);
     vector<Gambler *> gamblers = {bot1, bot2, gambler};
     auto *jackpot = new Jackpot(gamblers, 100);
@@ -145,7 +162,7 @@ TEST(JackpotTest, AdvanceGameBotBet) {
 }
 
 TEST(JackpotTest, AdvanceGameFinishGame) {
-    auto *bot1 = new JackpotBot(500), *bot2 = new JackpotBot(420);
+    auto *bot1 = new FakeJackpotBot(500), *bot2 = new FakeJackpotBot(420);
     vector<Gambler *> gamblers = {bot1, bot2};
     auto *jackpot = new Jackpot(gamblers, 100);
     jackpot->advanceGame(30000); // game starts
@@ -193,7 +210,7 @@ TEST(JackpotTest, AdvanceGameRemoveBankrupt) {
 
         MockJackpot(MockJackpot const &jackpot);
     };
-    auto *bot1 = new JackpotBot(200);
+    auto *bot1 = new FakeJackpotBot(200);
     auto *gambler = new Gambler(500);
     vector<Gambler *> gamblers = {gambler, bot1};
     vector<Gambler *> winners = {gambler};
@@ -210,7 +227,7 @@ TEST(JackpotTest, AdvanceGameRemoveBankrupt) {
 }
 
 TEST(JackpotTest, GetPercentages) {
-    auto *bot1 = new JackpotBot(500), *bot2 = new JackpotBot(700), *bot3 = new JackpotBot(200);
+    auto *bot1 = new FakeJackpotBot(500), *bot2 = new FakeJackpotBot(700), *bot3 = new FakeJackpotBot(200);
     vector<Gambler *> gamblers = {bot1, bot2, bot3};
     Jackpot jackpot = Jackpot(gamblers, 100);
     jackpot.advanceGame(30000);
