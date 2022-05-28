@@ -5,11 +5,11 @@
 #include <vector>
 #include <cmath>
 #include <utility>
-#include <iostream>
 
 class Game;
 
 #include "Game.h"
+#include "Shop.h"
 
 /**
  * Gambler class, represents a base casino player, bots and human player classes inherit from it
@@ -77,31 +77,17 @@ public:
     bool isBot() const noexcept;
 };
 
-class Shop {
-private:
-    std::vector<std::pair<std::string, int>> items;
-public:
-    Shop() noexcept;
-
-    std::vector<std::pair<std::string, int>> getItems() noexcept { return this->items; }
-
-    void addItem(std::pair<std::string, int> item) noexcept { this->items.push_back(item); }
-
-    void removeItem(std::string itemName) noexcept;
-
-    int findItemValue(std::string itemName) noexcept;
-
-    friend std::ostream &operator<<(std::ostream &os, const Shop &shop) noexcept;
-};
-
+/**
+ * Guest class, represents a casino player with various limitations
+ */
 class Guest : public Gambler {
 private:
     int max_bet = 10000;
 public:
     // deposit max 100000
-    // wyplaty do max 1000 w jednej transakcji
-    // ograniczenie widocznosci ostatnich wplat do 10 (i wyplat)
-    // zablokowany dostep do totalProfit(), totalDeposited(), totalWithdrawed()
+    // withdrawals max 1000 in one transaction
+    // visibility of deposits and withdrawals to last 10
+    // blocked access to totalProfit(), totalDeposited(), totalWithdrawed()
 
     explicit Guest(const std::string& name = "") noexcept;
 
@@ -124,16 +110,18 @@ public:
     int totalProfit() const noexcept override { return -1; }
 };
 
+/**
+ * VIP class, represents a VIP casino player with access to new things
+ */
 class VIP : public Gambler {
 private:
-    int max_bet = 100000;
     int safe = 0;
     std::vector<std::string> items;
 public:
-    // dostep do statystyk innych osob (ilosc balansu)
-    // mozliwosc wplacania i wyplacania pieniedzy do sejfu (brak sladu)
-    // mozliwosc resetowania statystyk (zacieranie sladow)
-    // mozliwosc kupowania ze sklepu nagrod rzeczowych (bedzie mozna nimi grac <- do implementacji)
+    // access to other people's balance visibility
+    // access to safe (no traces)
+    // ability to reset statistics (obliterating traces)
+    // acces to the shop, with items VIP can play
 
     explicit VIP(const std::string &name = "") noexcept;
 
@@ -143,7 +131,7 @@ public:
 
     int checkGamblerBalance(Gambler gracz) noexcept { return gracz.getBalance(); }
 
-    std::vector<std::string> getItems() noexcept { return this->items; }
+    std::vector<std::string> getItems() const noexcept { return this->items; }
 
     void buyItem(Shop *shop, std::string itemName) noexcept;
 
@@ -153,20 +141,23 @@ public:
 
     void withdrawFromSafe(int amount) noexcept;
 
-    int getSafeValue() noexcept { return safe; }
+    int getSafeValue() const noexcept { return safe; }
 
     void resetStats() noexcept;
 };
 
+/**
+ * SafeGambler class, represents a casino player who is afraid of big bets
+ */
 class SafeGambler : public Gambler {
 private:
     int max_bet = 100;
 public:
     // max deposit 300
     // max withdraw 100
-    // ograniczenie widocznosci ostatnich wplat do 5 (i wyplat)
-    // zablokowany dostep do totalProfit(), totalDeposited(), totalWithdrawed()
-    // mozliwosc zablokowania grania
+    // limited visibility of recent deposits and withdrawals to 5
+    // blocked access to totalProfit(), totalDeposited(), totalWithdrawed()
+    // ability to block the account
 
     explicit SafeGambler(const std::string& name = "") noexcept;
 
