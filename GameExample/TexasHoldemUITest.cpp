@@ -107,6 +107,15 @@ class TexasHoldemUITest : public QMainWindow {
                     toDisplay.pop_back();
                     toDisplay.pop_back();
                     this->ui.tableCardsList->addItem(QString(toDisplay.c_str()));
+                    toDisplay = "Last table:";
+                    this->ui.tableCardsList->addItem(QString(toDisplay.c_str()));
+                    for(auto &card:this->texasHoldem->getCurrentDealtCards()) {
+                        toDisplay += Card::toString(*card);
+                        toDisplay += ", ";
+                    }
+                    toDisplay.pop_back();
+                    toDisplay.pop_back();
+                    this->ui.tableCardsList->addItem(QString(toDisplay.c_str()));
                 }
             }
         }

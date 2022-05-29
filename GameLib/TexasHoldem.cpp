@@ -570,7 +570,7 @@ void TexasHoldem::advanceGame(int millisecondsPassed) {
             this->inProgress = false;
             this->lastGameWinners = this->chooseTheWinners();
             this->payTheWinners(this->lastGameWinners);
-            this->targetTime = millisecondsPassed + 5000;
+            this->targetTime = millisecondsPassed + 30000;
         }
     } else {
         if (this->targetTime <= millisecondsPassed) {
