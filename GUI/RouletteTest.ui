@@ -341,7 +341,7 @@
          </widget>
         </item>
         <item row="2" column="14">
-         <widget class="QPushButton" name="betColumn2Button_2">
+         <widget class="QPushButton" name="betColumn1Button">
           <property name="text">
            <string>2 to 1</string>
           </property>
@@ -459,9 +459,9 @@
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_2">
         <item>
-         <widget class="QPushButton" name="betButton">
+         <widget class="QLabel" name="label_3">
           <property name="text">
-           <string>Bet</string>
+           <string>Bet amount:</string>
           </property>
          </widget>
         </item>
