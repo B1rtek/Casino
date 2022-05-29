@@ -88,5 +88,21 @@ void Roulette::checkAndPayBets() noexcept {
 void Roulette::startGame() noexcept {
     Game::startGame();
     this->bets.clear();
+    for(auto &gambler: this->gamblersPlaying) {
+        this->currentBets[gambler] = 0;
+    }
 }
+
+bool Roulette::rouletteBet(Gambler *gambler, RouletteBetType betType, int amount, int number) {
+    if(this->inProgress && this->bet(gambler, amount)) {
+        this->bets.emplace_back(betType, number, amount, gambler);
+        return true;
+    }
+    return false;
+}
+
+std::vector<RouletteBet> Roulette::getRouletteBets() {
+    return this->bets;
+}
+
 
