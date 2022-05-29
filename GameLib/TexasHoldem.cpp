@@ -57,7 +57,7 @@ std::pair<std::pair<TexasHoldemHand, Card *>, std::vector<Card *>> TexasHoldem::
         std::vector<Card *> cards = this->getGamblersCards()[gambler], tempCards;
         for (int i = 0; i < 2; i++) {
             for (int j = 0; j < 4; j++) {
-                tempCards = cards;
+                tempCards = this->getCurrentDealtCards();
                 tempCards[4] = cards[i];
                 tempCards[j] = cards[1 - i];
                 std::pair<std::pair<TexasHoldemHand, Card *>, std::vector<Card *>> tempHand = {
@@ -506,6 +506,9 @@ void TexasHoldem::assignNewDealer() {
     } else if (this->dealer == this->gamblersPlaying[dealerIndex]) { // last dealer left
         ++this->dealerIndex;
     }
+    if (unsigned(this->dealerIndex) >= this->gamblersPlaying.size()) { // can be out of range here
+        this->dealerIndex = 0;
+    }
     this->dealer = this->gamblersPlaying[dealerIndex];
 }
 
@@ -567,7 +570,7 @@ void TexasHoldem::advanceGame(int millisecondsPassed) {
             this->inProgress = false;
             this->lastGameWinners = this->chooseTheWinners();
             this->payTheWinners(this->lastGameWinners);
-            this->targetTime = millisecondsPassed + 30000;
+            this->targetTime = millisecondsPassed + 5000;
         }
     } else {
         if (this->targetTime <= millisecondsPassed) {
