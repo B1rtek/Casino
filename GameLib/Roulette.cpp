@@ -16,7 +16,8 @@ void Roulette::advanceGame(int millisecondsPassed) {
             this->rollTheNumber();
             this->checkAndPayBets();
             this->removeBankruptPlayers();
-            this->targetTime = millisecondsPassed + 30000; // new game begins in 30 seconds
+            this->targetTime = millisecondsPassed + 10000; // new game begins in 10 seconds
+            this->inProgress = false;
         } else {
             for (auto &gambler: this->gamblersPlaying) {
                 if (gambler->isBot()) {
@@ -27,14 +28,13 @@ void Roulette::advanceGame(int millisecondsPassed) {
     } else {
         if (this->targetTime <= millisecondsPassed) {
             this->startGame();
-            this->targetTime = millisecondsPassed + 60000; // give everyone 60 seconds for betting
+            this->targetTime = millisecondsPassed + 30000; // give everyone 30 seconds for betting
         }
     }
 }
 
 void Roulette::rollTheNumber() noexcept {
-    std::mt19937 mt(time(nullptr));
-    this->lastNumberRolled = mt() % 37;
+    this->lastNumberRolled = rand() % 37;
 }
 
 void Roulette::checkAndPayBets() noexcept {
@@ -49,17 +49,17 @@ void Roulette::checkAndPayBets() noexcept {
             }
                 break;
             case HALF: {
-                if ((this->lastNumberRolled >= 1 && this->lastNumberRolled <= 18 && bet.number == 1) ||
-                    (this->lastNumberRolled > 18 && bet.number > 1)) {
+                if ((this->lastNumberRolled >= 1 && this->lastNumberRolled <= 18 && bet.number >= 1 && bet.number <= 18) ||
+                    (this->lastNumberRolled > 18 && bet.number > 18)) {
                     this->inGameMoney[bet.gambler] += 2 * bet.amount;
                     bet.successful = true;
                 }
             }
                 break;
             case TWELVE: {
-                if ((this->lastNumberRolled >= 1 && this->lastNumberRolled <= 12 && bet.number == 1) ||
-                    (this->lastNumberRolled >= 13 && this->lastNumberRolled <= 24 && bet.number == 13) ||
-                    (this->lastNumberRolled >= 25 && bet.number == 25)) {
+                if ((this->lastNumberRolled >= 1 && this->lastNumberRolled <= 12 && bet.number >= 1 && bet.number <= 12) ||
+                    (this->lastNumberRolled >= 13 && this->lastNumberRolled <= 24 && bet.number >= 13 && bet.number <= 24) ||
+                    (this->lastNumberRolled >= 25 && bet.number >= 25)) {
                     this->inGameMoney[bet.gambler] += 3 * bet.amount;
                     bet.successful = true;
                 }
@@ -94,6 +94,7 @@ void Roulette::startGame() noexcept {
 }
 
 bool Roulette::rouletteBet(Gambler *gambler, RouletteBetType betType, int amount, int number) {
+    if(amount == 0) return false;
     if(this->inProgress && this->bet(gambler, amount)) {
         this->bets.emplace_back(betType, number, amount, gambler);
         return true;
@@ -107,6 +108,15 @@ std::vector<RouletteBet> Roulette::getRouletteBets() {
 
 int Roulette::getLastRolledNumber() const noexcept {
     return this->lastNumberRolled;
+}
+
+void Roulette::removeBankruptPlayers() noexcept {
+    for(auto &gambler: this->gamblersPlaying) {
+        if (this->inGameMoney[gambler] == 0) {
+            gambler->leaveGame();
+            gambler->spectate(this);
+        }
+    }
 }
 
 

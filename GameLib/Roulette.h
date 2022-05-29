@@ -71,6 +71,9 @@ class Roulette : public Game {
     void startGame() noexcept override;
 
 protected:
+    void removeBankruptPlayers() noexcept override;
+
+protected:
     int lastNumberRolled = 0;
 
 public:

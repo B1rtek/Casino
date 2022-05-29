@@ -242,6 +242,7 @@ int main(int argc, char **argv) {
     QApplication app(argc, argv);
     QApplication::setStyle("fusion");
     RouletteUITest window = RouletteUITest();
+    srand(time(nullptr));
 
     window.show();
     return QApplication::exec();
