@@ -23,8 +23,8 @@ void TestTexasBot::makeAMove(int millisecondsPassed) noexcept {
                         double v = (rand() % 11 + 15) / 100;
                         dynamic_cast<TexasHoldem*>(this->gamePlayed)->raise(this, v * dynamic_cast<TexasHoldem*>(this->gamePlayed)->getInGameMoney()[this]);
                     } else {
-                        if (dynamic_cast<TexasHoldem*>(this->gamePlayed)->getCurrentHighest() <= dynamic_cast<TexasHoldem*>(this->gamePlayed)->getCurrentBets()[this] * 0.5) {
-                            if (dynamic_cast<TexasHoldem*>(this->gamePlayed)->getCurrentHighest() <= dynamic_cast<TexasHoldem*>(this->gamePlayed)->getCurrentBets()[this] * 0.15) {
+                        if (dynamic_cast<TexasHoldem*>(this->gamePlayed)->getCurrentHighest() <= dynamic_cast<TexasHoldem*>(this->gamePlayed)->getInGameMoney()[this] * 0.5) {
+                            if (dynamic_cast<TexasHoldem*>(this->gamePlayed)->getCurrentHighest() <= dynamic_cast<TexasHoldem*>(this->gamePlayed)->getInGameMoney()[this] * 0.15) {
                                 // 50% chance of reraising to 20% of balance if bet is below 10% of balance if pair in hand
                                 double v = rand() % 10;
                                 if (v <= 4) {
@@ -51,7 +51,7 @@ void TestTexasBot::makeAMove(int millisecondsPassed) noexcept {
                             // raise between 5% to 10% of balance if straight high cards
                             double v = (rand() % 6 + 5) / 100;
                             dynamic_cast<TexasHoldem*>(this->gamePlayed)->raise(this, v * dynamic_cast<TexasHoldem*>(this->gamePlayed)->getInGameMoney()[this]);
-                        } else if (dynamic_cast<TexasHoldem*>(this->gamePlayed)->getCurrentHighest() <= dynamic_cast<TexasHoldem*>(this->gamePlayed)->getCurrentBets()[this] * 0.3) {
+                        } else if (dynamic_cast<TexasHoldem*>(this->gamePlayed)->getCurrentHighest() <= dynamic_cast<TexasHoldem*>(this->gamePlayed)->getInGameMoney()[this] * 0.3) {
                             // calls any bet below 30% of balance if straight high cards
                             dynamic_cast<TexasHoldem*>(this->gamePlayed)->call(this);
                         } else {
@@ -63,7 +63,7 @@ void TestTexasBot::makeAMove(int millisecondsPassed) noexcept {
                         if (dynamic_cast<TexasHoldem*>(this->gamePlayed)->getCurrentHighest() == dynamic_cast<TexasHoldem*>(this->gamePlayed)->getCurrentBets()[this]) {
                             // just check if simple high card
                             dynamic_cast<TexasHoldem*>(this->gamePlayed)->call(this);
-                        } else if (dynamic_cast<TexasHoldem*>(this->gamePlayed)->getCurrentHighest() <= dynamic_cast<TexasHoldem*>(this->gamePlayed)->getCurrentBets()[this] * 0.2) {
+                        } else if (dynamic_cast<TexasHoldem*>(this->gamePlayed)->getCurrentHighest() <= dynamic_cast<TexasHoldem*>(this->gamePlayed)->getInGameMoney()[this] * 0.2) {
                             // calls any bet below 20% of balance if simple high card
                             dynamic_cast<TexasHoldem*>(this->gamePlayed)->call(this);
                         } else {
@@ -77,7 +77,7 @@ void TestTexasBot::makeAMove(int millisecondsPassed) noexcept {
                         dynamic_cast<TexasHoldem*>(this->gamePlayed)->call(this);
                     } else {
                         if (abs(bot_cards[0]->getValue() - bot_cards[1]->getValue()) == 1) {
-                            if (dynamic_cast<TexasHoldem*>(this->gamePlayed)->getCurrentHighest() <= dynamic_cast<TexasHoldem*>(this->gamePlayed)->getCurrentBets()[this] * 0.25) {
+                            if (dynamic_cast<TexasHoldem*>(this->gamePlayed)->getCurrentHighest() <= dynamic_cast<TexasHoldem*>(this->gamePlayed)->getInGameMoney()[this] * 0.25) {
                                 // calls any bet below 25% of balance if straight cards below 10's
                                 dynamic_cast<TexasHoldem*>(this->gamePlayed)->call(this);
                             } else {
@@ -85,7 +85,7 @@ void TestTexasBot::makeAMove(int millisecondsPassed) noexcept {
                                 dynamic_cast<TexasHoldem*>(this->gamePlayed)->fold(this);
                             }
                         } else {
-                            if (dynamic_cast<TexasHoldem*>(this->gamePlayed)->getCurrentHighest() <= dynamic_cast<TexasHoldem*>(this->gamePlayed)->getCurrentBets()[this] * 0.1) {
+                            if (dynamic_cast<TexasHoldem*>(this->gamePlayed)->getCurrentHighest() <= dynamic_cast<TexasHoldem*>(this->gamePlayed)->getInGameMoney()[this] * 0.1) {
                                 // calls any bet below 10% of balance if random cards below 10's
                                 dynamic_cast<TexasHoldem*>(this->gamePlayed)->call(this);
                             } else {
@@ -103,7 +103,7 @@ void TestTexasBot::makeAMove(int millisecondsPassed) noexcept {
                         double v = (rand() % 11 + 20) / 100;
                         dynamic_cast<TexasHoldem*>(this->gamePlayed)->raise(this, v * dynamic_cast<TexasHoldem*>(this->gamePlayed)->getInGameMoney()[this]);
                     } else {
-                        if (dynamic_cast<TexasHoldem*>(this->gamePlayed)->getCurrentHighest() <= dynamic_cast<TexasHoldem*>(this->gamePlayed)->getCurrentBets()[this] * 0.15) {
+                        if (dynamic_cast<TexasHoldem*>(this->gamePlayed)->getCurrentHighest() <= dynamic_cast<TexasHoldem*>(this->gamePlayed)->getInGameMoney()[this] * 0.15) {
                             // 50% chance of reraising to 30% of balance if bet is below 15% of balance if hand better equal straight
                             double v = rand() % 10;
                             if (v <= 4) {
@@ -121,8 +121,8 @@ void TestTexasBot::makeAMove(int millisecondsPassed) noexcept {
                         // raise from 30% to 40% of balance if hand is three of a kind
                         double v = (rand() % 11 + 30) / 100;
                         dynamic_cast<TexasHoldem*>(this->gamePlayed)->raise(this, v * dynamic_cast<TexasHoldem*>(this->gamePlayed)->getInGameMoney()[this]);
-                    } else if (dynamic_cast<TexasHoldem*>(this->gamePlayed)->getCurrentHighest() <= dynamic_cast<TexasHoldem*>(this->gamePlayed)->getCurrentBets()[this] * 0.6) {
-                        if (dynamic_cast<TexasHoldem*>(this->gamePlayed)->getCurrentHighest() <= dynamic_cast<TexasHoldem*>(this->gamePlayed)->getCurrentBets()[this] * 0.15) {
+                    } else if (dynamic_cast<TexasHoldem*>(this->gamePlayed)->getCurrentHighest() <= dynamic_cast<TexasHoldem*>(this->gamePlayed)->getInGameMoney()[this] * 0.6) {
+                        if (dynamic_cast<TexasHoldem*>(this->gamePlayed)->getCurrentHighest() <= dynamic_cast<TexasHoldem*>(this->gamePlayed)->getInGameMoney()[this] * 0.15) {
                             // 50% chance of reraising to 30% of balance if bet is below 15% of balance if hand is three of a kind
                             double v = rand() % 10;
                             if (v <= 4) {
@@ -148,8 +148,8 @@ void TestTexasBot::makeAMove(int millisecondsPassed) noexcept {
                         // raise from 20% to 30% of balance if hand is two pairs
                         double v = (rand() % 11 + 20) / 100;
                         dynamic_cast<TexasHoldem*>(this->gamePlayed)->raise(this, v * dynamic_cast<TexasHoldem*>(this->gamePlayed)->getInGameMoney()[this]);
-                    } else if (dynamic_cast<TexasHoldem*>(this->gamePlayed)->getCurrentHighest() <= dynamic_cast<TexasHoldem*>(this->gamePlayed)->getCurrentBets()[this] * 0.4) {
-                        if (dynamic_cast<TexasHoldem*>(this->gamePlayed)->getCurrentHighest() <= dynamic_cast<TexasHoldem*>(this->gamePlayed)->getCurrentBets()[this] * 0.1) {
+                    } else if (dynamic_cast<TexasHoldem*>(this->gamePlayed)->getCurrentHighest() <= dynamic_cast<TexasHoldem*>(this->gamePlayed)->getInGameMoney()[this] * 0.4) {
+                        if (dynamic_cast<TexasHoldem*>(this->gamePlayed)->getCurrentHighest() <= dynamic_cast<TexasHoldem*>(this->gamePlayed)->getInGameMoney()[this] * 0.1) {
                             // 50% chance of reraising to 20% of balance if bet is below 10% of balance if hand is two pairs
                             double v = rand() % 10;
                             if (v <= 4) {
@@ -175,8 +175,8 @@ void TestTexasBot::makeAMove(int millisecondsPassed) noexcept {
                         // raise from 10% to 15% of balance if hand is one pair
                         double v = (rand() % 6 + 10) / 100;
                         dynamic_cast<TexasHoldem*>(this->gamePlayed)->raise(this, v * dynamic_cast<TexasHoldem*>(this->gamePlayed)->getInGameMoney()[this]);
-                    } else if (dynamic_cast<TexasHoldem*>(this->gamePlayed)->getCurrentHighest() <= dynamic_cast<TexasHoldem*>(this->gamePlayed)->getCurrentBets()[this] * 0.15) {
-                        if (dynamic_cast<TexasHoldem*>(this->gamePlayed)->getCurrentHighest() <= dynamic_cast<TexasHoldem*>(this->gamePlayed)->getCurrentBets()[this] * 0.05) {
+                    } else if (dynamic_cast<TexasHoldem*>(this->gamePlayed)->getCurrentHighest() <= dynamic_cast<TexasHoldem*>(this->gamePlayed)->getInGameMoney()[this] * 0.15) {
+                        if (dynamic_cast<TexasHoldem*>(this->gamePlayed)->getCurrentHighest() <= dynamic_cast<TexasHoldem*>(this->gamePlayed)->getInGameMoney()[this] * 0.05) {
                             // 50% chance of reraising to 10% of balance if bet is below 5% of balance if hand is one pair
                             double v = rand() % 10;
                             if (v <= 4) {
@@ -201,7 +201,7 @@ void TestTexasBot::makeAMove(int millisecondsPassed) noexcept {
                     if (dynamic_cast<TexasHoldem*>(this->gamePlayed)->getCurrentHighest() == dynamic_cast<TexasHoldem*>(this->gamePlayed)->getCurrentBets()[this]) {
                         // just checks if high card
                         dynamic_cast<TexasHoldem*>(this->gamePlayed)->call(this);
-                    } else if (dynamic_cast<TexasHoldem*>(this->gamePlayed)->getCurrentHighest() <= dynamic_cast<TexasHoldem*>(this->gamePlayed)->getCurrentBets()[this] * 0.05) {
+                    } else if (dynamic_cast<TexasHoldem*>(this->gamePlayed)->getCurrentHighest() <= dynamic_cast<TexasHoldem*>(this->gamePlayed)->getInGameMoney()[this] * 0.05) {
                         // calls any bet below 5% of balance
                         dynamic_cast<TexasHoldem*>(this->gamePlayed)->call(this);
                     } else {
@@ -218,7 +218,7 @@ void TestTexasBot::makeAMove(int millisecondsPassed) noexcept {
                         dynamic_cast<TexasHoldem*>(this->gamePlayed)->raise(this, v * dynamic_cast<TexasHoldem*>(this->gamePlayed)->getInGameMoney()[this]);
                     }
                     else {
-                        if (dynamic_cast<TexasHoldem*>(this->gamePlayed)->getCurrentHighest() <= dynamic_cast<TexasHoldem*>(this->gamePlayed)->getCurrentBets()[this] * 0.1) {
+                        if (dynamic_cast<TexasHoldem*>(this->gamePlayed)->getCurrentHighest() <= dynamic_cast<TexasHoldem*>(this->gamePlayed)->getInGameMoney()[this] * 0.1) {
                             // 50% chance of reraising to 20% of balance if bet is below 10% of balance if hand better equal straight
                             double v = rand() % 10;
                             if (v <= 4) {
@@ -240,8 +240,8 @@ void TestTexasBot::makeAMove(int millisecondsPassed) noexcept {
                         double v = (rand() % 11 + 30) / 100;
                         dynamic_cast<TexasHoldem*>(this->gamePlayed)->raise(this, v * dynamic_cast<TexasHoldem*>(this->gamePlayed)->getInGameMoney()[this]);
                     }
-                    else if (dynamic_cast<TexasHoldem*>(this->gamePlayed)->getCurrentHighest() <= dynamic_cast<TexasHoldem*>(this->gamePlayed)->getCurrentBets()[this] * 0.6) {
-                        if (dynamic_cast<TexasHoldem*>(this->gamePlayed)->getCurrentHighest() <= dynamic_cast<TexasHoldem*>(this->gamePlayed)->getCurrentBets()[this] * 0.15) {
+                    else if (dynamic_cast<TexasHoldem*>(this->gamePlayed)->getCurrentHighest() <= dynamic_cast<TexasHoldem*>(this->gamePlayed)->getInGameMoney()[this] * 0.6) {
+                        if (dynamic_cast<TexasHoldem*>(this->gamePlayed)->getCurrentHighest() <= dynamic_cast<TexasHoldem*>(this->gamePlayed)->getInGameMoney()[this] * 0.15) {
                             // 50% chance of reraising to 30% of balance if bet is below 15% of balance if hand is three of a kind
                             double v = rand() % 10;
                             if (v <= 4) {
@@ -273,8 +273,8 @@ void TestTexasBot::makeAMove(int millisecondsPassed) noexcept {
                         double v = (rand() % 11 + 20) / 100;
                         dynamic_cast<TexasHoldem*>(this->gamePlayed)->raise(this, v * dynamic_cast<TexasHoldem*>(this->gamePlayed)->getInGameMoney()[this]);
                     }
-                    else if (dynamic_cast<TexasHoldem*>(this->gamePlayed)->getCurrentHighest() <= dynamic_cast<TexasHoldem*>(this->gamePlayed)->getCurrentBets()[this] * 0.4) {
-                        if (dynamic_cast<TexasHoldem*>(this->gamePlayed)->getCurrentHighest() <= dynamic_cast<TexasHoldem*>(this->gamePlayed)->getCurrentBets()[this] * 0.1) {
+                    else if (dynamic_cast<TexasHoldem*>(this->gamePlayed)->getCurrentHighest() <= dynamic_cast<TexasHoldem*>(this->gamePlayed)->getInGameMoney()[this] * 0.4) {
+                        if (dynamic_cast<TexasHoldem*>(this->gamePlayed)->getCurrentHighest() <= dynamic_cast<TexasHoldem*>(this->gamePlayed)->getInGameMoney()[this] * 0.1) {
                             // 50% chance of reraising to 20% of balance if bet is below 10% of balance if hand is two pairs
                             double v = rand() % 10;
                             if (v <= 4) {
@@ -306,8 +306,8 @@ void TestTexasBot::makeAMove(int millisecondsPassed) noexcept {
                         double v = (rand() % 6 + 10) / 100;
                         dynamic_cast<TexasHoldem*>(this->gamePlayed)->raise(this, v * dynamic_cast<TexasHoldem*>(this->gamePlayed)->getInGameMoney()[this]);
                     }
-                    else if (dynamic_cast<TexasHoldem*>(this->gamePlayed)->getCurrentHighest() <= dynamic_cast<TexasHoldem*>(this->gamePlayed)->getCurrentBets()[this] * 0.15) {
-                        if (dynamic_cast<TexasHoldem*>(this->gamePlayed)->getCurrentHighest() <= dynamic_cast<TexasHoldem*>(this->gamePlayed)->getCurrentBets()[this] * 0.05) {
+                    else if (dynamic_cast<TexasHoldem*>(this->gamePlayed)->getCurrentHighest() <= dynamic_cast<TexasHoldem*>(this->gamePlayed)->getInGameMoney()[this] * 0.15) {
+                        if (dynamic_cast<TexasHoldem*>(this->gamePlayed)->getCurrentHighest() <= dynamic_cast<TexasHoldem*>(this->gamePlayed)->getInGameMoney()[this] * 0.05) {
                             // 50% chance of reraising to 10% of balance if bet is below 5% of balance if hand is one pair
                             double v = rand() % 10;
                             if (v <= 4) {
@@ -338,7 +338,7 @@ void TestTexasBot::makeAMove(int millisecondsPassed) noexcept {
                         // just checks if high card
                         dynamic_cast<TexasHoldem*>(this->gamePlayed)->call(this);
                     }
-                    else if (dynamic_cast<TexasHoldem*>(this->gamePlayed)->getCurrentHighest() <= dynamic_cast<TexasHoldem*>(this->gamePlayed)->getCurrentBets()[this] * 0.05) {
+                    else if (dynamic_cast<TexasHoldem*>(this->gamePlayed)->getCurrentHighest() <= dynamic_cast<TexasHoldem*>(this->gamePlayed)->getInGameMoney()[this] * 0.05) {
                         // calls any bet below 5% of balance
                         dynamic_cast<TexasHoldem*>(this->gamePlayed)->call(this);
                     }
@@ -358,8 +358,8 @@ void TestTexasBot::makeAMove(int millisecondsPassed) noexcept {
                         double v = (rand() % 11 + 30) / 100;
                         dynamic_cast<TexasHoldem*>(this->gamePlayed)->raise(this, v * dynamic_cast<TexasHoldem*>(this->gamePlayed)->getInGameMoney()[this]);
                     }
-                    else if (dynamic_cast<TexasHoldem*>(this->gamePlayed)->getCurrentHighest() <= dynamic_cast<TexasHoldem*>(this->gamePlayed)->getCurrentBets()[this] * 0.6) {
-                        if (dynamic_cast<TexasHoldem*>(this->gamePlayed)->getCurrentHighest() <= dynamic_cast<TexasHoldem*>(this->gamePlayed)->getCurrentBets()[this] * 0.15) {
+                    else if (dynamic_cast<TexasHoldem*>(this->gamePlayed)->getCurrentHighest() <= dynamic_cast<TexasHoldem*>(this->gamePlayed)->getInGameMoney()[this] * 0.6) {
+                        if (dynamic_cast<TexasHoldem*>(this->gamePlayed)->getCurrentHighest() <= dynamic_cast<TexasHoldem*>(this->gamePlayed)->getInGameMoney()[this] * 0.15) {
                             // 50% chance of reraising to 30% of balance if bet is below 15% of balance if hand is three of a kind
                             double v = rand() % 10;
                             if (v <= 4) {
@@ -391,8 +391,8 @@ void TestTexasBot::makeAMove(int millisecondsPassed) noexcept {
                         double v = (rand() % 6 + 20) / 100;
                         dynamic_cast<TexasHoldem*>(this->gamePlayed)->raise(this, v * dynamic_cast<TexasHoldem*>(this->gamePlayed)->getInGameMoney()[this]);
                     }
-                    else if (dynamic_cast<TexasHoldem*>(this->gamePlayed)->getCurrentHighest() <= dynamic_cast<TexasHoldem*>(this->gamePlayed)->getCurrentBets()[this] * 0.3) {
-                        if (dynamic_cast<TexasHoldem*>(this->gamePlayed)->getCurrentHighest() <= dynamic_cast<TexasHoldem*>(this->gamePlayed)->getCurrentBets()[this] * 0.1) {
+                    else if (dynamic_cast<TexasHoldem*>(this->gamePlayed)->getCurrentHighest() <= dynamic_cast<TexasHoldem*>(this->gamePlayed)->getInGameMoney()[this] * 0.3) {
+                        if (dynamic_cast<TexasHoldem*>(this->gamePlayed)->getCurrentHighest() <= dynamic_cast<TexasHoldem*>(this->gamePlayed)->getInGameMoney()[this] * 0.1) {
                             // 50% chance of reraising to 20% of balance if bet is below 10% of balance if hand is two pairs
                             double v = rand() % 10;
                             if (v <= 4) {
@@ -423,7 +423,7 @@ void TestTexasBot::makeAMove(int millisecondsPassed) noexcept {
                         // just checks if hand is one pair
                         dynamic_cast<TexasHoldem*>(this->gamePlayed)->call(this);
                     }
-                    else if (dynamic_cast<TexasHoldem*>(this->gamePlayed)->getCurrentHighest() <= dynamic_cast<TexasHoldem*>(this->gamePlayed)->getCurrentBets()[this] * 0.1) {
+                    else if (dynamic_cast<TexasHoldem*>(this->gamePlayed)->getCurrentHighest() <= dynamic_cast<TexasHoldem*>(this->gamePlayed)->getInGameMoney()[this] * 0.1) {
                         // calls any bet below 10% of balance if hand is one pair
                         dynamic_cast<TexasHoldem*>(this->gamePlayed)->call(this);
                     }
@@ -443,7 +443,7 @@ void TestTexasBot::makeAMove(int millisecondsPassed) noexcept {
                         // just checks if high card
                         dynamic_cast<TexasHoldem*>(this->gamePlayed)->call(this);
                     }
-                    else if (dynamic_cast<TexasHoldem*>(this->gamePlayed)->getCurrentHighest() <= dynamic_cast<TexasHoldem*>(this->gamePlayed)->getCurrentBets()[this] * 0.05) {
+                    else if (dynamic_cast<TexasHoldem*>(this->gamePlayed)->getCurrentHighest() <= dynamic_cast<TexasHoldem*>(this->gamePlayed)->getInGameMoney()[this] * 0.05) {
                         // calls any bet below 5% of balance
                         dynamic_cast<TexasHoldem*>(this->gamePlayed)->call(this);
                     }
@@ -453,7 +453,6 @@ void TestTexasBot::makeAMove(int millisecondsPassed) noexcept {
                     }
                 }
             }
-            
             this->moveScheduled = false;
         }
     }
