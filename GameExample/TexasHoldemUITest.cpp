@@ -250,6 +250,7 @@ int main(int argc, char **argv) {
     QApplication app(argc, argv);
     QApplication::setStyle("fusion");
     TexasHoldemUITest window = TexasHoldemUITest();
+    srand(time(nullptr));
 
     window.show();
     return QApplication::exec();
