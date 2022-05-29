@@ -17,7 +17,7 @@ add_library(GamblerLib GamblerLib/Gambler.cpp GamblerLib/Gambler.h GamblerLib/Te
 add_executable(GameExample GameExample/GameExample.cpp)
 target_link_libraries(GameExample PUBLIC GameLib GamblerLib)
 
-set(GUI_TARGETS TexasHoldemUITest JackpotUITest)
+set(GUI_TARGETS TexasHoldemUITest JackpotUITest RouletteUITest)
 foreach(GUI_TARGET IN LISTS GUI_TARGETS)
     add_executable(${GUI_TARGET} GameExample/${GUI_TARGET}.cpp)
     target_link_libraries(${GUI_TARGET} PRIVATE GameLib GamblerLib Qt5::Widgets)

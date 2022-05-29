@@ -105,4 +105,8 @@ std::vector<RouletteBet> Roulette::getRouletteBets() {
     return this->bets;
 }
 
+int Roulette::getLastRolledNumber() const noexcept {
+    return this->lastNumberRolled;
+}
+
 

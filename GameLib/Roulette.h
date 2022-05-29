@@ -85,6 +85,8 @@ public:
     bool rouletteBet(Gambler *gambler, RouletteBetType betType, int amount, int number);
 
     std::vector<RouletteBet> getRouletteBets();
+
+    int getLastRolledNumber() const noexcept;
 };
 
 
