@@ -1,12 +1,12 @@
-#include "TestTexasBot.h"
+#include "TexasBot.h"
 
-TestTexasBot::TestTexasBot(const std::string &name) : GamblerBot(name) {}
+TexasBot::TexasBot(const std::string &name) : GamblerBot(name) {}
 
-TestTexasBot::TestTexasBot(int balance, const std::string &name) : GamblerBot(balance, name) {}
+TexasBot::TexasBot(int balance, const std::string &name) : GamblerBot(balance, name) {}
 
-TestTexasBot::TestTexasBot(int balance, Game *game, const std::string &name) : GamblerBot(balance, game, name) {}
+TexasBot::TexasBot(int balance, Game *game, const std::string &name) : GamblerBot(balance, game, name) {}
 
-void TestTexasBot::makeAMove(int millisecondsPassed) noexcept {
+void TexasBot::makeAMove(int millisecondsPassed) noexcept {
     if (this->gamePlayed != nullptr) {
         if (dynamic_cast<TexasHoldem *>(this->gamePlayed)->getCurrentPlayer() != this) return;
         if (!this->moveScheduled) {

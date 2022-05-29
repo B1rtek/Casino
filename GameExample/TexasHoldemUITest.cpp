@@ -4,7 +4,7 @@
 #include <QStyleFactory>
 #include "UITexasHoldemTest.h"
 #include "TexasHoldem.h"
-#include "TestTexasBot.h"
+#include "TexasBot.h"
 
 using namespace std;
 
@@ -125,7 +125,7 @@ class TexasHoldemUITest : public QMainWindow {
     void setupObjects() {
         this->ui.advanceTimeLineEdit->setText("30000");
         this->gambler = new Gambler(1001, "B1rtek");
-        this->bots = {this->gambler, new TestTexasBot(1001, "Marcus"), new TestTexasBot(1001, "Tyler"), new TestTexasBot(1001, "Lina")};
+        this->bots = {this->gambler, new TexasBot(1001, "Marcus"), new TexasBot(1001, "Tyler"), new TexasBot(1001, "Lina")};
         this->texasHoldem = new TexasHoldem(bots, 1000);
         this->chronoTime = chrono::steady_clock::now();
     }

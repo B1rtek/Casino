@@ -12,7 +12,7 @@ find_package(Qt5Widgets REQUIRED)
 include_directories(GameLib GamblerLib GUI)
 
 add_library(GameLib GameLib/Game.cpp GameLib/Game.h GameLib/CardGame.cpp GameLib/CardGame.h GameLib/Card.cpp GameLib/Card.h GameLib/TexasHoldem.cpp GameLib/TexasHoldem.h GameLib/Jackpot.cpp GameLib/Jackpot.h GameLib/Roulette.cpp GameLib/Roulette.h)
-add_library(GamblerLib GamblerLib/Gambler.cpp GamblerLib/Gambler.h GamblerLib/TestJackpotBot.cpp GamblerLib/TestJackpotBot.h GamblerLib/GamblerBot.cpp GamblerLib/GamblerBot.h GamblerLib/TestTexasBot.cpp GamblerLib/TestTexasBot.h GamblerLib/Shop.cpp GamblerLib/Shop.h GamblerLib/RouletteBot.cpp GamblerLib/RouletteBot.h)
+add_library(GamblerLib GamblerLib/Gambler.cpp GamblerLib/Gambler.h GamblerLib/TestJackpotBot.cpp GamblerLib/TestJackpotBot.h GamblerLib/GamblerBot.cpp GamblerLib/GamblerBot.h GamblerLib/TexasBot.cpp GamblerLib/TexasBot.h GamblerLib/Shop.cpp GamblerLib/Shop.h GamblerLib/RouletteBot.cpp GamblerLib/RouletteBot.h)
 
 add_executable(GameExample GameExample/GameExample.cpp)
 target_link_libraries(GameExample PUBLIC GameLib GamblerLib)
