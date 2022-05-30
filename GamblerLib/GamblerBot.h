@@ -24,7 +24,9 @@ public:
 
     void withdrawBalance(int amount) noexcept override {}
 
-    void leaveOrJoin(int millisecondsPassed) noexcept override;
+    void leaveOrJoin(int millisecondsPassed) noexcept;
+
+    bool isMoveScheduled() const noexcept;
 };
 
 

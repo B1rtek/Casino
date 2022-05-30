@@ -23,6 +23,7 @@ int GamblerBot::getTargetTime() const noexcept {
 void GamblerBot::scheduleGameJoin(Game *game) noexcept {
     this->gameToJoin = game;
     this->targetTime = rand() % 20000;
+    this->moveScheduled = true;
 }
 
 void GamblerBot::leaveOrJoin(int millisecondsPassed) noexcept {
@@ -33,4 +34,9 @@ void GamblerBot::leaveOrJoin(int millisecondsPassed) noexcept {
             this->leaveGame();
         }
     }
+    this->moveScheduled = false;
+}
+
+bool GamblerBot::isMoveScheduled() const noexcept {
+    return this->moveScheduled;
 }
