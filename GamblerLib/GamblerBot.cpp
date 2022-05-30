@@ -19,3 +19,18 @@ GamblerBot::GamblerBot(int balance, Game *game, const std::string &name) noexcep
 int GamblerBot::getTargetTime() const noexcept {
     return this->targetTime;
 }
+
+void GamblerBot::scheduleGameJoin(Game *game) noexcept {
+    this->gameToJoin = game;
+    this->targetTime = rand() % 20000;
+}
+
+void GamblerBot::leaveOrJoin(int millisecondsPassed) noexcept {
+    if(this->gamePlayed == nullptr && this->gameToJoin != nullptr && this->targetTime <= millisecondsPassed) {
+        this->joinGame(gameToJoin);
+    } else if (this->gamePlayed != nullptr && !this->gamePlayed->isInProgress()) {
+        if(rand() % 100 == 0) {
+            this->leaveGame();
+        }
+    }
+}

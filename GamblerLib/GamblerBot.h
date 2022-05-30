@@ -10,6 +10,7 @@ class GamblerBot : public Gambler {
 protected:
     int targetTime = 0;
     bool moveScheduled = false;
+    Game *gameToJoin = nullptr;
 public:
     explicit GamblerBot(const std::string &name="") noexcept;
 
@@ -19,7 +20,11 @@ public:
 
     int getTargetTime() const noexcept;
 
+    void scheduleGameJoin(Game *game) noexcept;
+
     void withdrawBalance(int amount) noexcept override {}
+
+    void leaveOrJoin(int millisecondsPassed) noexcept override;
 };
 
 
