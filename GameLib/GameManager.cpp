@@ -63,4 +63,44 @@ GameManager::GameManager() {
     };
     this->player = new Gambler(15000, "YOU");
     // schedule joining a game for all bots todo
+    for(auto &bot: bots) {
+        this->assignGameToBot(bot);
+    }
+}
+
+void GameManager::assignGameToBot(GamblerBot *bot) noexcept {
+    int gameNumber;
+    switch(bot->getGamblerType()) {
+        case ROULETTE_BOT: gameNumber = rand() % 3 + 6;
+            break;
+        case JACKPOT_BOT: gameNumber = rand() % 3;
+            break;
+        case TEXAS_BOT: gameNumber = rand() % 3 + 3;
+            break;
+    }
+    bot->scheduleGameJoin(this->games[gameNumber]);
+}
+
+void GameManager::advanceCasino(int millisecondsPassed) {
+    for(auto &bot: this->bots) {
+        if(bot->getCurrentGame() == nullptr) {
+            if(bot->isMoveScheduled()) {
+                bot->leaveOrJoin(millisecondsPassed);
+            } else {
+                this->assignGameToBot(bot);
+            }
+        }
+    }
+    for(auto &game: this->games) {
+        game->advanceGame(millisecondsPassed);
+    }
+}
+
+GameManager::~GameManager() {
+    for(auto &bot: this->bots) {
+        delete bot;
+    }
+    for(auto &game: this->games) {
+        delete game;
+    }
 }
