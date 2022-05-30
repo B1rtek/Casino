@@ -573,7 +573,8 @@ void TexasHoldem::advanceGame(int millisecondsPassed) {
             this->inProgress = false;
             this->lastGameWinners = this->chooseTheWinners();
             this->payTheWinners(this->lastGameWinners);
-            this->targetTime = millisecondsPassed + 30000;
+            this->removeBankruptPlayers();
+            this->targetTime = millisecondsPassed + 10000;
         }
     } else {
         if (this->targetTime <= millisecondsPassed) {
@@ -590,7 +591,7 @@ void TexasHoldem::advanceGame(int millisecondsPassed) {
                 }
                 // no new target time is assigned, players can take their time to choose what they do
             } else { // game failed to start, waiting another 30 s
-                this->targetTime = millisecondsPassed + 30000;
+                this->targetTime = millisecondsPassed + 10000;
             }
         }
     }
@@ -700,7 +701,9 @@ bool TexasHoldem::call(Gambler *gambler) {
                 break;
             default: {
                 if (this->currentHighest > this->currentBets[gambler] && this->inGameMoney[gambler] != 0) {
-                    if (!this->bet(gambler, this->currentHighest - this->currentBets[gambler])) {
+                    int amount = this->currentHighest - this->currentBets[gambler];
+                    amount = std::min(amount, this->inGameMoney[gambler]);
+                    if (!this->bet(gambler, amount)) {
                         return false;
                     }
                 } else {

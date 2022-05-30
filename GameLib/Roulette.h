@@ -71,10 +71,9 @@ class Roulette : public Game {
     void startGame() noexcept override;
 
 protected:
-    void removeBankruptPlayers() noexcept override;
-
-protected:
     int lastNumberRolled = 0;
+
+    void removeBankruptPlayers() noexcept override;
 
 public:
     explicit Roulette(int minimumEntry, const std::string &name = "") noexcept;

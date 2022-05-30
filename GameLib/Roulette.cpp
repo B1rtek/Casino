@@ -19,11 +19,11 @@ Roulette::Roulette(const std::vector<Gambler *> &gamblers, int minimumEntry, con
 void Roulette::advanceGame(int millisecondsPassed) {
     if (this->inProgress) {
         if (this->targetTime <= millisecondsPassed) { // time for betting ended
+            this->inProgress = false;
             this->rollTheNumber();
             this->checkAndPayBets();
             this->removeBankruptPlayers();
             this->targetTime = millisecondsPassed + 10000; // new game begins in 10 seconds
-            this->inProgress = false;
         } else {
             for (auto &gambler: this->gamblersPlaying) {
                 if (gambler->isBot()) {
@@ -34,7 +34,7 @@ void Roulette::advanceGame(int millisecondsPassed) {
     } else {
         if (this->targetTime <= millisecondsPassed) {
             this->startGame();
-            this->targetTime = millisecondsPassed + 30000; // give everyone 30 seconds for betting
+            this->targetTime = millisecondsPassed + 10000; // give everyone 30 seconds for betting
         }
     }
 }
@@ -119,10 +119,9 @@ int Roulette::getLastRolledNumber() const noexcept {
 void Roulette::removeBankruptPlayers() noexcept {
     for(auto &gambler: this->gamblersPlaying) {
         if (this->inGameMoney[gambler] == 0) {
+            this->currentBets[gambler] = 0;
             gambler->leaveGame();
             gambler->spectate(this);
         }
     }
 }
-
-
