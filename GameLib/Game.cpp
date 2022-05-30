@@ -42,7 +42,14 @@ std::vector<Gambler *> Game::chooseTheWinners() noexcept { return {}; }
 /**
  * Function removing the bankrupt players
  */
-void Game::removeBankruptPlayers() noexcept {}
+void Game::removeBankruptPlayers() noexcept {
+    for(auto &gambler: this->gamblersPlaying) {
+        if (this->inGameMoney[gambler] == 0) {
+            gambler->leaveGame();
+            gambler->spectate(this);
+        }
+    }
+}
 
 /**
  * Starts the game by setting inProgress to true

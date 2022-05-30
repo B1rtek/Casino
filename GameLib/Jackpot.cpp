@@ -64,7 +64,7 @@ void Jackpot::advanceGame(int millisecondsPassed) {
             this->lastGameWinners = this->chooseTheWinners();
             this->payTheWinners(this->lastGameWinners);
             this->removeBankruptPlayers();
-            this->targetTime = millisecondsPassed + 30000; // new game begins in 30 seconds
+            this->targetTime = millisecondsPassed + 10000; // new game begins in 10 seconds
         } else {
             for (auto &gambler: this->gamblersPlaying) {
                 if (gambler->isBot()) {
