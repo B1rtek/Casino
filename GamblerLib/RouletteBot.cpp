@@ -3,11 +3,17 @@
 #include <random>
 #include <Roulette.h>
 
-RouletteBot::RouletteBot(const std::string &name) : GamblerBot(name) {}
+RouletteBot::RouletteBot(const std::string &name) : GamblerBot(name) {
+    this->gamblerType = ROULETTE_BOT;
+}
 
-RouletteBot::RouletteBot(int balance, const std::string &name) : GamblerBot(balance, name) {}
+RouletteBot::RouletteBot(int balance, const std::string &name) : GamblerBot(balance, name) {
+    this->gamblerType = ROULETTE_BOT;
+}
 
-RouletteBot::RouletteBot(int balance, Game *game, const std::string &name) : GamblerBot(balance, game, name) {}
+RouletteBot::RouletteBot(int balance, Game *game, const std::string &name) : GamblerBot(balance, game, name) {
+    this->gamblerType = ROULETTE_BOT;
+}
 
 void RouletteBot::makeAMove(int millisecondsPassed) noexcept {
     if (this->gamePlayed->isInProgress()) {

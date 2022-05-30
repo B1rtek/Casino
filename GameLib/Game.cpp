@@ -212,3 +212,7 @@ int Game::getTargetTime() const noexcept {
 std::vector<Gambler *> Game::getLastGameWinners() const noexcept {
     return this->lastGameWinners;
 }
+
+GameType Game::getGameType() const noexcept {
+    return this->gameType;
+}

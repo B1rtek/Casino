@@ -209,6 +209,10 @@ bool Gambler::isBot() const noexcept {
     return this->bot;
 }
 
+GamblerType Gambler::getGamblerType() const noexcept {
+    return this->gamblerType;
+}
+
 // Guest
 Guest::Guest(const std::string& name) noexcept : Gambler(name) {}
 

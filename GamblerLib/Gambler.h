@@ -11,6 +11,13 @@ class Game;
 #include "Game.h"
 #include "Shop.h"
 
+enum GamblerType {
+    PLAYER,
+    ROULETTE_BOT,
+    JACKPOT_BOT,
+    TEXAS_BOT
+};
+
 /**
  * Gambler class, represents a base casino player, bots and human player classes inherit from it
  */
@@ -23,6 +30,7 @@ protected:
     std::vector<std::pair<int, std::string>> transactions;
     Game *gamePlayed = nullptr, *gameSpectated = nullptr;
     bool bot = false;
+    GamblerType gamblerType = PLAYER;
 public:
     explicit Gambler(std::string name = "") noexcept;
 
@@ -75,6 +83,8 @@ public:
     Game *getSpectatedGame() const noexcept;
 
     bool isBot() const noexcept;
+
+    GamblerType getGamblerType() const noexcept;
 };
 
 /**

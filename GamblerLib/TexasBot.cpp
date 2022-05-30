@@ -1,10 +1,16 @@
 #include "TexasBot.h"
 
-TexasBot::TexasBot(const std::string &name) : GamblerBot(name) {}
+TexasBot::TexasBot(const std::string &name) : GamblerBot(name) {
+    this->gamblerType = TEXAS_BOT;
+}
 
-TexasBot::TexasBot(int balance, const std::string &name) : GamblerBot(balance, name) {}
+TexasBot::TexasBot(int balance, const std::string &name) : GamblerBot(balance, name) {
+    this->gamblerType = TEXAS_BOT;
+}
 
-TexasBot::TexasBot(int balance, Game *game, const std::string &name) : GamblerBot(balance, game, name) {}
+TexasBot::TexasBot(int balance, Game *game, const std::string &name) : GamblerBot(balance, game, name) {
+    this->gamblerType = TEXAS_BOT;
+}
 
 void TexasBot::makeAMove(int millisecondsPassed) noexcept {
     if (this->gamePlayed != nullptr) {

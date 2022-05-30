@@ -1,10 +1,16 @@
 #include "TestJackpotBot.h"
 
-TestJackpotBot::TestJackpotBot(const std::string &name) : GamblerBot(name) {}
+TestJackpotBot::TestJackpotBot(const std::string &name) : GamblerBot(name) {
+    this->gamblerType = JACKPOT_BOT;
+}
 
-TestJackpotBot::TestJackpotBot(int balance, const std::string &name) : GamblerBot(balance, name) {}
+TestJackpotBot::TestJackpotBot(int balance, const std::string &name) : GamblerBot(balance, name) {
+    this->gamblerType = JACKPOT_BOT;
+}
 
-TestJackpotBot::TestJackpotBot(int balance, Game *game, const std::string &name) : GamblerBot(balance, game, name) {}
+TestJackpotBot::TestJackpotBot(int balance, Game *game, const std::string &name) : GamblerBot(balance, game, name) {
+    this->gamblerType = JACKPOT_BOT;
+}
 
 /**
  * Makes the bot bet additional money if the algorithm decides to do so

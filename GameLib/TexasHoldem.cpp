@@ -14,6 +14,7 @@ TexasHoldem::TexasHoldem(int minimumEntry, const std::string &name) : CardGame(
         throw std::invalid_argument("minimumEntry must be divisible by 1000!");
     }
     this->maxPlayers = 10;
+    this->gameType = TEXAS_HOLDEM;
 }
 
 TexasHoldem::TexasHoldem(Gambler *gambler, int minimumEntry, const std::string &name) : CardGame(minimumEntry,
@@ -25,6 +26,7 @@ TexasHoldem::TexasHoldem(Gambler *gambler, int minimumEntry, const std::string &
     if (gambler != nullptr) {
         gambler->joinGame(this);
     }
+    this->gameType = TEXAS_HOLDEM;
 }
 
 TexasHoldem::TexasHoldem(const std::vector<Gambler *> &gamblers, int minimumEntry, const std::string &name)
@@ -38,6 +40,7 @@ TexasHoldem::TexasHoldem(const std::vector<Gambler *> &gamblers, int minimumEntr
             gambler->joinGame(this);
         }
     }
+    this->gameType = TEXAS_HOLDEM;
 }
 
 /**

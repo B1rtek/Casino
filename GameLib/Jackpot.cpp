@@ -10,6 +10,7 @@ Jackpot::Jackpot(int minimumEntry, const std::string &name) : Game(minimumEntry,
     if (minimumEntry % 100 != 0) {
         throw std::invalid_argument("minimumEntry for Jackpot must be divisible by 100");
     }
+    this->gameType = JACKPOT;
 }
 
 Jackpot::Jackpot(Gambler *gambler, int minimumEntry, const std::string &name) : Game(gambler, minimumEntry,
@@ -17,6 +18,7 @@ Jackpot::Jackpot(Gambler *gambler, int minimumEntry, const std::string &name) : 
     if (minimumEntry % 100 != 0) {
         throw std::invalid_argument("minimumEntry for Jackpot must be divisible by 100");
     }
+    this->gameType = JACKPOT;
 }
 
 Jackpot::Jackpot(const std::vector<Gambler *> &gamblers, int minimumEntry, const std::string &name) :
@@ -24,6 +26,7 @@ Jackpot::Jackpot(const std::vector<Gambler *> &gamblers, int minimumEntry, const
     if (minimumEntry % 100 != 0) {
         throw std::invalid_argument("minimumEntry for Jackpot must be divisible by 100");
     }
+    this->gameType = JACKPOT;
 }
 
 /**

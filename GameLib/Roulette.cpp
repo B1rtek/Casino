@@ -2,13 +2,19 @@
 
 #include <random>
 
-Roulette::Roulette(int minimumEntry, const std::string &name) noexcept: Game(minimumEntry, name) {}
+Roulette::Roulette(int minimumEntry, const std::string &name) noexcept: Game(minimumEntry, name) {
+    this->gameType = ROULETTE;
+}
 
 Roulette::Roulette(Gambler *gambler, int minimumEntry, const std::string &name) noexcept: Game(gambler, minimumEntry,
-                                                                                               name) {}
+                                                                                               name) {
+    this->gameType = ROULETTE;
+}
 
 Roulette::Roulette(const std::vector<Gambler *> &gamblers, int minimumEntry, const std::string &name) noexcept:
-        Game(gamblers, minimumEntry, name) {}
+        Game(gamblers, minimumEntry, name) {
+    this->gameType = ROULETTE;
+}
 
 void Roulette::advanceGame(int millisecondsPassed) {
     if (this->inProgress) {

@@ -11,6 +11,12 @@ class Gambler;
 
 #include "Gambler.h"
 
+enum GameType {
+    ROULETTE,
+    JACKPOT,
+    TEXAS_HOLDEM
+};
+
 /**
  * Game class, the base class for all casino games, implements methods used by all games
  */
@@ -23,6 +29,7 @@ protected:
     std::string name;
     bool inProgress = false;
     std::vector<Gambler*> lastGameWinners;
+    GameType gameType;
 
     virtual void removeBankruptPlayers() noexcept;
 
@@ -70,6 +77,8 @@ public:
     int getTargetTime() const noexcept;
 
     std::vector<Gambler*> getLastGameWinners() const noexcept;
+
+    GameType getGameType() const noexcept;
 };
 
 
