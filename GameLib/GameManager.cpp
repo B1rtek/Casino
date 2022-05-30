@@ -62,7 +62,6 @@ GameManager::GameManager() {
             new RouletteBot(15000, "Darius")
     };
     this->player = new Gambler(15000, "YOU");
-    // schedule joining a game for all bots todo
     for(auto &bot: bots) {
         this->assignGameToBot(bot);
     }
