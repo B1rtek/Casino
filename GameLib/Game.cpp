@@ -118,7 +118,7 @@ bool Game::addPlayer(Gambler *gambler) noexcept {
     if (gambler->getCurrentGame() != nullptr || gambler->getSpectatedGame() != nullptr) {
         return false;
     }
-    if (gambler->getBalance() > this->minimumEntry) {
+    if (gambler->getBalance() >= this->minimumEntry && gambler->getBalance() > 0) {
         this->gamblersPlaying.push_back(gambler);
         this->currentBets[gambler] = 0;
         this->inGameMoney[gambler] = this->minimumEntry;
