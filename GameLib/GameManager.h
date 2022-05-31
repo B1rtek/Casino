@@ -25,9 +25,13 @@ public:
 
     void advanceCasino(int millisecondsPassed);
 
-    void joinGame(int gameIndex);
+    bool joinGame(int gameIndex);
 
-    void spectateGame(int gameIndex);
+    bool leaveGame();
+
+    bool spectateGame(int gameIndex);
+
+    bool jackpotBet(int amount);
 
     std::vector<Game*> getGames() const noexcept;
 

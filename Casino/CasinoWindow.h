@@ -33,13 +33,21 @@ class CasinoWindow: public QMainWindow {
 
     void setupUI();
 
+    static void adjustTableSize(QTableWidget *table, int targetSize, int columns);
+
+    static int getIntFromLineEdit(QLineEdit *lineEdit);
+
     void sendClockSignal();
 
     void refreshUI();
 
     void joinGame();
 
+    void leaveGame();
+
     void spectateGame();
+
+    void jackpotBet();
 public:
     explicit CasinoWindow(QWidget *parent = nullptr);
 

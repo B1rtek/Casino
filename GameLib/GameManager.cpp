@@ -113,10 +113,18 @@ Gambler *GameManager::getPlayer() const noexcept {
     return this->player;
 }
 
-void GameManager::joinGame(int gameIndex) {
-    this->player->joinGame(this->games[gameIndex]);
+bool GameManager::joinGame(int gameIndex) {
+    return this->player->joinGame(this->games[gameIndex]);
 }
 
-void GameManager::spectateGame(int gameIndex) {
-    this->player->spectate(this->games[gameIndex]);
+bool GameManager::spectateGame(int gameIndex) {
+    return this->player->spectate(this->games[gameIndex]);
+}
+
+bool GameManager::leaveGame() {
+    return this->player->leaveGame();
+}
+
+bool GameManager::jackpotBet(int amount) {
+    return dynamic_cast<Jackpot*>(this->player->getCurrentGame())->bet(this->player, amount);
 }

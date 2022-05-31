@@ -21,6 +21,9 @@ void CasinoWindow::linkButtons() {
     connect(this->ui.buttonBackToMain, &QPushButton::clicked, [this]() { this->ui.stackedWidget->setCurrentIndex(MAIN_MENU); });
     connect(this->ui.buttonJoin, &QPushButton::clicked, this, &CasinoWindow::joinGame);
     connect(this->ui.buttonSpectate, &QPushButton::clicked, this, &CasinoWindow::spectateGame);
+    // jackpot
+    connect(this->ui.buttonLeaveJackpot, &QPushButton::clicked, this, &CasinoWindow::leaveGame);
+    connect(this->ui.buttonBetJackpot, &QPushButton::clicked, this, &CasinoWindow::jackpotBet);
 }
 
 void CasinoWindow::setDarkMode() {
@@ -124,7 +127,62 @@ void CasinoWindow::refreshUI() {
         }
             break;
         case GamePage::GAME_JACKPOT: {
-
+            auto *currentGame = dynamic_cast<Jackpot *>(this->gameManager.getPlayer()->getCurrentGame()); // if this cast fails something went horribly wrong
+            // tables - gamblers table
+            CasinoWindow::adjustTableSize(this->ui.tableGamblersJackpot, currentGame->getPlayers().size(), 3);
+            int rowCounter = 0;
+            for (auto &gambler: currentGame->getPlayers()) {
+                QTableWidgetItem updated = QTableWidgetItem(QString(gambler->getName().c_str()));
+                if (this->ui.tableGamblersJackpot->item(rowCounter, 0)->text() != updated.text()) {
+                    *this->ui.tableGamblersJackpot->item(rowCounter, 0) = updated;
+                }
+                updated = QTableWidgetItem(QString(std::to_string(currentGame->getInGameMoney()[gambler]).c_str()));
+                if (this->ui.tableGamblersJackpot->item(rowCounter, 1)->text() != updated.text()) {
+                    *this->ui.tableGamblersJackpot->item(rowCounter, 1) = updated;
+                }
+                updated = QTableWidgetItem(QString(std::to_string(currentGame->getCurrentBets()[gambler]).c_str()));
+                if (this->ui.tableGamblersJackpot->item(rowCounter, 2)->text() != updated.text()) {
+                    *this->ui.tableGamblersJackpot->item(rowCounter, 2) = updated;
+                }
+                ++rowCounter;
+            }
+            this->ui.tableGamblersJackpot->setEditTriggers(QAbstractItemView::NoEditTriggers);
+            this->ui.tableGamblersJackpot->viewport()->update();
+            // tables - bets table
+            CasinoWindow::adjustTableSize(this->ui.tableBetsJackpot, currentGame->getPlayers().size(), 2);
+            rowCounter = 0;
+            for (auto &gambler: currentGame->getPlayers()) {
+                QTableWidgetItem updated = QTableWidgetItem(QString(gambler->getName().c_str()));
+                if (this->ui.tableBetsJackpot->item(rowCounter, 0)->text() != updated.text()) {
+                    *this->ui.tableBetsJackpot->item(rowCounter, 0) = updated;
+                }
+                updated = QTableWidgetItem(QString((std::to_string(currentGame->getPercentages()[gambler]) + '%').c_str()));
+                if (this->ui.tableBetsJackpot->item(rowCounter, 1)->text() != updated.text()) {
+                    *this->ui.tableBetsJackpot->item(rowCounter, 1) = updated;
+                }
+                ++rowCounter;
+            }
+            this->ui.tableBetsJackpot->setEditTriggers(QAbstractItemView::NoEditTriggers);
+            this->ui.tableBetsJackpot->viewport()->update();
+            // jackpot countdown label
+            std::string toDisplay;
+            if (currentGame->isInProgress()) {
+                auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - this->chronoTimeStart);
+                int timeToStart = (currentGame->getTargetTime() - elapsed.count()) / 1000;
+                toDisplay = "Betting ends in " + std::to_string(timeToStart) + " seconds";
+            } else {
+                toDisplay = currentGame->getGameSituationDescription();
+            }
+            if (this->ui.labelCountdownJackpot->text().toStdString() != toDisplay) {
+                this->ui.labelCountdownJackpot->setText(QString(toDisplay.c_str()));
+            }
+            // jackpot last winner label
+            if (!currentGame->getLastGameWinners().empty()) {
+                toDisplay = "Last game winner: " + currentGame->getLastGameWinners()[0]->getName();
+                if (this->ui.labelLastResultsJackpot->text().toStdString() != toDisplay) {
+                    this->ui.labelLastResultsJackpot->setText(QString(toDisplay.c_str()));
+                }
+            }
         }
             break;
 
@@ -133,14 +191,69 @@ void CasinoWindow::refreshUI() {
 
 void CasinoWindow::joinGame() {
     QList<QTableWidgetSelectionRange> selected = this->ui.tableGames->selectedRanges();
-    if(!selected.empty()) {
-        this->gameManager.joinGame(selected[0].topRow());
+    if (!selected.empty()) {
+        if (this->gameManager.joinGame(selected[0].topRow())) {
+            this->ui.stackedWidget->setCurrentIndex(3 + this->gameManager.getPlayer()->getCurrentGame()->getGameType());
+            this->refreshUI();
+        }
     }
 }
 
 void CasinoWindow::spectateGame() {
     QList<QTableWidgetSelectionRange> selected = this->ui.tableGames->selectedRanges();
-    if(!selected.empty()) {
-        this->gameManager.spectateGame(selected[0].topRow());
+    if (!selected.empty()) {
+        if (this->gameManager.spectateGame(selected[0].topRow())) {
+            this->ui.stackedWidget->setCurrentIndex(3 + this->gameManager.getPlayer()->getSpectatedGame()->getGameType());
+            this->refreshUI();
+        }
     }
+}
+
+void CasinoWindow::adjustTableSize(QTableWidget *table, int targetSize, int columns) {
+    if (targetSize != table->rowCount()) { // fix the row count
+        while (targetSize < table->rowCount()) {
+            for (int i = 0; i < columns; i++) {
+                delete table->item(table->rowCount() - 1, i);
+            }
+            table->removeRow(table->rowCount() - 1);
+        }
+        while (targetSize > table->rowCount()) {
+            table->insertRow(table->rowCount());
+            for (int i = 0; i < columns; i++) {
+                table->setItem(table->rowCount() - 1, i, new QTableWidgetItem());
+            }
+        }
+    }
+}
+
+void CasinoWindow::leaveGame() {
+    if (this->gameManager.leaveGame()) {
+        this->ui.stackedWidget->setCurrentIndex(GamePage::GAME_SELECT);
+        this->refreshUI();
+    }
+}
+
+void CasinoWindow::jackpotBet() {
+    if (this->gameManager.getPlayer()->getCurrentGame() != nullptr) {
+        if (this->gameManager.getPlayer()->getCurrentGame()->getGameType() == JACKPOT) {
+            int toBet = CasinoWindow::getIntFromLineEdit(this->ui.lineEditBetJackpot);
+            if (toBet != 0 && this->gameManager.jackpotBet(toBet)) {
+                this->refreshUI();
+            }
+        }
+    }
+}
+
+int CasinoWindow::getIntFromLineEdit(QLineEdit *lineEdit) {
+    std::string intAsString = lineEdit->text().toStdString();
+    if (!intAsString.empty()) {
+        try {
+            return stoi(intAsString);
+        } catch (const std::invalid_argument& e) {
+            lineEdit->setText(QString());
+        } catch (const std::out_of_range& e) {
+            lineEdit->setText(QString());
+        }
+    }
+    return 0;
 }

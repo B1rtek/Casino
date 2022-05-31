@@ -1599,6 +1599,7 @@ public:
         lineEditBetJackpot->setObjectName(QString::fromUtf8("lineEditBetJackpot"));
         sizePolicy2.setHeightForWidth(lineEditBetJackpot->sizePolicy().hasHeightForWidth());
         lineEditBetJackpot->setSizePolicy(sizePolicy2);
+        lineEditBetJackpot->setInputMethodHints(Qt::ImhDigitsOnly);
 
         horizontalLayout_39->addWidget(lineEditBetJackpot);
 
