@@ -12,9 +12,9 @@ class Gambler;
 #include "Gambler.h"
 
 enum GameType {
+    TEXAS_HOLDEM,
     ROULETTE,
-    JACKPOT,
-    TEXAS_HOLDEM
+    JACKPOT
 };
 
 /**
