@@ -54,6 +54,7 @@ public:
     QHBoxLayout *horizontalLayout_3;
     QPushButton *buttonBackToMain;
     QLabel *label_2;
+    QLabel *labelPlayerBalance;
     QHBoxLayout *horizontalLayout_4;
     QTableWidget *tableGames;
     QVBoxLayout *verticalLayout_4;
@@ -390,6 +391,16 @@ public:
         label_2->setObjectName(QString::fromUtf8("label_2"));
 
         horizontalLayout_3->addWidget(label_2, 0, Qt::AlignHCenter);
+
+        labelPlayerBalance = new QLabel(pageGameSelect);
+        labelPlayerBalance->setObjectName(QString::fromUtf8("labelPlayerBalance"));
+        QSizePolicy sizePolicy1(QSizePolicy::Fixed, QSizePolicy::Preferred);
+        sizePolicy1.setHorizontalStretch(0);
+        sizePolicy1.setVerticalStretch(0);
+        sizePolicy1.setHeightForWidth(labelPlayerBalance->sizePolicy().hasHeightForWidth());
+        labelPlayerBalance->setSizePolicy(sizePolicy1);
+
+        horizontalLayout_3->addWidget(labelPlayerBalance, 0, Qt::AlignRight);
 
 
         verticalLayout_5->addLayout(horizontalLayout_3);
@@ -1078,11 +1089,11 @@ public:
 
         lineEditRaise = new QLineEdit(pageTexasHoldem);
         lineEditRaise->setObjectName(QString::fromUtf8("lineEditRaise"));
-        QSizePolicy sizePolicy1(QSizePolicy::Minimum, QSizePolicy::Fixed);
-        sizePolicy1.setHorizontalStretch(0);
-        sizePolicy1.setVerticalStretch(0);
-        sizePolicy1.setHeightForWidth(lineEditRaise->sizePolicy().hasHeightForWidth());
-        lineEditRaise->setSizePolicy(sizePolicy1);
+        QSizePolicy sizePolicy2(QSizePolicy::Minimum, QSizePolicy::Fixed);
+        sizePolicy2.setHorizontalStretch(0);
+        sizePolicy2.setVerticalStretch(0);
+        sizePolicy2.setHeightForWidth(lineEditRaise->sizePolicy().hasHeightForWidth());
+        lineEditRaise->setSizePolicy(sizePolicy2);
 
         horizontalLayout_9->addWidget(lineEditRaise);
 
@@ -1142,11 +1153,11 @@ public:
         QTableWidgetItem *__qtablewidgetitem6 = new QTableWidgetItem();
         tableGamblersRoulette->setHorizontalHeaderItem(2, __qtablewidgetitem6);
         tableGamblersRoulette->setObjectName(QString::fromUtf8("tableGamblersRoulette"));
-        QSizePolicy sizePolicy2(QSizePolicy::Minimum, QSizePolicy::Expanding);
-        sizePolicy2.setHorizontalStretch(0);
-        sizePolicy2.setVerticalStretch(0);
-        sizePolicy2.setHeightForWidth(tableGamblersRoulette->sizePolicy().hasHeightForWidth());
-        tableGamblersRoulette->setSizePolicy(sizePolicy2);
+        QSizePolicy sizePolicy3(QSizePolicy::Minimum, QSizePolicy::Expanding);
+        sizePolicy3.setHorizontalStretch(0);
+        sizePolicy3.setVerticalStretch(0);
+        sizePolicy3.setHeightForWidth(tableGamblersRoulette->sizePolicy().hasHeightForWidth());
+        tableGamblersRoulette->setSizePolicy(sizePolicy3);
 
         verticalLayout_3->addWidget(tableGamblersRoulette);
 
@@ -1172,8 +1183,8 @@ public:
         QTableWidgetItem *__qtablewidgetitem10 = new QTableWidgetItem();
         tableBetsRoulette->setHorizontalHeaderItem(3, __qtablewidgetitem10);
         tableBetsRoulette->setObjectName(QString::fromUtf8("tableBetsRoulette"));
-        sizePolicy2.setHeightForWidth(tableBetsRoulette->sizePolicy().hasHeightForWidth());
-        tableBetsRoulette->setSizePolicy(sizePolicy2);
+        sizePolicy3.setHeightForWidth(tableBetsRoulette->sizePolicy().hasHeightForWidth());
+        tableBetsRoulette->setSizePolicy(sizePolicy3);
 
         verticalLayout_31->addWidget(tableBetsRoulette);
 
@@ -1467,8 +1478,8 @@ public:
 
         lineEditBetRoulette = new QLineEdit(pageRoulette);
         lineEditBetRoulette->setObjectName(QString::fromUtf8("lineEditBetRoulette"));
-        sizePolicy1.setHeightForWidth(lineEditBetRoulette->sizePolicy().hasHeightForWidth());
-        lineEditBetRoulette->setSizePolicy(sizePolicy1);
+        sizePolicy2.setHeightForWidth(lineEditBetRoulette->sizePolicy().hasHeightForWidth());
+        lineEditBetRoulette->setSizePolicy(sizePolicy2);
 
         horizontalLayout_33->addWidget(lineEditBetRoulette);
 
@@ -1581,8 +1592,8 @@ public:
 
         lineEditBetJackpot = new QLineEdit(pageJackpot);
         lineEditBetJackpot->setObjectName(QString::fromUtf8("lineEditBetJackpot"));
-        sizePolicy1.setHeightForWidth(lineEditBetJackpot->sizePolicy().hasHeightForWidth());
-        lineEditBetJackpot->setSizePolicy(sizePolicy1);
+        sizePolicy2.setHeightForWidth(lineEditBetJackpot->sizePolicy().hasHeightForWidth());
+        lineEditBetJackpot->setSizePolicy(sizePolicy2);
 
         horizontalLayout_39->addWidget(lineEditBetJackpot);
 
@@ -1625,6 +1636,7 @@ public:
         buttonQuit->setText(QCoreApplication::translate("CasinoWindow", "Quit >:(", nullptr));
         buttonBackToMain->setText(QCoreApplication::translate("CasinoWindow", "Back", nullptr));
         label_2->setText(QCoreApplication::translate("CasinoWindow", "Current games:", nullptr));
+        labelPlayerBalance->setText(QCoreApplication::translate("CasinoWindow", "Your balance: 15000", nullptr));
         QTableWidgetItem *___qtablewidgetitem = tableGames->horizontalHeaderItem(0);
         ___qtablewidgetitem->setText(QCoreApplication::translate("CasinoWindow", "Game", nullptr));
         QTableWidgetItem *___qtablewidgetitem1 = tableGames->horizontalHeaderItem(1);
