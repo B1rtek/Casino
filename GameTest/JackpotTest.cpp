@@ -2,7 +2,7 @@
 #include <gmock/gmock.h>
 
 #include "Jackpot.h"
-#include "TestJackpotBot.h"
+#include "JackpotBot.h"
 
 using namespace std;
 

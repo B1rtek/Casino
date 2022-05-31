@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "TestJackpotBot.h"
+#include "JackpotBot.h"
 
 using namespace std;
 

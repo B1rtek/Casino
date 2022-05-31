@@ -4,7 +4,7 @@
 #include <QStyleFactory>
 #include "UIJackpotTest.h"
 #include "Jackpot.h"
-#include "TestJackpotBot.h"
+#include "JackpotBot.h"
 
 using namespace std;
 
@@ -79,8 +79,8 @@ class JackpotUITest : public QMainWindow {
     void setupObjects() {
         this->ui.advanceTimeLineEdit->setText("30000");
         this->gambler = new Gambler(1001, "B1rtek");
-        this->bots = {this->gambler, new TestJackpotBot(1001, "Marcus"), new TestJackpotBot(1001, "Tyler"),
-                      new TestJackpotBot(1001, "Lina")};
+        this->bots = {this->gambler, new JackpotBot(1001, "Marcus"), new JackpotBot(1001, "Tyler"),
+                      new JackpotBot(1001, "Lina")};
         this->jackpot = new Jackpot(bots, 1000);
         this->chronoTime = chrono::steady_clock::now();
     }
