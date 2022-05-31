@@ -16,7 +16,6 @@
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QLineEdit>
-#include <QtWidgets/QListWidget>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QPushButton>
@@ -56,7 +55,7 @@ public:
     QPushButton *buttonBackToMain;
     QLabel *label_2;
     QHBoxLayout *horizontalLayout_4;
-    QListWidget *listGames;
+    QTableWidget *tableGames;
     QVBoxLayout *verticalLayout_4;
     QSpacerItem *verticalSpacer_4;
     QPushButton *buttonJoin;
@@ -397,10 +396,23 @@ public:
 
         horizontalLayout_4 = new QHBoxLayout();
         horizontalLayout_4->setObjectName(QString::fromUtf8("horizontalLayout_4"));
-        listGames = new QListWidget(pageGameSelect);
-        listGames->setObjectName(QString::fromUtf8("listGames"));
+        tableGames = new QTableWidget(pageGameSelect);
+        if (tableGames->columnCount() < 4)
+            tableGames->setColumnCount(4);
+        QTableWidgetItem *__qtablewidgetitem = new QTableWidgetItem();
+        tableGames->setHorizontalHeaderItem(0, __qtablewidgetitem);
+        QTableWidgetItem *__qtablewidgetitem1 = new QTableWidgetItem();
+        tableGames->setHorizontalHeaderItem(1, __qtablewidgetitem1);
+        QTableWidgetItem *__qtablewidgetitem2 = new QTableWidgetItem();
+        tableGames->setHorizontalHeaderItem(2, __qtablewidgetitem2);
+        QTableWidgetItem *__qtablewidgetitem3 = new QTableWidgetItem();
+        tableGames->setHorizontalHeaderItem(3, __qtablewidgetitem3);
+        tableGames->setObjectName(QString::fromUtf8("tableGames"));
+        tableGames->setSelectionBehavior(QAbstractItemView::SelectRows);
+        tableGames->setShowGrid(true);
+        tableGames->horizontalHeader()->setStretchLastSection(true);
 
-        horizontalLayout_4->addWidget(listGames);
+        horizontalLayout_4->addWidget(tableGames);
 
         verticalLayout_4 = new QVBoxLayout();
         verticalLayout_4->setObjectName(QString::fromUtf8("verticalLayout_4"));
@@ -1123,12 +1135,12 @@ public:
         tableGamblersRoulette = new QTableWidget(pageRoulette);
         if (tableGamblersRoulette->columnCount() < 3)
             tableGamblersRoulette->setColumnCount(3);
-        QTableWidgetItem *__qtablewidgetitem = new QTableWidgetItem();
-        tableGamblersRoulette->setHorizontalHeaderItem(0, __qtablewidgetitem);
-        QTableWidgetItem *__qtablewidgetitem1 = new QTableWidgetItem();
-        tableGamblersRoulette->setHorizontalHeaderItem(1, __qtablewidgetitem1);
-        QTableWidgetItem *__qtablewidgetitem2 = new QTableWidgetItem();
-        tableGamblersRoulette->setHorizontalHeaderItem(2, __qtablewidgetitem2);
+        QTableWidgetItem *__qtablewidgetitem4 = new QTableWidgetItem();
+        tableGamblersRoulette->setHorizontalHeaderItem(0, __qtablewidgetitem4);
+        QTableWidgetItem *__qtablewidgetitem5 = new QTableWidgetItem();
+        tableGamblersRoulette->setHorizontalHeaderItem(1, __qtablewidgetitem5);
+        QTableWidgetItem *__qtablewidgetitem6 = new QTableWidgetItem();
+        tableGamblersRoulette->setHorizontalHeaderItem(2, __qtablewidgetitem6);
         tableGamblersRoulette->setObjectName(QString::fromUtf8("tableGamblersRoulette"));
         QSizePolicy sizePolicy2(QSizePolicy::Minimum, QSizePolicy::Expanding);
         sizePolicy2.setHorizontalStretch(0);
@@ -1151,14 +1163,14 @@ public:
         tableBetsRoulette = new QTableWidget(pageRoulette);
         if (tableBetsRoulette->columnCount() < 4)
             tableBetsRoulette->setColumnCount(4);
-        QTableWidgetItem *__qtablewidgetitem3 = new QTableWidgetItem();
-        tableBetsRoulette->setHorizontalHeaderItem(0, __qtablewidgetitem3);
-        QTableWidgetItem *__qtablewidgetitem4 = new QTableWidgetItem();
-        tableBetsRoulette->setHorizontalHeaderItem(1, __qtablewidgetitem4);
-        QTableWidgetItem *__qtablewidgetitem5 = new QTableWidgetItem();
-        tableBetsRoulette->setHorizontalHeaderItem(2, __qtablewidgetitem5);
-        QTableWidgetItem *__qtablewidgetitem6 = new QTableWidgetItem();
-        tableBetsRoulette->setHorizontalHeaderItem(3, __qtablewidgetitem6);
+        QTableWidgetItem *__qtablewidgetitem7 = new QTableWidgetItem();
+        tableBetsRoulette->setHorizontalHeaderItem(0, __qtablewidgetitem7);
+        QTableWidgetItem *__qtablewidgetitem8 = new QTableWidgetItem();
+        tableBetsRoulette->setHorizontalHeaderItem(1, __qtablewidgetitem8);
+        QTableWidgetItem *__qtablewidgetitem9 = new QTableWidgetItem();
+        tableBetsRoulette->setHorizontalHeaderItem(2, __qtablewidgetitem9);
+        QTableWidgetItem *__qtablewidgetitem10 = new QTableWidgetItem();
+        tableBetsRoulette->setHorizontalHeaderItem(3, __qtablewidgetitem10);
         tableBetsRoulette->setObjectName(QString::fromUtf8("tableBetsRoulette"));
         sizePolicy2.setHeightForWidth(tableBetsRoulette->sizePolicy().hasHeightForWidth());
         tableBetsRoulette->setSizePolicy(sizePolicy2);
@@ -1512,12 +1524,12 @@ public:
         tableGamblersJackpot = new QTableWidget(pageJackpot);
         if (tableGamblersJackpot->columnCount() < 3)
             tableGamblersJackpot->setColumnCount(3);
-        QTableWidgetItem *__qtablewidgetitem7 = new QTableWidgetItem();
-        tableGamblersJackpot->setHorizontalHeaderItem(0, __qtablewidgetitem7);
-        QTableWidgetItem *__qtablewidgetitem8 = new QTableWidgetItem();
-        tableGamblersJackpot->setHorizontalHeaderItem(1, __qtablewidgetitem8);
-        QTableWidgetItem *__qtablewidgetitem9 = new QTableWidgetItem();
-        tableGamblersJackpot->setHorizontalHeaderItem(2, __qtablewidgetitem9);
+        QTableWidgetItem *__qtablewidgetitem11 = new QTableWidgetItem();
+        tableGamblersJackpot->setHorizontalHeaderItem(0, __qtablewidgetitem11);
+        QTableWidgetItem *__qtablewidgetitem12 = new QTableWidgetItem();
+        tableGamblersJackpot->setHorizontalHeaderItem(1, __qtablewidgetitem12);
+        QTableWidgetItem *__qtablewidgetitem13 = new QTableWidgetItem();
+        tableGamblersJackpot->setHorizontalHeaderItem(2, __qtablewidgetitem13);
         tableGamblersJackpot->setObjectName(QString::fromUtf8("tableGamblersJackpot"));
 
         verticalLayout_33->addWidget(tableGamblersJackpot);
@@ -1535,10 +1547,10 @@ public:
         tableBetsJackpot = new QTableWidget(pageJackpot);
         if (tableBetsJackpot->columnCount() < 2)
             tableBetsJackpot->setColumnCount(2);
-        QTableWidgetItem *__qtablewidgetitem10 = new QTableWidgetItem();
-        tableBetsJackpot->setHorizontalHeaderItem(0, __qtablewidgetitem10);
-        QTableWidgetItem *__qtablewidgetitem11 = new QTableWidgetItem();
-        tableBetsJackpot->setHorizontalHeaderItem(1, __qtablewidgetitem11);
+        QTableWidgetItem *__qtablewidgetitem14 = new QTableWidgetItem();
+        tableBetsJackpot->setHorizontalHeaderItem(0, __qtablewidgetitem14);
+        QTableWidgetItem *__qtablewidgetitem15 = new QTableWidgetItem();
+        tableBetsJackpot->setHorizontalHeaderItem(1, __qtablewidgetitem15);
         tableBetsJackpot->setObjectName(QString::fromUtf8("tableBetsJackpot"));
 
         verticalLayout_34->addWidget(tableBetsJackpot);
@@ -1598,7 +1610,7 @@ public:
 
         retranslateUi(CasinoWindow);
 
-        stackedWidget->setCurrentIndex(0);
+        stackedWidget->setCurrentIndex(1);
 
 
         QMetaObject::connectSlotsByName(CasinoWindow);
@@ -1613,6 +1625,14 @@ public:
         buttonQuit->setText(QCoreApplication::translate("CasinoWindow", "Quit >:(", nullptr));
         buttonBackToMain->setText(QCoreApplication::translate("CasinoWindow", "Back", nullptr));
         label_2->setText(QCoreApplication::translate("CasinoWindow", "Current games:", nullptr));
+        QTableWidgetItem *___qtablewidgetitem = tableGames->horizontalHeaderItem(0);
+        ___qtablewidgetitem->setText(QCoreApplication::translate("CasinoWindow", "Game", nullptr));
+        QTableWidgetItem *___qtablewidgetitem1 = tableGames->horizontalHeaderItem(1);
+        ___qtablewidgetitem1->setText(QCoreApplication::translate("CasinoWindow", "Players", nullptr));
+        QTableWidgetItem *___qtablewidgetitem2 = tableGames->horizontalHeaderItem(2);
+        ___qtablewidgetitem2->setText(QCoreApplication::translate("CasinoWindow", "Entry", nullptr));
+        QTableWidgetItem *___qtablewidgetitem3 = tableGames->horizontalHeaderItem(3);
+        ___qtablewidgetitem3->setText(QCoreApplication::translate("CasinoWindow", "Status", nullptr));
         buttonJoin->setText(QCoreApplication::translate("CasinoWindow", "Join", nullptr));
         buttonSpectate->setText(QCoreApplication::translate("CasinoWindow", "Spectate", nullptr));
         label_3->setText(QCoreApplication::translate("CasinoWindow", "Help", nullptr));
@@ -1690,21 +1710,21 @@ public:
         label_55->setText(QCoreApplication::translate("CasinoWindow", "Roulette", nullptr));
         labelLastResultsRoulette->setText(QCoreApplication::translate("CasinoWindow", "Last number: none, this will be the first game", nullptr));
         label_5->setText(QCoreApplication::translate("CasinoWindow", "Gamblers table", nullptr));
-        QTableWidgetItem *___qtablewidgetitem = tableGamblersRoulette->horizontalHeaderItem(0);
-        ___qtablewidgetitem->setText(QCoreApplication::translate("CasinoWindow", "Gambler", nullptr));
-        QTableWidgetItem *___qtablewidgetitem1 = tableGamblersRoulette->horizontalHeaderItem(1);
-        ___qtablewidgetitem1->setText(QCoreApplication::translate("CasinoWindow", "Balance", nullptr));
-        QTableWidgetItem *___qtablewidgetitem2 = tableGamblersRoulette->horizontalHeaderItem(2);
-        ___qtablewidgetitem2->setText(QCoreApplication::translate("CasinoWindow", "Total bet", nullptr));
+        QTableWidgetItem *___qtablewidgetitem4 = tableGamblersRoulette->horizontalHeaderItem(0);
+        ___qtablewidgetitem4->setText(QCoreApplication::translate("CasinoWindow", "Gambler", nullptr));
+        QTableWidgetItem *___qtablewidgetitem5 = tableGamblersRoulette->horizontalHeaderItem(1);
+        ___qtablewidgetitem5->setText(QCoreApplication::translate("CasinoWindow", "Balance", nullptr));
+        QTableWidgetItem *___qtablewidgetitem6 = tableGamblersRoulette->horizontalHeaderItem(2);
+        ___qtablewidgetitem6->setText(QCoreApplication::translate("CasinoWindow", "Total bet", nullptr));
         label_6->setText(QCoreApplication::translate("CasinoWindow", "Bets", nullptr));
-        QTableWidgetItem *___qtablewidgetitem3 = tableBetsRoulette->horizontalHeaderItem(0);
-        ___qtablewidgetitem3->setText(QCoreApplication::translate("CasinoWindow", "Gambler", nullptr));
-        QTableWidgetItem *___qtablewidgetitem4 = tableBetsRoulette->horizontalHeaderItem(1);
-        ___qtablewidgetitem4->setText(QCoreApplication::translate("CasinoWindow", "Amount", nullptr));
-        QTableWidgetItem *___qtablewidgetitem5 = tableBetsRoulette->horizontalHeaderItem(2);
-        ___qtablewidgetitem5->setText(QCoreApplication::translate("CasinoWindow", "Type", nullptr));
-        QTableWidgetItem *___qtablewidgetitem6 = tableBetsRoulette->horizontalHeaderItem(3);
-        ___qtablewidgetitem6->setText(QCoreApplication::translate("CasinoWindow", "State", nullptr));
+        QTableWidgetItem *___qtablewidgetitem7 = tableBetsRoulette->horizontalHeaderItem(0);
+        ___qtablewidgetitem7->setText(QCoreApplication::translate("CasinoWindow", "Gambler", nullptr));
+        QTableWidgetItem *___qtablewidgetitem8 = tableBetsRoulette->horizontalHeaderItem(1);
+        ___qtablewidgetitem8->setText(QCoreApplication::translate("CasinoWindow", "Amount", nullptr));
+        QTableWidgetItem *___qtablewidgetitem9 = tableBetsRoulette->horizontalHeaderItem(2);
+        ___qtablewidgetitem9->setText(QCoreApplication::translate("CasinoWindow", "Type", nullptr));
+        QTableWidgetItem *___qtablewidgetitem10 = tableBetsRoulette->horizontalHeaderItem(3);
+        ___qtablewidgetitem10->setText(QCoreApplication::translate("CasinoWindow", "State", nullptr));
         toolButtonRouletteBet20->setText(QCoreApplication::translate("CasinoWindow", "20", nullptr));
         toolButtonRouletteBet36->setText(QCoreApplication::translate("CasinoWindow", "36", nullptr));
         toolButtonRouletteBet21->setText(QCoreApplication::translate("CasinoWindow", "21", nullptr));
@@ -1760,17 +1780,17 @@ public:
         label_9->setText(QCoreApplication::translate("CasinoWindow", "Jackpot", nullptr));
         labelLastResultsJackpot->setText(QCoreApplication::translate("CasinoWindow", "Last game winner: none, this will be the first game", nullptr));
         label_7->setText(QCoreApplication::translate("CasinoWindow", "Gamblers table", nullptr));
-        QTableWidgetItem *___qtablewidgetitem7 = tableGamblersJackpot->horizontalHeaderItem(0);
-        ___qtablewidgetitem7->setText(QCoreApplication::translate("CasinoWindow", "Gambler", nullptr));
-        QTableWidgetItem *___qtablewidgetitem8 = tableGamblersJackpot->horizontalHeaderItem(1);
-        ___qtablewidgetitem8->setText(QCoreApplication::translate("CasinoWindow", "Balance", nullptr));
-        QTableWidgetItem *___qtablewidgetitem9 = tableGamblersJackpot->horizontalHeaderItem(2);
-        ___qtablewidgetitem9->setText(QCoreApplication::translate("CasinoWindow", "Bet", nullptr));
+        QTableWidgetItem *___qtablewidgetitem11 = tableGamblersJackpot->horizontalHeaderItem(0);
+        ___qtablewidgetitem11->setText(QCoreApplication::translate("CasinoWindow", "Gambler", nullptr));
+        QTableWidgetItem *___qtablewidgetitem12 = tableGamblersJackpot->horizontalHeaderItem(1);
+        ___qtablewidgetitem12->setText(QCoreApplication::translate("CasinoWindow", "Balance", nullptr));
+        QTableWidgetItem *___qtablewidgetitem13 = tableGamblersJackpot->horizontalHeaderItem(2);
+        ___qtablewidgetitem13->setText(QCoreApplication::translate("CasinoWindow", "Bet", nullptr));
         label_8->setText(QCoreApplication::translate("CasinoWindow", "Bets table", nullptr));
-        QTableWidgetItem *___qtablewidgetitem10 = tableBetsJackpot->horizontalHeaderItem(0);
-        ___qtablewidgetitem10->setText(QCoreApplication::translate("CasinoWindow", "Gambler", nullptr));
-        QTableWidgetItem *___qtablewidgetitem11 = tableBetsJackpot->horizontalHeaderItem(1);
-        ___qtablewidgetitem11->setText(QCoreApplication::translate("CasinoWindow", "Percentage", nullptr));
+        QTableWidgetItem *___qtablewidgetitem14 = tableBetsJackpot->horizontalHeaderItem(0);
+        ___qtablewidgetitem14->setText(QCoreApplication::translate("CasinoWindow", "Gambler", nullptr));
+        QTableWidgetItem *___qtablewidgetitem15 = tableBetsJackpot->horizontalHeaderItem(1);
+        ___qtablewidgetitem15->setText(QCoreApplication::translate("CasinoWindow", "Percentage", nullptr));
         labelCountdownJackpot->setText(QCoreApplication::translate("CasinoWindow", "Next game begins in 30 seconds", nullptr));
         buttonBetJackpot->setText(QCoreApplication::translate("CasinoWindow", "Bet", nullptr));
     } // retranslateUi
