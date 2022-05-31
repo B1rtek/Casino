@@ -1545,6 +1545,7 @@ public:
         QTableWidgetItem *__qtablewidgetitem13 = new QTableWidgetItem();
         tableGamblersJackpot->setHorizontalHeaderItem(2, __qtablewidgetitem13);
         tableGamblersJackpot->setObjectName(QString::fromUtf8("tableGamblersJackpot"));
+        tableGamblersJackpot->horizontalHeader()->setStretchLastSection(true);
 
         verticalLayout_33->addWidget(tableGamblersJackpot);
 
@@ -1566,6 +1567,7 @@ public:
         QTableWidgetItem *__qtablewidgetitem15 = new QTableWidgetItem();
         tableBetsJackpot->setHorizontalHeaderItem(1, __qtablewidgetitem15);
         tableBetsJackpot->setObjectName(QString::fromUtf8("tableBetsJackpot"));
+        tableBetsJackpot->horizontalHeader()->setStretchLastSection(true);
 
         verticalLayout_34->addWidget(tableBetsJackpot);
 
@@ -1624,7 +1626,7 @@ public:
 
         retranslateUi(CasinoWindow);
 
-        stackedWidget->setCurrentIndex(4);
+        stackedWidget->setCurrentIndex(5);
 
 
         QMetaObject::connectSlotsByName(CasinoWindow);
