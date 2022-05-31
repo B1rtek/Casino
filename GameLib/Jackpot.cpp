@@ -70,6 +70,7 @@ void Jackpot::advanceGame(int millisecondsPassed) {
             this->lastGameWinners = this->chooseTheWinners();
             this->payTheWinners(this->lastGameWinners);
             this->removeBankruptPlayers();
+            this->totalBet = 0;
             this->targetTime = millisecondsPassed + 10000; // new game begins in 10 seconds
         } else {
             for (auto &gambler: this->gamblersPlaying) {
@@ -86,8 +87,8 @@ void Jackpot::advanceGame(int millisecondsPassed) {
                 for (auto &gambler: this->gamblersPlaying) {
                     this->bet(gambler, this->minimumEntry / 100);
                 }
-                // give everyone 60 seconds for betting
-                this->targetTime = millisecondsPassed + 60000;
+                // give everyone 30 seconds for betting
+                this->targetTime = millisecondsPassed + 30000;
             } else {
                 this->targetTime = millisecondsPassed + 10000; // wait another 10 s for players
             }
@@ -112,7 +113,11 @@ void Jackpot::removeBankruptPlayers() noexcept {
 std::map<Gambler *, double> Jackpot::getPercentages() noexcept {
     std::map<Gambler *, double> percentages;
     for (auto &gambler: this->gamblersPlaying) {
-        percentages[gambler] = double(this->currentBets[gambler]) / double(this->totalBet) * 100.0;
+        if(this->totalBet == 0) {
+            percentages[gambler] = 0.0;
+        } else {
+            percentages[gambler] = double(this->currentBets[gambler]) / double(this->totalBet) * 100.0;
+        }
     }
     return percentages;
 }

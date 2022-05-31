@@ -118,13 +118,13 @@ TEST(JackpotTest, AdvanceGameStart) {
     ASSERT_TRUE(jackpot->isInProgress());
     ASSERT_EQ(jackpot->getCurrentBets()[gambler1], 1);
     ASSERT_EQ(jackpot->getCurrentBets()[gambler2], 1);
-    ASSERT_EQ(jackpot->getTargetTime(), 90000);
+    ASSERT_EQ(jackpot->getTargetTime(), 60000);
     // game doesn't start twice
     jackpot->advanceGame(40000);
     ASSERT_TRUE(jackpot->isInProgress());
     ASSERT_EQ(jackpot->getCurrentBets()[gambler1], 1);
     ASSERT_EQ(jackpot->getCurrentBets()[gambler2], 1);
-    ASSERT_EQ(jackpot->getTargetTime(), 90000);
+    ASSERT_EQ(jackpot->getTargetTime(), 60000);
     ASSERT_TRUE(jackpot->bet(gambler1, 3));
     ASSERT_EQ(jackpot->getCurrentBets()[gambler1], 4);
     delete gambler1;
