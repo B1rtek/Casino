@@ -263,7 +263,7 @@ TEST(TexasHoldemTest, AdvanceGameStart) {
     ASSERT_FALSE(texasHoldem->isInProgress());
     texasHoldem->advanceGame(30000);
     // game didn't start because there isn't enough players to start
-    ASSERT_EQ(texasHoldem->getTargetTime(), 60000);
+    ASSERT_EQ(texasHoldem->getTargetTime(), 40000);
     ASSERT_FALSE(texasHoldem->isInProgress());
     ASSERT_EQ(texasHoldem->getInGameMoney()[gambler1], 1000);
     ASSERT_EQ(texasHoldem->getCurrentPlayer(), nullptr);
@@ -274,7 +274,7 @@ TEST(TexasHoldemTest, AdvanceGameStart) {
     ASSERT_TRUE(texasHoldem->isInProgress());
     ASSERT_EQ(texasHoldem->getGameState(), SMALL_BLIND);
     ASSERT_EQ(texasHoldem->getCurrentPlayer(), gambler1);
-    ASSERT_EQ(texasHoldem->getTargetTime(), 60000); // no target specified
+    ASSERT_EQ(texasHoldem->getTargetTime(), 40000); // no target specified
     delete gambler1;
     delete gambler2;
     delete texasHoldem;
