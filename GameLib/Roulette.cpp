@@ -19,9 +19,9 @@ Roulette::Roulette(const std::vector<Gambler *> &gamblers, int minimumEntry, con
 void Roulette::advanceGame(int millisecondsPassed) {
     if (this->inProgress) {
         if (this->targetTime <= millisecondsPassed) { // time for betting ended
-            this->inProgress = false;
             this->rollTheNumber();
             this->checkAndPayBets();
+            this->inProgress = false;
             this->removeBankruptPlayers();
             this->targetTime = millisecondsPassed + 10000; // new game begins in 10 seconds
         } else {
@@ -49,6 +49,15 @@ void Roulette::rollTheNumber() noexcept {
 }
 
 void Roulette::checkAndPayBets() noexcept {
+    // if someone didn't bet, bet a random amount of their balance as a fee for playing the game :)
+    for(auto &gambler: this->gamblersPlaying) {
+        if(this->currentBets[gambler] == 0) {
+            int amountToBet = std::max(((this->getInGameMoney()[gambler] / 10) * (rand() % 100 + 1) / 100), 1);
+            int numberToBet = rand() % 37;
+            int betType = rand() % 6;
+            this->rouletteBet(gambler, static_cast<RouletteBetType>(betType), amountToBet, numberToBet);
+        }
+    }
     for (auto &bet: this->bets) {
         switch (bet.type) {
             case COLOR:
