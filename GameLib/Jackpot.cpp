@@ -1,5 +1,6 @@
 #include <ctime>
 #include <stdexcept>
+#include <algorithm>
 #include "Jackpot.h"
 
 /**
@@ -120,6 +121,19 @@ std::map<Gambler *, double> Jackpot::getPercentages() noexcept {
         }
     }
     return percentages;
+}
+
+std::vector<std::pair<Gambler *, double>> Jackpot::getSortedPercentages() noexcept {
+    std::map<Gambler *, double> percentages = this->getPercentages();
+    std::vector<std::pair<Gambler*, double>> sortedPerecentages;
+    for (auto &gamblerPercentagePair: percentages) {
+        sortedPerecentages.emplace_back(gamblerPercentagePair.first, gamblerPercentagePair.second);
+    }
+    std::sort(sortedPerecentages.begin(), sortedPerecentages.end(),
+         [](const std::pair<Gambler*, double> &one, const std::pair<Gambler*, double> &two) {
+             return one.second > two.second;
+         });
+    return sortedPerecentages;
 }
 
 

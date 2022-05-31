@@ -22,6 +22,8 @@ public:
     void advanceGame(int millisecondsPassed) override;
 
     std::map<Gambler*, double> getPercentages() noexcept;
+
+    std::vector<std::pair<Gambler*, double>> getSortedPercentages() noexcept;
 };
 
 
