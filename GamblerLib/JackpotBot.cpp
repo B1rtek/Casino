@@ -22,12 +22,12 @@ void JackpotBot::makeAMove(int millisecondsPassed) noexcept {
             this->targetTime = millisecondsPassed + rand() % 5000;
             this->moveScheduled = true;
         } else {
-            bool willBet = !(rand() % 10);
+            bool willBet = !(rand() % 8);
             if (this->gamePlayed->getTotalBet() > this->gamePlayed->getCurrentBets()[this] * 20) { // chances less than 5%
                 willBet = true;
             }
             if(willBet) {
-                int maxPart = 10;
+                int maxPart = 50;
                 if (this->gamePlayed->getInGameMoney()[this] <= 10) {
                     maxPart = 1;
                 } else if (this->gamePlayed->getInGameMoney()[this] <= 100) {
