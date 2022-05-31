@@ -108,7 +108,7 @@ class TexasHoldemUITest : public QMainWindow {
                     toDisplay.pop_back();
                     this->ui.tableCardsList->addItem(QString(toDisplay.c_str()));
                     toDisplay = "Last table:";
-                    this->ui.tableCardsList->addItem(QString(toDisplay.c_str()));
+                       this->ui.tableCardsList->addItem(QString(toDisplay.c_str()));
                     for(auto &card:this->texasHoldem->getCurrentDealtCards()) {
                         toDisplay += Card::toString(*card);
                         toDisplay += ", ";
@@ -134,7 +134,18 @@ class TexasHoldemUITest : public QMainWindow {
     void setupObjects() {
         this->ui.advanceTimeLineEdit->setText("30000");
         this->gambler = new Gambler(1001, "B1rtek");
-        this->bots = {this->gambler, new TexasBot(1001, "Marcus"), new TexasBot(1001, "Tyler"), new TexasBot(1001, "Lina")};
+        this->bots = {
+                new TexasBot(15000, "Chase Linh"),
+                new TexasBot(15000, "Chau Wu"),
+                new TexasBot(15000, "Big Lou"),
+                new TexasBot(15000, "Eugene James"),
+                new TexasBot(15000, "Gallo Rivera"),
+                new TexasBot(15000, "Hector Maio"),
+                new TexasBot(15000, "Ho Seun"),
+                new TexasBot(15000, "Isabel Diaz"),
+                new TexasBot(15000, "Jack Rourke"),
+                new TexasBot(15000, "Taz")
+        };
         this->texasHoldem = new TexasHoldem(bots, 1000);
         this->chronoTime = chrono::steady_clock::now();
     }
