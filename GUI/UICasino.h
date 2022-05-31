@@ -1158,6 +1158,7 @@ public:
         sizePolicy3.setVerticalStretch(0);
         sizePolicy3.setHeightForWidth(tableGamblersRoulette->sizePolicy().hasHeightForWidth());
         tableGamblersRoulette->setSizePolicy(sizePolicy3);
+        tableGamblersRoulette->horizontalHeader()->setStretchLastSection(true);
 
         verticalLayout_3->addWidget(tableGamblersRoulette);
 
@@ -1185,6 +1186,8 @@ public:
         tableBetsRoulette->setObjectName(QString::fromUtf8("tableBetsRoulette"));
         sizePolicy3.setHeightForWidth(tableBetsRoulette->sizePolicy().hasHeightForWidth());
         tableBetsRoulette->setSizePolicy(sizePolicy3);
+        tableBetsRoulette->setSizeAdjustPolicy(QAbstractScrollArea::AdjustToContentsOnFirstShow);
+        tableBetsRoulette->horizontalHeader()->setStretchLastSection(true);
 
         verticalLayout_31->addWidget(tableBetsRoulette);
 
@@ -1621,7 +1624,7 @@ public:
 
         retranslateUi(CasinoWindow);
 
-        stackedWidget->setCurrentIndex(1);
+        stackedWidget->setCurrentIndex(4);
 
 
         QMetaObject::connectSlotsByName(CasinoWindow);
