@@ -541,6 +541,7 @@ Gambler *TexasHoldem::nextGambler() {
             this->currentPlayerIndex = 1;
             next = this->gamblersPlaying.front();
         } else {
+            if(this->currentPlayerIndex >= this->gamblersPlaying.size()) this->currentPlayerIndex = 0;
             next = this->gamblersPlaying[this->currentPlayerIndex++];
         }
     } while (!this->notFolded[next]);
