@@ -74,13 +74,17 @@ void Jackpot::advanceGame(int millisecondsPassed) {
         }
     } else {
         if (this->targetTime <= millisecondsPassed) {
-            this->startGame();
-            // collect a minimum bet from everyone
-            for (auto &gambler: this->gamblersPlaying) {
-                this->bet(gambler, this->minimumEntry / 100);
+            if(this->gamblersPlaying.size() >= 2) {
+                this->startGame();
+                // collect a minimum bet from everyone
+                for (auto &gambler: this->gamblersPlaying) {
+                    this->bet(gambler, this->minimumEntry / 100);
+                }
+                // give everyone 60 seconds for betting
+                this->targetTime = millisecondsPassed + 60000;
+            } else {
+                this->targetTime = millisecondsPassed + 10000; // wait another 10 s for players
             }
-            // give everyone 60 seconds for betting
-            this->targetTime = millisecondsPassed + 60000;
         }
     }
 

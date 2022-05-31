@@ -590,7 +590,7 @@ void TexasHoldem::advanceGame(int millisecondsPassed) {
                     this->current = this->nextGambler();
                 }
                 // no new target time is assigned, players can take their time to choose what they do
-            } else { // game failed to start, waiting another 30 s
+            } else { // game failed to start, waiting another 10 s
                 this->targetTime = millisecondsPassed + 10000;
             }
         }
