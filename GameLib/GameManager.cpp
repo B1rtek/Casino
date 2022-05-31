@@ -104,3 +104,19 @@ GameManager::~GameManager() {
         delete game;
     }
 }
+
+std::vector<Game *> GameManager::getGames() const noexcept {
+    return this->games;
+}
+
+Gambler *GameManager::getPlayer() const noexcept {
+    return this->player;
+}
+
+void GameManager::joinGame(int gameIndex) {
+    this->player->joinGame(this->games[gameIndex]);
+}
+
+void GameManager::spectateGame(int gameIndex) {
+    this->player->spectate(this->games[gameIndex]);
+}

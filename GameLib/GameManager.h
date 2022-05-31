@@ -25,6 +25,14 @@ public:
 
     void advanceCasino(int millisecondsPassed);
 
+    void joinGame(int gameIndex);
+
+    void spectateGame(int gameIndex);
+
+    std::vector<Game*> getGames() const noexcept;
+
+    Gambler* getPlayer() const noexcept;
+
     virtual ~GameManager();
 };
 

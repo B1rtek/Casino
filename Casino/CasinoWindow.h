@@ -22,11 +22,12 @@ enum GamePage {
 class CasinoWindow: public QMainWindow {
     Ui_CasinoWindow ui;
     GameManager gameManager;
-    Game *currentGame;
     QTimer *timer;
     std::chrono::time_point<std::chrono::steady_clock> chronoTimeStart;
 
     void linkButtons();
+
+    void setDarkMode();
 
     void setupObjects();
 
@@ -35,6 +36,10 @@ class CasinoWindow: public QMainWindow {
     void sendClockSignal();
 
     void refreshUI();
+
+    void joinGame();
+
+    void spectateGame();
 public:
     explicit CasinoWindow(QWidget *parent = nullptr);
 
