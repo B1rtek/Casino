@@ -11,6 +11,7 @@ int main() {
     srand(time(nullptr));
     auto start = chrono::steady_clock::now();
     GameManager gameManager = GameManager();
+    gameManager.start();
     for(;;) {
         auto now = chrono::steady_clock::now();
         auto elapsed = chrono::duration_cast<chrono::milliseconds>(now - start);

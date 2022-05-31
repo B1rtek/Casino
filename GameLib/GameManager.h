@@ -21,6 +21,8 @@ class GameManager {
 public:
     GameManager();
 
+    void start();
+
     void advanceCasino(int millisecondsPassed);
 
     virtual ~GameManager();

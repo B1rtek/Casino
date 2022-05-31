@@ -1,7 +1,8 @@
 #include "GameManager.h"
 
-GameManager::GameManager() {
-// create games and gamblers, the amount of gamblers should stay constant
+GameManager::GameManager() = default;
+
+void GameManager::start() {
     this->games = {
             new Jackpot(1000, "Jackpot"),
             new Jackpot(5000, "Jackpot++"),
