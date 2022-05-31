@@ -9,11 +9,11 @@ if (WIN32)
 endif (WIN32)
 find_package(Qt5Widgets REQUIRED)
 
-include_directories(GameLib GamblerLib GUI)
+include_directories(Casino GameLib GamblerLib GUI)
 
-add_library(GameLib GameLib/Game.cpp GameLib/Game.h GameLib/CardGame.cpp GameLib/CardGame.h GameLib/Card.cpp GameLib/Card.h GameLib/TexasHoldem.cpp GameLib/TexasHoldem.h GameLib/Jackpot.cpp GameLib/Jackpot.h GameLib/Roulette.cpp GameLib/Roulette.h GameLib/GameManager.cpp GameLib/GameManager.h)
+add_library(GameLib GameLib/Game.cpp GameLib/Game.h GameLib/CardGame.cpp GameLib/CardGame.h GameLib/Card.cpp GameLib/Card.h GameLib/TexasHoldem.cpp GameLib/TexasHoldem.h GameLib/Jackpot.cpp GameLib/Jackpot.h GameLib/Roulette.cpp GameLib/Roulette.h GameLib/GameManager.h GameLib/GameManager.cpp)
 add_library(GamblerLib GamblerLib/Gambler.cpp GamblerLib/Gambler.h GamblerLib/TestJackpotBot.cpp GamblerLib/TestJackpotBot.h GamblerLib/GamblerBot.cpp GamblerLib/GamblerBot.h GamblerLib/TexasBot.cpp GamblerLib/TexasBot.h GamblerLib/Shop.cpp GamblerLib/Shop.h GamblerLib/RouletteBot.cpp GamblerLib/RouletteBot.h)
-
+add_library(CasinoLib Casino/CasinoWindow.h Casino/CasinoWindow.cpp)
 add_executable(GameExample GameExample/GameExample.cpp)
 target_link_libraries(GameExample PUBLIC GameLib GamblerLib)
 
@@ -36,6 +36,20 @@ foreach(GUI_TARGET IN LISTS GUI_TARGETS)
         endforeach()
     endif()
 endforeach()
+
+add_executable(Casino Casino.cpp)
+target_link_libraries(Casino PRIVATE GameLib GamblerLib CasinoLib Qt5::Widgets)
+if(WIN32)
+    if (CMAKE_BUILD_TYPE STREQUAL "Debug")
+        add_custom_command(TARGET Casino POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/WindowsQt5files/Debug ${CMAKE_CURRENT_BINARY_DIR})
+    else()
+        add_custom_command(TARGET Casino POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/WindowsQt5files/Release ${CMAKE_CURRENT_BINARY_DIR})
+    endif()
+    set(WIN_CPP_FILES libgcc_s_seh-1.dll libstdc++-6.dll libwinpthread-1.dll)
+    foreach(FILE IN LISTS WIN_CPP_FILES)
+        add_custom_command(TARGET Casino POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/WindowsQt5files/${FILE} ${CMAKE_CURRENT_BINARY_DIR})
+    endforeach()
+endif()
 
 message("CLion > Visual Studio")
 

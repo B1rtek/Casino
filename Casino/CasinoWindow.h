@@ -1,0 +1,10 @@
+#ifndef CASINOGAME_CASINOWINDOW_H
+#define CASINOGAME_CASINOWINDOW_H
+
+
+class CasinoWindow {
+
+};
+
+
+#endif //CASINOGAME_CASINOWINDOW_H
