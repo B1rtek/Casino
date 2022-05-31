@@ -17,6 +17,7 @@ Roulette::Roulette(const std::vector<Gambler *> &gamblers, int minimumEntry, con
 }
 
 void Roulette::advanceGame(int millisecondsPassed) {
+    Game::advanceGame(millisecondsPassed);
     if (this->inProgress) {
         if (this->targetTime <= millisecondsPassed) { // time for betting ended
             this->rollTheNumber();

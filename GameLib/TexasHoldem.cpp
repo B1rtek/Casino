@@ -562,6 +562,7 @@ void TexasHoldem::startGame() noexcept {
  * @param millisecondsPassed milliseconds passed since the start of the casino
  */
 void TexasHoldem::advanceGame(int millisecondsPassed) {
+    Game::advanceGame(millisecondsPassed);
     if (this->inProgress) {
         if (this->current->isBot()) this->current->makeAMove(millisecondsPassed);
         if (this->onePlayerLeft()) {

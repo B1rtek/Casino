@@ -11,6 +11,7 @@ Jackpot::Jackpot(int minimumEntry, const std::string &name) : Game(minimumEntry,
         throw std::invalid_argument("minimumEntry for Jackpot must be divisible by 100");
     }
     this->gameType = JACKPOT;
+    this->minPlayers = 1;
 }
 
 Jackpot::Jackpot(Gambler *gambler, int minimumEntry, const std::string &name) : Game(gambler, minimumEntry,
@@ -19,6 +20,8 @@ Jackpot::Jackpot(Gambler *gambler, int minimumEntry, const std::string &name) : 
         throw std::invalid_argument("minimumEntry for Jackpot must be divisible by 100");
     }
     this->gameType = JACKPOT;
+    this->minPlayers = 1;
+
 }
 
 Jackpot::Jackpot(const std::vector<Gambler *> &gamblers, int minimumEntry, const std::string &name) :
@@ -27,6 +30,8 @@ Jackpot::Jackpot(const std::vector<Gambler *> &gamblers, int minimumEntry, const
         throw std::invalid_argument("minimumEntry for Jackpot must be divisible by 100");
     }
     this->gameType = JACKPOT;
+    this->minPlayers = 1;
+
 }
 
 /**
@@ -58,6 +63,7 @@ std::vector<Gambler*> Jackpot::chooseTheWinners() noexcept {
  * Advances the game by telling bots to bet
  */
 void Jackpot::advanceGame(int millisecondsPassed) {
+    Game::advanceGame(millisecondsPassed);
     if (this->inProgress) {
         if (this->targetTime <= millisecondsPassed) { // time for betting ended
             this->calculatePercent();

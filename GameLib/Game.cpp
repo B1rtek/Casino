@@ -43,7 +43,7 @@ std::vector<Gambler *> Game::chooseTheWinners() noexcept { return {}; }
  * Function removing the bankrupt players
  */
 void Game::removeBankruptPlayers() noexcept {
-    for(auto &gambler: this->gamblersPlaying) {
+    for (auto &gambler: this->gamblersPlaying) {
         if (this->inGameMoney[gambler] == 0) {
             gambler->leaveGame();
             gambler->spectate(this);
@@ -62,7 +62,9 @@ void Game::startGame() noexcept {
  * Advances the in-game timer and all actions that depend on it
  * Implementation is left to the subclasses
  */
-void Game::advanceGame(int millisecondsPassed) {}
+void Game::advanceGame(int millisecondsPassed) {
+    this->lastMillis = millisecondsPassed;
+}
 
 /**
  * Bets the given amount of money
@@ -89,12 +91,12 @@ bool Game::bet(Gambler *gambler, int amount) noexcept {
 /**
  * Gives winnings to the winners of the game and zeroes out the bets
  */
-void Game::payTheWinners(const std::vector<Gambler *>& winners) noexcept {
+void Game::payTheWinners(const std::vector<Gambler *> &winners) noexcept {
     int toPay = this->totalBet / int(winners.size());
     for (auto &gambler: winners) {
         this->inGameMoney[gambler] += toPay;
     }
-    for(auto &gambler: this->gamblersPlaying) {
+    for (auto &gambler: this->gamblersPlaying) {
         this->currentBets[gambler] = 0;
     }
     this->inProgress = false;
@@ -222,4 +224,18 @@ std::vector<Gambler *> Game::getLastGameWinners() const noexcept {
 
 GameType Game::getGameType() const noexcept {
     return this->gameType;
+}
+
+std::string Game::getPlayerCountStr() const noexcept {
+    return std::to_string(this->gamblersPlaying.size()) + '/' + std::to_string(this->maxPlayers);
+}
+
+std::string Game::getGameSituationDescription() const noexcept {
+    if (this->gamblersPlaying.size() < this->minPlayers) {
+        return "Waiting for players...";
+    }
+    if (this->inProgress) {
+        return "In progress";
+    }
+    return "Next game starts in " + std::to_string((this->targetTime - this->lastMillis) / 1000) + " seconds...";
 }
