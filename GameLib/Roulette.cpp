@@ -36,7 +36,7 @@ void Roulette::advanceGame(int millisecondsPassed) {
         if (this->targetTime <= millisecondsPassed) {
             if(this->gamblersPlaying.size() >= 1) {
                 this->startGame();
-                this->targetTime = millisecondsPassed + 30000; // give everyone 30 seconds for betting
+                this->targetTime = millisecondsPassed + 15000; // give everyone 15 seconds for betting
             } else {
                 this->targetTime = millisecondsPassed + 10000; // wait another 10 s for a player
             }
