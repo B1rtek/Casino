@@ -16,21 +16,21 @@ void GameManager::start() {
     };
     // there will be 5 gamblers per each game at the start, all players start with 15k
     this->bots = {
-            new TestJackpotBot(15000, "Aki Kimura"),
-            new TestJackpotBot(15000, "Brad Rogers"),
-            new TestJackpotBot(15000, "Carmen Mendez"),
-            new TestJackpotBot(15000, "Murff"),
-            new TestJackpotBot(15000, "Neville"),
-            new TestJackpotBot(15000, "Nikki Morris"),
-            new TestJackpotBot(15000, "Dirt"),
-            new TestJackpotBot(15000, "Manu"),
-            new TestJackpotBot(15000, "GMAC"),
-            new TestJackpotBot(15000, "Wolf"),
-            new TestJackpotBot(15000, "Yumi"),
-            new TestJackpotBot(15000, "Udo Roth"),
-            new TestJackpotBot(15000, "Tommy"),
-            new TestJackpotBot(15000, "Samson"),
-            new TestJackpotBot(15000, "Ray Krieger"),
+            new JackpotBot(15000, "Aki Kimura"),
+            new JackpotBot(15000, "Brad Rogers"),
+            new JackpotBot(15000, "Carmen Mendez"),
+            new JackpotBot(15000, "Murff"),
+            new JackpotBot(15000, "Neville"),
+            new JackpotBot(15000, "Nikki Morris"),
+            new JackpotBot(15000, "Dirt"),
+            new JackpotBot(15000, "Manu"),
+            new JackpotBot(15000, "GMAC"),
+            new JackpotBot(15000, "Wolf"),
+            new JackpotBot(15000, "Yumi"),
+            new JackpotBot(15000, "Udo Roth"),
+            new JackpotBot(15000, "Tommy"),
+            new JackpotBot(15000, "Samson"),
+            new JackpotBot(15000, "Ray Krieger"),
             new TexasBot(15000, "Chase Linh"),
             new TexasBot(15000, "Chau Wu"),
             new TexasBot(15000, "Big Lou"),
@@ -123,6 +123,10 @@ bool GameManager::spectateGame(int gameIndex) {
 
 bool GameManager::leaveGame() {
     return this->player->leaveGame();
+}
+
+bool GameManager::stopSpectating() {
+    return this->player->stopSpectating();
 }
 
 bool GameManager::jackpotBet(int amount) {

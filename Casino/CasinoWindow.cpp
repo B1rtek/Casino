@@ -127,7 +127,12 @@ void CasinoWindow::refreshUI() {
         }
             break;
         case GamePage::GAME_JACKPOT: {
-            auto *currentGame = dynamic_cast<Jackpot *>(this->gameManager.getPlayer()->getCurrentGame()); // if this cast fails something went horribly wrong
+            Jackpot *currentGame;
+            if(this->gameManager.getPlayer()->getCurrentGame() != nullptr) {
+                currentGame = dynamic_cast<Jackpot *>(this->gameManager.getPlayer()->getCurrentGame()); // if this cast fails something went horribly wrong
+            } else {
+                currentGame = dynamic_cast<Jackpot *>(this->gameManager.getPlayer()->getSpectatedGame()); // same here
+            }
             // tables - gamblers table
             CasinoWindow::adjustTableSize(this->ui.tableGamblersJackpot, currentGame->getPlayers().size(), 3);
             int rowCounter = 0;
@@ -151,12 +156,12 @@ void CasinoWindow::refreshUI() {
             // tables - bets table
             CasinoWindow::adjustTableSize(this->ui.tableBetsJackpot, currentGame->getPlayers().size(), 2);
             rowCounter = 0;
-            for (auto &gambler: currentGame->getPlayers()) {
-                QTableWidgetItem updated = QTableWidgetItem(QString(gambler->getName().c_str()));
+            for (auto &gamblerPercentagePair: currentGame->getSortedPercentages()) {
+                QTableWidgetItem updated = QTableWidgetItem(QString(gamblerPercentagePair.first->getName().c_str()));
                 if (this->ui.tableBetsJackpot->item(rowCounter, 0)->text() != updated.text()) {
                     *this->ui.tableBetsJackpot->item(rowCounter, 0) = updated;
                 }
-                updated = QTableWidgetItem(QString((std::to_string(currentGame->getPercentages()[gambler]) + '%').c_str()));
+                updated = QTableWidgetItem(QString((std::to_string(currentGame->getPercentages()[gamblerPercentagePair.first]) + '%').c_str()));
                 if (this->ui.tableBetsJackpot->item(rowCounter, 1)->text() != updated.text()) {
                     *this->ui.tableBetsJackpot->item(rowCounter, 1) = updated;
                 }
@@ -227,7 +232,7 @@ void CasinoWindow::adjustTableSize(QTableWidget *table, int targetSize, int colu
 }
 
 void CasinoWindow::leaveGame() {
-    if (this->gameManager.leaveGame()) {
+    if (this->gameManager.leaveGame() || this->gameManager.stopSpectating()) {
         this->ui.stackedWidget->setCurrentIndex(GamePage::GAME_SELECT);
         this->refreshUI();
     }

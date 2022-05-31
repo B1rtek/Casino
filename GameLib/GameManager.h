@@ -7,7 +7,7 @@
 #include "Jackpot.h"
 #include "TexasHoldem.h"
 #include "Roulette.h"
-#include "TestJackpotBot.h"
+#include "JackpotBot.h"
 #include "TexasBot.h"
 #include "RouletteBot.h"
 
@@ -30,6 +30,8 @@ public:
     bool leaveGame();
 
     bool spectateGame(int gameIndex);
+
+    bool stopSpectating();
 
     bool jackpotBet(int amount);
 
