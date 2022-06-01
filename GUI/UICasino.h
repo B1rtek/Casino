@@ -1253,6 +1253,8 @@ public:
         sizePolicy3.setVerticalStretch(0);
         sizePolicy3.setHeightForWidth(tableGamblersRoulette->sizePolicy().hasHeightForWidth());
         tableGamblersRoulette->setSizePolicy(sizePolicy3);
+        tableGamblersRoulette->setSizeAdjustPolicy(QAbstractScrollArea::AdjustToContents);
+        tableGamblersRoulette->setSelectionBehavior(QAbstractItemView::SelectRows);
         tableGamblersRoulette->horizontalHeader()->setStretchLastSection(true);
 
         verticalLayout_3->addWidget(tableGamblersRoulette);
@@ -1281,7 +1283,8 @@ public:
         tableBetsRoulette->setObjectName(QString::fromUtf8("tableBetsRoulette"));
         sizePolicy3.setHeightForWidth(tableBetsRoulette->sizePolicy().hasHeightForWidth());
         tableBetsRoulette->setSizePolicy(sizePolicy3);
-        tableBetsRoulette->setSizeAdjustPolicy(QAbstractScrollArea::AdjustToContentsOnFirstShow);
+        tableBetsRoulette->setSizeAdjustPolicy(QAbstractScrollArea::AdjustToContents);
+        tableBetsRoulette->setSelectionBehavior(QAbstractItemView::SelectRows);
         tableBetsRoulette->horizontalHeader()->setStretchLastSection(true);
 
         verticalLayout_31->addWidget(tableBetsRoulette);
@@ -1640,6 +1643,7 @@ public:
         QTableWidgetItem *__qtablewidgetitem13 = new QTableWidgetItem();
         tableGamblersJackpot->setHorizontalHeaderItem(2, __qtablewidgetitem13);
         tableGamblersJackpot->setObjectName(QString::fromUtf8("tableGamblersJackpot"));
+        tableGamblersJackpot->setSelectionBehavior(QAbstractItemView::SelectRows);
         tableGamblersJackpot->horizontalHeader()->setStretchLastSection(true);
 
         verticalLayout_33->addWidget(tableGamblersJackpot);
@@ -1662,6 +1666,7 @@ public:
         QTableWidgetItem *__qtablewidgetitem15 = new QTableWidgetItem();
         tableBetsJackpot->setHorizontalHeaderItem(1, __qtablewidgetitem15);
         tableBetsJackpot->setObjectName(QString::fromUtf8("tableBetsJackpot"));
+        tableBetsJackpot->setSelectionBehavior(QAbstractItemView::SelectRows);
         tableBetsJackpot->horizontalHeader()->setStretchLastSection(true);
 
         verticalLayout_34->addWidget(tableBetsJackpot);
@@ -1722,7 +1727,7 @@ public:
 
         retranslateUi(CasinoWindow);
 
-        stackedWidget->setCurrentIndex(3);
+        stackedWidget->setCurrentIndex(4);
 
 
         QMetaObject::connectSlotsByName(CasinoWindow);
