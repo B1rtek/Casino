@@ -330,8 +330,8 @@
          <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Quia dolores labore odio recusandae reprehenderit veritatis. Ratione qui nemo rerum illum modi dolores praesentium. Dolores in rerum in vel consectetur occaecati. Dolorem nulla maxime ad. Fugiat voluptatem molestiae corporis ipsam voluptatem. Iste et fugiat et natus culpa. Et ullam voluptatum doloribus. Aliquam id ut blanditiis blanditiis fuga doloribus eos. Harum et excepturi sit doloribus quod suscipit quod. Quam doloremque laborum blanditiis iusto pariatur. Necessitatibus magni velit est. Sapiente voluptas ipsam mollitia quam porro repudiandae. Voluptatem eos ducimus quam nobis et voluptas non. Aliquid quis ut sit repudiandae non. Nostrum ab temporibus et odio molestiae. Et dolorum fugiat ipsum et maiores facere. Voluptate odit eaque occaecati in. Necessitatibus provident debitis modi sed enim quia. Architecto voluptas deserunt nisi ut asperiores. Beatae expedita quod repellat est voluptas ducimus sunt iste. Sed cumque nostrum repellat quis commodi quae. Doloremque facere quis qui voluptas sequi qui fugit repellat. Quasi facilis non alias qui aliquam. Ullam qui fugiat qui porro. Soluta aut vero eum qui earum corrupti quasi rerum. Ea veritatis voluptatem praesentium quo harum necessitatibus. Quos dolorum voluptas rerum sit est iure.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Fira Sans'; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'MS Shell Dlg 2'; font-size:8pt;&quot;&gt;Quia dolores labore odio recusandae reprehenderit veritatis. Ratione qui nemo rerum illum modi dolores praesentium. Dolores in rerum in vel consectetur occaecati. Dolorem nulla maxime ad. Fugiat voluptatem molestiae corporis ipsam voluptatem. Iste et fugiat et natus culpa. Et ullam voluptatum doloribus. Aliquam id ut blanditiis blanditiis fuga doloribus eos. Harum et excepturi sit doloribus quod suscipit quod. Quam doloremque laborum blanditiis iusto pariatur. Necessitatibus magni velit est. Sapiente voluptas ipsam mollitia quam porro repudiandae. Voluptatem eos ducimus quam nobis et voluptas non. Aliquid quis ut sit repudiandae non. Nostrum ab temporibus et odio molestiae. Et dolorum fugiat ipsum et maiores facere. Voluptate odit eaque occaecati in. Necessitatibus provident debitis modi sed enim quia. Architecto voluptas deserunt nisi ut asperiores. Beatae expedita quod repellat est voluptas ducimus sunt iste. Sed cumque nostrum repellat quis commodi quae. Doloremque facere quis qui voluptas sequi qui fugit repellat. Quasi facilis non alias qui aliquam. Ullam qui fugiat qui porro. Soluta aut vero eum qui earum corrupti quasi rerum. Ea veritatis voluptatem praesentium quo harum necessitatibus. Quos dolorum voluptas rerum sit est iure.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="openLinks">
          <bool>false</bool>
@@ -380,7 +380,7 @@ p, li { white-space: pre-wrap; }
        </layout>
       </item>
       <item alignment="Qt::AlignHCenter">
-       <widget class="QLabel" name="label_54">
+       <widget class="QLabel" name="labelTexasHoldemName">
         <property name="font">
          <font>
           <pointsize>15</pointsize>
@@ -1165,7 +1165,7 @@ p, li { white-space: pre-wrap; }
        </layout>
       </item>
       <item>
-       <widget class="QLabel" name="label_55">
+       <widget class="QLabel" name="labelRouletteName">
         <property name="font">
          <font>
           <pointsize>15</pointsize>
@@ -1743,7 +1743,7 @@ p, li { white-space: pre-wrap; }
        </layout>
       </item>
       <item alignment="Qt::AlignHCenter">
-       <widget class="QLabel" name="label_9">
+       <widget class="QLabel" name="labelJackpotName">
         <property name="font">
          <font>
           <pointsize>15</pointsize>
@@ -1897,7 +1897,7 @@ p, li { white-space: pre-wrap; }
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>21</height>
+     <height>27</height>
     </rect>
    </property>
   </widget>

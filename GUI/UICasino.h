@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'Casino.ui'
 **
-** Created by: Qt User Interface Compiler version 5.15.2
+** Created by: Qt User Interface Compiler version 5.15.4
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -75,7 +75,7 @@ public:
     QHBoxLayout *horizontalLayout_29;
     QPushButton *buttonLeaveTexas;
     QSpacerItem *horizontalSpacer_9;
-    QLabel *label_54;
+    QLabel *labelTexasHoldemName;
     QLabel *labelLastResultsTexas;
     QHBoxLayout *horizontalLayout_28;
     QVBoxLayout *verticalLayout_17;
@@ -199,7 +199,7 @@ public:
     QHBoxLayout *horizontalLayout_35;
     QPushButton *buttonLeaveRoulette;
     QSpacerItem *horizontalSpacer_15;
-    QLabel *label_55;
+    QLabel *labelRouletteName;
     QLabel *labelLastResultsRoulette;
     QHBoxLayout *horizontalLayout_34;
     QVBoxLayout *verticalLayout_3;
@@ -273,7 +273,7 @@ public:
     QHBoxLayout *horizontalLayout_40;
     QPushButton *buttonLeaveJackpot;
     QSpacerItem *horizontalSpacer_19;
-    QLabel *label_9;
+    QLabel *labelJackpotName;
     QLabel *labelLastResultsJackpot;
     QHBoxLayout *horizontalLayout_37;
     QVBoxLayout *verticalLayout_33;
@@ -509,13 +509,13 @@ public:
 
         verticalLayout_30->addLayout(horizontalLayout_29);
 
-        label_54 = new QLabel(pageTexasHoldem);
-        label_54->setObjectName(QString::fromUtf8("label_54"));
+        labelTexasHoldemName = new QLabel(pageTexasHoldem);
+        labelTexasHoldemName->setObjectName(QString::fromUtf8("labelTexasHoldemName"));
         QFont font2;
         font2.setPointSize(15);
-        label_54->setFont(font2);
+        labelTexasHoldemName->setFont(font2);
 
-        verticalLayout_30->addWidget(label_54, 0, Qt::AlignHCenter);
+        verticalLayout_30->addWidget(labelTexasHoldemName, 0, Qt::AlignHCenter);
 
         labelLastResultsTexas = new QLabel(pageTexasHoldem);
         labelLastResultsTexas->setObjectName(QString::fromUtf8("labelLastResultsTexas"));
@@ -1122,12 +1122,12 @@ public:
 
         verticalLayout_32->addLayout(horizontalLayout_35);
 
-        label_55 = new QLabel(pageRoulette);
-        label_55->setObjectName(QString::fromUtf8("label_55"));
-        label_55->setFont(font2);
-        label_55->setAlignment(Qt::AlignCenter);
+        labelRouletteName = new QLabel(pageRoulette);
+        labelRouletteName->setObjectName(QString::fromUtf8("labelRouletteName"));
+        labelRouletteName->setFont(font2);
+        labelRouletteName->setAlignment(Qt::AlignCenter);
 
-        verticalLayout_32->addWidget(label_55);
+        verticalLayout_32->addWidget(labelRouletteName);
 
         labelLastResultsRoulette = new QLabel(pageRoulette);
         labelLastResultsRoulette->setObjectName(QString::fromUtf8("labelLastResultsRoulette"));
@@ -1515,11 +1515,11 @@ public:
 
         verticalLayout_35->addLayout(horizontalLayout_40);
 
-        label_9 = new QLabel(pageJackpot);
-        label_9->setObjectName(QString::fromUtf8("label_9"));
-        label_9->setFont(font2);
+        labelJackpotName = new QLabel(pageJackpot);
+        labelJackpotName->setObjectName(QString::fromUtf8("labelJackpotName"));
+        labelJackpotName->setFont(font2);
 
-        verticalLayout_35->addWidget(label_9, 0, Qt::AlignHCenter);
+        verticalLayout_35->addWidget(labelJackpotName, 0, Qt::AlignHCenter);
 
         labelLastResultsJackpot = new QLabel(pageJackpot);
         labelLastResultsJackpot->setObjectName(QString::fromUtf8("labelLastResultsJackpot"));
@@ -1617,7 +1617,7 @@ public:
         CasinoWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(CasinoWindow);
         menubar->setObjectName(QString::fromUtf8("menubar"));
-        menubar->setGeometry(QRect(0, 0, 800, 21));
+        menubar->setGeometry(QRect(0, 0, 800, 27));
         CasinoWindow->setMenuBar(menubar);
         statusbar = new QStatusBar(CasinoWindow);
         statusbar->setObjectName(QString::fromUtf8("statusbar"));
@@ -1657,12 +1657,12 @@ public:
         textBrowser->setHtml(QCoreApplication::translate("CasinoWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Quia dolores labore odio recusandae reprehenderit veritatis. Ratione qui nemo rerum illum modi dolores praesentium. Dolores in rerum in vel consectetur occaecati. Dolorem nulla maxime ad. Fugiat voluptatem molestiae corporis ipsam voluptatem. Iste et fugiat et natus culpa. Et ullam voluptatum doloribus. Aliquam id ut blanditiis blanditiis fuga doloribus eos. Harum et excepturi sit doloribus quod suscipit quod. Quam doloremque laborum blanditiis iusto pariatur. Necessitatibus magni velit est. Sapiente voluptas ipsam molliti"
-                        "a quam porro repudiandae. Voluptatem eos ducimus quam nobis et voluptas non. Aliquid quis ut sit repudiandae non. Nostrum ab temporibus et odio molestiae. Et dolorum fugiat ipsum et maiores facere. Voluptate odit eaque occaecati in. Necessitatibus provident debitis modi sed enim quia. Architecto voluptas deserunt nisi ut asperiores. Beatae expedita quod repellat est voluptas ducimus sunt iste. Sed cumque nostrum repellat quis commodi quae. Doloremque facere quis qui voluptas sequi qui fugit repellat. Quasi facilis non alias qui aliquam. Ullam qui fugiat qui porro. Soluta aut vero eum qui earum corrupti quasi rerum. Ea veritatis voluptatem praesentium quo harum necessitatibus. Quos dolorum voluptas rerum sit est iure.</span></p></body></html>", nullptr));
+"</style></head><body style=\" font-family:'Fira Sans'; font-size:10pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:'MS Shell Dlg 2'; font-size:8pt;\">Quia dolores labore odio recusandae reprehenderit veritatis. Ratione qui nemo rerum illum modi dolores praesentium. Dolores in rerum in vel consectetur occaecati. Dolorem nulla maxime ad. Fugiat voluptatem molestiae corporis ipsam voluptatem. Iste et fugiat et natus culpa. Et ullam voluptatum doloribus. Aliquam id ut blanditiis blanditiis fuga doloribus eos. Harum et excepturi sit doloribus quod suscipit quod. Quam doloremque laborum blanditiis iusto pariatur. Necessitatibus magni velit est. Sapiente"
+                        " voluptas ipsam mollitia quam porro repudiandae. Voluptatem eos ducimus quam nobis et voluptas non. Aliquid quis ut sit repudiandae non. Nostrum ab temporibus et odio molestiae. Et dolorum fugiat ipsum et maiores facere. Voluptate odit eaque occaecati in. Necessitatibus provident debitis modi sed enim quia. Architecto voluptas deserunt nisi ut asperiores. Beatae expedita quod repellat est voluptas ducimus sunt iste. Sed cumque nostrum repellat quis commodi quae. Doloremque facere quis qui voluptas sequi qui fugit repellat. Quasi facilis non alias qui aliquam. Ullam qui fugiat qui porro. Soluta aut vero eum qui earum corrupti quasi rerum. Ea veritatis voluptatem praesentium quo harum necessitatibus. Quos dolorum voluptas rerum sit est iure.</span></p></body></html>", nullptr));
         buttonBackFromHelp->setText(QCoreApplication::translate("CasinoWindow", "Back", nullptr));
         buttonLeaveTexas->setText(QCoreApplication::translate("CasinoWindow", "Leave", nullptr));
-        label_54->setText(QCoreApplication::translate("CasinoWindow", "Texas Holdem", nullptr));
+        labelTexasHoldemName->setText(QCoreApplication::translate("CasinoWindow", "Texas Holdem", nullptr));
         labelLastResultsTexas->setText(QCoreApplication::translate("CasinoWindow", "Last Game results: none because this is the first game :)", nullptr));
         labelGambler1Name->setText(QCoreApplication::translate("CasinoWindow", "<empty>", nullptr));
         labelGambler1Balance->setText(QCoreApplication::translate("CasinoWindow", "0", nullptr));
@@ -1725,7 +1725,7 @@ public:
         buttonCall->setText(QCoreApplication::translate("CasinoWindow", "Check/Call", nullptr));
         buttonRaise->setText(QCoreApplication::translate("CasinoWindow", "Raise", nullptr));
         buttonLeaveRoulette->setText(QCoreApplication::translate("CasinoWindow", "Leave", nullptr));
-        label_55->setText(QCoreApplication::translate("CasinoWindow", "Roulette", nullptr));
+        labelRouletteName->setText(QCoreApplication::translate("CasinoWindow", "Roulette", nullptr));
         labelLastResultsRoulette->setText(QCoreApplication::translate("CasinoWindow", "Last number: none, this will be the first game", nullptr));
         label_5->setText(QCoreApplication::translate("CasinoWindow", "Gamblers table", nullptr));
         QTableWidgetItem *___qtablewidgetitem4 = tableGamblersRoulette->horizontalHeaderItem(0);
@@ -1795,7 +1795,7 @@ public:
         labelCountdownRoulette->setText(QCoreApplication::translate("CasinoWindow", "Next game begins in 30 seconds...", nullptr));
         label_4->setText(QCoreApplication::translate("CasinoWindow", "Bet amount:", nullptr));
         buttonLeaveJackpot->setText(QCoreApplication::translate("CasinoWindow", "Leave", nullptr));
-        label_9->setText(QCoreApplication::translate("CasinoWindow", "Jackpot", nullptr));
+        labelJackpotName->setText(QCoreApplication::translate("CasinoWindow", "Jackpot", nullptr));
         labelLastResultsJackpot->setText(QCoreApplication::translate("CasinoWindow", "Last game winner: none, this will be the first game", nullptr));
         label_7->setText(QCoreApplication::translate("CasinoWindow", "Gamblers table", nullptr));
         QTableWidgetItem *___qtablewidgetitem11 = tableGamblersJackpot->horizontalHeaderItem(0);
