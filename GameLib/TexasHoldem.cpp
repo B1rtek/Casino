@@ -56,7 +56,8 @@ std::pair<std::pair<TexasHoldemHand, Card *>, std::vector<Card *>> TexasHoldem::
         onlyPossibleHand[3] = this->getGamblersCards()[gambler][1];
         bestHand = {TexasHoldem::calculateHand(onlyPossibleHand), onlyPossibleHand};
     } else if (this->state == TURN) {
-        bestHand = {{HIGH_CARD, CardGame::noneCard}, {}};
+        bestHand = {{HIGH_CARD, CardGame::noneCard},
+                    {}};
         std::vector<Card *> cards = this->getGamblersCards()[gambler], tempCards;
         for (int i = 0; i < 2; i++) {
             for (int j = 0; j < 4; j++) {
@@ -102,7 +103,8 @@ std::pair<std::pair<TexasHoldemHand, Card *>, std::vector<Card *>> TexasHoldem::
             }
         }
     } else {
-        return {{HIGH_CARD, CardGame::noneCard}, {}};
+        return {{HIGH_CARD, CardGame::noneCard},
+                {}};
     }
     if (bestHand.first.first != FLUSH && bestHand.first.first != STRAIGHT_FLUSH && bestHand.first.first != HIGH_CARD) {
         bestHand.first.second = uncoloredDeck[bestHand.first.second->getValue()]; // in the checked hands the color of the highest card matters
@@ -541,7 +543,7 @@ Gambler *TexasHoldem::nextGambler() {
             this->currentPlayerIndex = 1;
             next = this->gamblersPlaying.front();
         } else {
-            if(this->currentPlayerIndex >= this->gamblersPlaying.size()) this->currentPlayerIndex = 0;
+            if (this->currentPlayerIndex >= this->gamblersPlaying.size()) this->currentPlayerIndex = 0;
             next = this->gamblersPlaying[this->currentPlayerIndex++];
         }
     } while (!this->notFolded[next]);
@@ -716,6 +718,7 @@ bool TexasHoldem::call(Gambler *gambler) {
         }
         if (!toReturn) return false;
         this->current = this->nextGambler();
+        this->lastMoveMillis = this->lastMillis;
         return true;
     }
     return false;
@@ -737,6 +740,7 @@ bool TexasHoldem::fold(Gambler *gambler) {
         return false; // you can't fold during blinds
     this->notFolded[gambler] = false;
     this->current = this->nextGambler();
+    this->lastMoveMillis = this->lastMillis;
     return true;
 }
 
@@ -842,4 +846,18 @@ int TexasHoldem::getCurrentHighest() const noexcept {
 
 Gambler *TexasHoldem::getCurrentDealer() const noexcept {
     return this->dealer;
+}
+
+bool TexasHoldem::unjammingPerformed(Gambler *player) noexcept {
+    if (this->current == player) return false;
+    return Game::unjammingPerformed(player);
+}
+
+void TexasHoldem::removeBankruptPlayers() noexcept {
+    for (auto &gambler: this->gamblersPlaying) {
+        if (this->inGameMoney[gambler] < this->minimumEntry / 500) {
+            gambler->leaveGame();
+            gambler->spectate(this);
+        }
+    }
 }

@@ -153,6 +153,11 @@ public:
     int getCurrentHighest() const noexcept;
 
     Gambler* getCurrentDealer() const noexcept;
+
+    bool unjammingPerformed(Gambler *player) noexcept override;
+
+protected:
+    void removeBankruptPlayers() noexcept override;
 };
 
 
