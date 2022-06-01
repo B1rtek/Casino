@@ -810,6 +810,8 @@ bool TexasHoldem::addPlayer(Gambler *gambler) noexcept {
     if (this->gamblersPlaying.size() < this->maxPlayers && CardGame::addPlayer(gambler)) {
         this->notFolded[gambler] = true;
         this->movedDuringThisPhase[gambler] = false;
+        this->gamblersCards[gambler].push_back(CardGame::noneCard);
+        this->gamblersCards[gambler].push_back(CardGame::noneCard);
         return true;
     }
     return false;
