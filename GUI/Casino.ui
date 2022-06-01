@@ -1473,7 +1473,7 @@ p, li { white-space: pre-wrap; }
            </widget>
           </item>
           <item row="5" column="9" colspan="2">
-           <widget class="QPushButton" name="buttonBetEvenodd1_2">
+           <widget class="QPushButton" name="buttonBetEvenodd2">
             <property name="text">
              <string>Odd</string>
             </property>
@@ -1487,7 +1487,7 @@ p, li { white-space: pre-wrap; }
            </widget>
           </item>
           <item row="2" column="5" alignment="Qt::AlignHCenter">
-           <widget class="QToolButton" name="toolButtonRouletteBet13_2">
+           <widget class="QToolButton" name="toolButtonRouletteBet13">
             <property name="text">
              <string>13</string>
             </property>
@@ -1543,7 +1543,7 @@ p, li { white-space: pre-wrap; }
            </widget>
           </item>
           <item row="1" column="4" alignment="Qt::AlignHCenter">
-           <widget class="QToolButton" name="toolButtonRouletteBet12">
+           <widget class="QToolButton" name="toolButtonRouletteBet11">
             <property name="text">
              <string>11</string>
             </property>
@@ -1655,7 +1655,7 @@ p, li { white-space: pre-wrap; }
            </widget>
           </item>
           <item row="0" column="4" alignment="Qt::AlignHCenter">
-           <widget class="QToolButton" name="toolButtonRouletteBet13">
+           <widget class="QToolButton" name="toolButtonRouletteBet12">
             <property name="text">
              <string>12</string>
             </property>
@@ -1711,7 +1711,7 @@ p, li { white-space: pre-wrap; }
            </widget>
           </item>
           <item row="1" column="11" alignment="Qt::AlignHCenter">
-           <widget class="QToolButton" name="toolButtonRouletteBet31_2">
+           <widget class="QToolButton" name="toolButtonRouletteBet32">
             <property name="text">
              <string>32</string>
             </property>

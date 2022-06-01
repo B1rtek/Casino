@@ -227,9 +227,9 @@ public:
     QToolButton *toolButtonRouletteBet21;
     QToolButton *toolButtonRouletteBet7;
     QToolButton *toolButtonRouletteBet14;
-    QPushButton *buttonBetEvenodd1_2;
+    QPushButton *buttonBetEvenodd2;
     QPushButton *buttonBetTwelve2;
-    QToolButton *toolButtonRouletteBet13_2;
+    QToolButton *toolButtonRouletteBet13;
     QToolButton *toolButtonRouletteBet0;
     QToolButton *toolButtonRouletteBet24;
     QToolButton *toolButtonRouletteBet33;
@@ -237,7 +237,7 @@ public:
     QToolButton *toolButtonRouletteBet3;
     QToolButton *toolButtonRouletteBet30;
     QToolButton *toolButtonRouletteBet26;
-    QToolButton *toolButtonRouletteBet12;
+    QToolButton *toolButtonRouletteBet11;
     QToolButton *toolButtonRouletteBet15;
     QToolButton *toolButtonRouletteBet23;
     QToolButton *toolButtonRouletteBet5;
@@ -253,7 +253,7 @@ public:
     QToolButton *toolButtonRouletteBet19;
     QToolButton *toolButtonRouletteBet17;
     QToolButton *toolButtonRouletteBet4;
-    QToolButton *toolButtonRouletteBet13;
+    QToolButton *toolButtonRouletteBet12;
     QPushButton *buttonBetColumn1;
     QPushButton *buttonBetColor2;
     QToolButton *toolButtonRouletteBet35;
@@ -261,7 +261,7 @@ public:
     QToolButton *toolButtonRouletteBet16;
     QToolButton *toolButtonRouletteBet22;
     QToolButton *toolButtonRouletteBet31;
-    QToolButton *toolButtonRouletteBet31_2;
+    QToolButton *toolButtonRouletteBet32;
     QToolButton *toolButtonRouletteBet2;
     QToolButton *toolButtonRouletteBet10;
     QPushButton *buttonBetColumn3;
@@ -1329,20 +1329,20 @@ public:
 
         gridLayout->addWidget(toolButtonRouletteBet14, 1, 5, 1, 1, Qt::AlignHCenter);
 
-        buttonBetEvenodd1_2 = new QPushButton(pageRoulette);
-        buttonBetEvenodd1_2->setObjectName(QString::fromUtf8("buttonBetEvenodd1_2"));
+        buttonBetEvenodd2 = new QPushButton(pageRoulette);
+        buttonBetEvenodd2->setObjectName(QString::fromUtf8("buttonBetEvenodd2"));
 
-        gridLayout->addWidget(buttonBetEvenodd1_2, 5, 9, 1, 2);
+        gridLayout->addWidget(buttonBetEvenodd2, 5, 9, 1, 2);
 
         buttonBetTwelve2 = new QPushButton(pageRoulette);
         buttonBetTwelve2->setObjectName(QString::fromUtf8("buttonBetTwelve2"));
 
         gridLayout->addWidget(buttonBetTwelve2, 4, 5, 1, 4);
 
-        toolButtonRouletteBet13_2 = new QToolButton(pageRoulette);
-        toolButtonRouletteBet13_2->setObjectName(QString::fromUtf8("toolButtonRouletteBet13_2"));
+        toolButtonRouletteBet13 = new QToolButton(pageRoulette);
+        toolButtonRouletteBet13->setObjectName(QString::fromUtf8("toolButtonRouletteBet13"));
 
-        gridLayout->addWidget(toolButtonRouletteBet13_2, 2, 5, 1, 1, Qt::AlignHCenter);
+        gridLayout->addWidget(toolButtonRouletteBet13, 2, 5, 1, 1, Qt::AlignHCenter);
 
         toolButtonRouletteBet0 = new QToolButton(pageRoulette);
         toolButtonRouletteBet0->setObjectName(QString::fromUtf8("toolButtonRouletteBet0"));
@@ -1379,10 +1379,10 @@ public:
 
         gridLayout->addWidget(toolButtonRouletteBet26, 1, 9, 1, 1, Qt::AlignHCenter);
 
-        toolButtonRouletteBet12 = new QToolButton(pageRoulette);
-        toolButtonRouletteBet12->setObjectName(QString::fromUtf8("toolButtonRouletteBet12"));
+        toolButtonRouletteBet11 = new QToolButton(pageRoulette);
+        toolButtonRouletteBet11->setObjectName(QString::fromUtf8("toolButtonRouletteBet11"));
 
-        gridLayout->addWidget(toolButtonRouletteBet12, 1, 4, 1, 1, Qt::AlignHCenter);
+        gridLayout->addWidget(toolButtonRouletteBet11, 1, 4, 1, 1, Qt::AlignHCenter);
 
         toolButtonRouletteBet15 = new QToolButton(pageRoulette);
         toolButtonRouletteBet15->setObjectName(QString::fromUtf8("toolButtonRouletteBet15"));
@@ -1459,10 +1459,10 @@ public:
 
         gridLayout->addWidget(toolButtonRouletteBet4, 2, 2, 1, 1, Qt::AlignHCenter);
 
-        toolButtonRouletteBet13 = new QToolButton(pageRoulette);
-        toolButtonRouletteBet13->setObjectName(QString::fromUtf8("toolButtonRouletteBet13"));
+        toolButtonRouletteBet12 = new QToolButton(pageRoulette);
+        toolButtonRouletteBet12->setObjectName(QString::fromUtf8("toolButtonRouletteBet12"));
 
-        gridLayout->addWidget(toolButtonRouletteBet13, 0, 4, 1, 1, Qt::AlignHCenter);
+        gridLayout->addWidget(toolButtonRouletteBet12, 0, 4, 1, 1, Qt::AlignHCenter);
 
         buttonBetColumn1 = new QPushButton(pageRoulette);
         buttonBetColumn1->setObjectName(QString::fromUtf8("buttonBetColumn1"));
@@ -1499,10 +1499,10 @@ public:
 
         gridLayout->addWidget(toolButtonRouletteBet31, 2, 11, 1, 1, Qt::AlignHCenter);
 
-        toolButtonRouletteBet31_2 = new QToolButton(pageRoulette);
-        toolButtonRouletteBet31_2->setObjectName(QString::fromUtf8("toolButtonRouletteBet31_2"));
+        toolButtonRouletteBet32 = new QToolButton(pageRoulette);
+        toolButtonRouletteBet32->setObjectName(QString::fromUtf8("toolButtonRouletteBet32"));
 
-        gridLayout->addWidget(toolButtonRouletteBet31_2, 1, 11, 1, 1, Qt::AlignHCenter);
+        gridLayout->addWidget(toolButtonRouletteBet32, 1, 11, 1, 1, Qt::AlignHCenter);
 
         toolButtonRouletteBet2 = new QToolButton(pageRoulette);
         toolButtonRouletteBet2->setObjectName(QString::fromUtf8("toolButtonRouletteBet2"));
@@ -1848,9 +1848,9 @@ public:
         toolButtonRouletteBet21->setText(QCoreApplication::translate("CasinoWindow", "21", nullptr));
         toolButtonRouletteBet7->setText(QCoreApplication::translate("CasinoWindow", "7", nullptr));
         toolButtonRouletteBet14->setText(QCoreApplication::translate("CasinoWindow", "14", nullptr));
-        buttonBetEvenodd1_2->setText(QCoreApplication::translate("CasinoWindow", "Odd", nullptr));
+        buttonBetEvenodd2->setText(QCoreApplication::translate("CasinoWindow", "Odd", nullptr));
         buttonBetTwelve2->setText(QCoreApplication::translate("CasinoWindow", "2nd 12", nullptr));
-        toolButtonRouletteBet13_2->setText(QCoreApplication::translate("CasinoWindow", "13", nullptr));
+        toolButtonRouletteBet13->setText(QCoreApplication::translate("CasinoWindow", "13", nullptr));
         toolButtonRouletteBet0->setText(QCoreApplication::translate("CasinoWindow", "0", nullptr));
         toolButtonRouletteBet24->setText(QCoreApplication::translate("CasinoWindow", "24", nullptr));
         toolButtonRouletteBet33->setText(QCoreApplication::translate("CasinoWindow", "33", nullptr));
@@ -1858,7 +1858,7 @@ public:
         toolButtonRouletteBet3->setText(QCoreApplication::translate("CasinoWindow", "3", nullptr));
         toolButtonRouletteBet30->setText(QCoreApplication::translate("CasinoWindow", "30", nullptr));
         toolButtonRouletteBet26->setText(QCoreApplication::translate("CasinoWindow", "26", nullptr));
-        toolButtonRouletteBet12->setText(QCoreApplication::translate("CasinoWindow", "11", nullptr));
+        toolButtonRouletteBet11->setText(QCoreApplication::translate("CasinoWindow", "11", nullptr));
         toolButtonRouletteBet15->setText(QCoreApplication::translate("CasinoWindow", "15", nullptr));
         toolButtonRouletteBet23->setText(QCoreApplication::translate("CasinoWindow", "23", nullptr));
         toolButtonRouletteBet5->setText(QCoreApplication::translate("CasinoWindow", "5", nullptr));
@@ -1874,7 +1874,7 @@ public:
         toolButtonRouletteBet19->setText(QCoreApplication::translate("CasinoWindow", "19", nullptr));
         toolButtonRouletteBet17->setText(QCoreApplication::translate("CasinoWindow", "17", nullptr));
         toolButtonRouletteBet4->setText(QCoreApplication::translate("CasinoWindow", "4", nullptr));
-        toolButtonRouletteBet13->setText(QCoreApplication::translate("CasinoWindow", "12", nullptr));
+        toolButtonRouletteBet12->setText(QCoreApplication::translate("CasinoWindow", "12", nullptr));
         buttonBetColumn1->setText(QCoreApplication::translate("CasinoWindow", "2 to 1", nullptr));
         buttonBetColor2->setText(QCoreApplication::translate("CasinoWindow", "Black", nullptr));
         toolButtonRouletteBet35->setText(QCoreApplication::translate("CasinoWindow", "35", nullptr));
@@ -1882,7 +1882,7 @@ public:
         toolButtonRouletteBet16->setText(QCoreApplication::translate("CasinoWindow", "16", nullptr));
         toolButtonRouletteBet22->setText(QCoreApplication::translate("CasinoWindow", "22", nullptr));
         toolButtonRouletteBet31->setText(QCoreApplication::translate("CasinoWindow", "31", nullptr));
-        toolButtonRouletteBet31_2->setText(QCoreApplication::translate("CasinoWindow", "32", nullptr));
+        toolButtonRouletteBet32->setText(QCoreApplication::translate("CasinoWindow", "32", nullptr));
         toolButtonRouletteBet2->setText(QCoreApplication::translate("CasinoWindow", "2", nullptr));
         toolButtonRouletteBet10->setText(QCoreApplication::translate("CasinoWindow", "10", nullptr));
         buttonBetColumn3->setText(QCoreApplication::translate("CasinoWindow", "2 to 1", nullptr));
