@@ -29,6 +29,57 @@ void CasinoWindow::linkButtons() {
     connect(this->ui.buttonFold, &QPushButton::clicked, this, &CasinoWindow::texasHoldemFold);
     connect(this->ui.buttonCall, &QPushButton::clicked, this, &CasinoWindow::texasHoldemCall);
     connect(this->ui.buttonRaise, &QPushButton::clicked, this, &CasinoWindow::texasHoldemRaise);
+    // roulette
+    connect(this->ui.buttonLeaveRoulette, &QPushButton::clicked, this, &CasinoWindow::leaveGame);
+    connect(this->ui.toolButtonRouletteBet0, &QToolButton::clicked, [this](){this->rouletteBet(NUMBER, 0);});
+    connect(this->ui.toolButtonRouletteBet1, &QToolButton::clicked, [this](){this->rouletteBet(NUMBER, 1);});
+    connect(this->ui.toolButtonRouletteBet2, &QToolButton::clicked, [this](){this->rouletteBet(NUMBER, 2);});
+    connect(this->ui.toolButtonRouletteBet3, &QToolButton::clicked, [this](){this->rouletteBet(NUMBER, 3);});
+    connect(this->ui.toolButtonRouletteBet4, &QToolButton::clicked, [this](){this->rouletteBet(NUMBER, 4);});
+    connect(this->ui.toolButtonRouletteBet5, &QToolButton::clicked, [this](){this->rouletteBet(NUMBER, 5);});
+    connect(this->ui.toolButtonRouletteBet6, &QToolButton::clicked, [this](){this->rouletteBet(NUMBER, 6);});
+    connect(this->ui.toolButtonRouletteBet7, &QToolButton::clicked, [this](){this->rouletteBet(NUMBER, 7);});
+    connect(this->ui.toolButtonRouletteBet8, &QToolButton::clicked, [this](){this->rouletteBet(NUMBER, 8);});
+    connect(this->ui.toolButtonRouletteBet9, &QToolButton::clicked, [this](){this->rouletteBet(NUMBER, 9);});
+    connect(this->ui.toolButtonRouletteBet10, &QToolButton::clicked, [this](){this->rouletteBet(NUMBER, 10);});
+    connect(this->ui.toolButtonRouletteBet11, &QToolButton::clicked, [this](){this->rouletteBet(NUMBER, 11);});
+    connect(this->ui.toolButtonRouletteBet12, &QToolButton::clicked, [this](){this->rouletteBet(NUMBER, 12);});
+    connect(this->ui.toolButtonRouletteBet13, &QToolButton::clicked, [this](){this->rouletteBet(NUMBER, 13);});
+    connect(this->ui.toolButtonRouletteBet14, &QToolButton::clicked, [this](){this->rouletteBet(NUMBER, 14);});
+    connect(this->ui.toolButtonRouletteBet15, &QToolButton::clicked, [this](){this->rouletteBet(NUMBER, 15);});
+    connect(this->ui.toolButtonRouletteBet16, &QToolButton::clicked, [this](){this->rouletteBet(NUMBER, 16);});
+    connect(this->ui.toolButtonRouletteBet17, &QToolButton::clicked, [this](){this->rouletteBet(NUMBER, 17);});
+    connect(this->ui.toolButtonRouletteBet18, &QToolButton::clicked, [this](){this->rouletteBet(NUMBER, 18);});
+    connect(this->ui.toolButtonRouletteBet19, &QToolButton::clicked, [this](){this->rouletteBet(NUMBER, 19);});
+    connect(this->ui.toolButtonRouletteBet20, &QToolButton::clicked, [this](){this->rouletteBet(NUMBER, 20);});
+    connect(this->ui.toolButtonRouletteBet21, &QToolButton::clicked, [this](){this->rouletteBet(NUMBER, 21);});
+    connect(this->ui.toolButtonRouletteBet22, &QToolButton::clicked, [this](){this->rouletteBet(NUMBER, 22);});
+    connect(this->ui.toolButtonRouletteBet23, &QToolButton::clicked, [this](){this->rouletteBet(NUMBER, 23);});
+    connect(this->ui.toolButtonRouletteBet24, &QToolButton::clicked, [this](){this->rouletteBet(NUMBER, 24);});
+    connect(this->ui.toolButtonRouletteBet25, &QToolButton::clicked, [this](){this->rouletteBet(NUMBER, 25);});
+    connect(this->ui.toolButtonRouletteBet26, &QToolButton::clicked, [this](){this->rouletteBet(NUMBER, 26);});
+    connect(this->ui.toolButtonRouletteBet27, &QToolButton::clicked, [this](){this->rouletteBet(NUMBER, 27);});
+    connect(this->ui.toolButtonRouletteBet28, &QToolButton::clicked, [this](){this->rouletteBet(NUMBER, 28);});
+    connect(this->ui.toolButtonRouletteBet29, &QToolButton::clicked, [this](){this->rouletteBet(NUMBER, 29);});
+    connect(this->ui.toolButtonRouletteBet30, &QToolButton::clicked, [this](){this->rouletteBet(NUMBER, 30);});
+    connect(this->ui.toolButtonRouletteBet31, &QToolButton::clicked, [this](){this->rouletteBet(NUMBER, 31);});
+    connect(this->ui.toolButtonRouletteBet32, &QToolButton::clicked, [this](){this->rouletteBet(NUMBER, 32);});
+    connect(this->ui.toolButtonRouletteBet33, &QToolButton::clicked, [this](){this->rouletteBet(NUMBER, 33);});
+    connect(this->ui.toolButtonRouletteBet34, &QToolButton::clicked, [this](){this->rouletteBet(NUMBER, 34);});
+    connect(this->ui.toolButtonRouletteBet35, &QToolButton::clicked, [this](){this->rouletteBet(NUMBER, 35);});
+    connect(this->ui.toolButtonRouletteBet36, &QToolButton::clicked, [this](){this->rouletteBet(NUMBER, 36);});
+    connect(this->ui.buttonBetColumn1, &QPushButton::clicked, [this](){this->rouletteBet(COLUMN, 1);});
+    connect(this->ui.buttonBetColumn2, &QPushButton::clicked, [this](){this->rouletteBet(COLUMN, 2);});
+    connect(this->ui.buttonBetColumn3, &QPushButton::clicked, [this](){this->rouletteBet(COLUMN, 3);});
+    connect(this->ui.buttonBetTwelve1, &QPushButton::clicked, [this](){this->rouletteBet(TWELVE, 1);});
+    connect(this->ui.buttonBetTwelve2, &QPushButton::clicked, [this](){this->rouletteBet(TWELVE, 13);});
+    connect(this->ui.buttonBetTwelve3, &QPushButton::clicked, [this](){this->rouletteBet(TWELVE, 25);});
+    connect(this->ui.buttonBetHalf1, &QPushButton::clicked, [this](){this->rouletteBet(HALF, 1);});
+    connect(this->ui.buttonBetHalf2, &QPushButton::clicked, [this](){this->rouletteBet(HALF, 19);});
+    connect(this->ui.buttonBetEvenodd1, &QPushButton::clicked, [this](){this->rouletteBet(EVENODD, 2);});
+    connect(this->ui.buttonBetEvenodd2, &QPushButton::clicked, [this](){this->rouletteBet(EVENODD, 1);});
+    connect(this->ui.buttonBetColor1, &QPushButton::clicked, [this](){this->rouletteBet(COLOR, 2);});
+    connect(this->ui.buttonBetColor2, &QPushButton::clicked, [this](){this->rouletteBet(COLOR, 1);});
 }
 
 void CasinoWindow::setDarkMode() {
@@ -204,7 +255,88 @@ void CasinoWindow::refreshUI() {
         }
             break;
         case GamePage::GAME_ROULETTE: {
-
+            Roulette *currentGame;
+            if(this->gameManager.getPlayer()->getCurrentGame() != nullptr) {
+                currentGame = dynamic_cast<Roulette *>(this->gameManager.getPlayer()->getCurrentGame()); // if this cast fails something went horribly wrong
+            } else {
+                currentGame = dynamic_cast<Roulette *>(this->gameManager.getPlayer()->getSpectatedGame()); // same here
+            }
+            // tables - gamblers table
+            CasinoWindow::adjustTableSize(this->ui.tableGamblersRoulette, currentGame->getPlayers().size(), 3);
+            int rowCounter = 0;
+            for (auto &gambler: currentGame->getPlayers()) {
+                QTableWidgetItem updated = QTableWidgetItem(QString(gambler->getName().c_str()));
+                if (this->ui.tableGamblersRoulette->item(rowCounter, 0)->text() != updated.text()) {
+                    *this->ui.tableGamblersRoulette->item(rowCounter, 0) = updated;
+                }
+                updated = QTableWidgetItem(QString(std::to_string(currentGame->getInGameMoney()[gambler]).c_str()));
+                if (this->ui.tableGamblersRoulette->item(rowCounter, 1)->text() != updated.text()) {
+                    *this->ui.tableGamblersRoulette->item(rowCounter, 1) = updated;
+                }
+                updated = QTableWidgetItem(QString(std::to_string(currentGame->getCurrentBets()[gambler]).c_str()));
+                if (this->ui.tableGamblersRoulette->item(rowCounter, 2)->text() != updated.text()) {
+                    *this->ui.tableGamblersRoulette->item(rowCounter, 2) = updated;
+                }
+                ++rowCounter;
+            }
+            this->ui.tableGamblersRoulette->setEditTriggers(QAbstractItemView::NoEditTriggers);
+            this->ui.tableGamblersRoulette->viewport()->update();
+            // tables - roulette bets
+            rowCounter = this->ui.tableBetsRoulette->rowCount();
+            std::vector<RouletteBet> rouletteBets = currentGame->getRouletteBets();
+            CasinoWindow::adjustTableSize(this->ui.tableBetsRoulette, rouletteBets.size(), 4);
+            bool scrollToBottom = rowCounter != rouletteBets.size();
+            rowCounter = 0;
+            for(auto &bet: rouletteBets) {
+                QTableWidgetItem updated = QTableWidgetItem(QString(bet.gambler->getName().c_str()));
+                if(this->ui.tableBetsRoulette->item(rowCounter, 0)->text() != updated.text()) {
+                    *this->ui.tableBetsRoulette->item(rowCounter, 0) = updated;
+                }
+                updated = QTableWidgetItem(QString(bet.getBetTypeString().c_str()));
+                if(this->ui.tableBetsRoulette->item(rowCounter, 1)->text() != updated.text()) {
+                    *this->ui.tableBetsRoulette->item(rowCounter, 1) = updated;
+                }
+                updated = QTableWidgetItem(QString(bet.getAmountString().c_str()));
+                if(this->ui.tableBetsRoulette->item(rowCounter, 2)->text() != updated.text()) {
+                    *this->ui.tableBetsRoulette->item(rowCounter, 2) = updated;
+                }
+                if(!currentGame->isInProgress()) {
+                    updated = QTableWidgetItem(QString(bet.getSuccessString().c_str()));
+                    if(this->ui.tableBetsRoulette->item(rowCounter, 3)->text() != updated.text()) {
+                        *this->ui.tableBetsRoulette->item(rowCounter, 3) = updated;
+                    }
+                }
+                ++rowCounter;
+            }
+            this->ui.tableBetsRoulette->setEditTriggers(QAbstractItemView::NoEditTriggers);
+            this->ui.tableBetsRoulette->viewport()->update();
+            if(scrollToBottom) {
+                QTableWidgetItem *last = this->ui.tableBetsRoulette->item((this->ui.tableBetsRoulette->rowCount()-1), 0);
+                this->ui.tableBetsRoulette->scrollToItem(last, QAbstractItemView::PositionAtBottom);
+            }
+            // roulette countdown label
+            std::string toDisplay;
+            if (currentGame->isInProgress()) {
+                auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - this->chronoTimeStart);
+                int timeToStart = (currentGame->getTargetTime() - elapsed.count()) / 1000;
+                toDisplay = "Betting ends in " + std::to_string(timeToStart) + " seconds";
+            } else {
+                toDisplay = currentGame->getGameSituationDescription();
+            }
+            if (this->ui.labelCountdownRoulette->text().toStdString() != toDisplay) {
+                this->ui.labelCountdownRoulette->setText(QString(toDisplay.c_str()));
+            }
+            // roulette last number display
+            if(!currentGame->getRouletteBets().empty()) {
+                toDisplay = "Last rolled number: " + std::to_string(currentGame->getLastRolledNumber());
+                if(this->ui.labelLastResultsRoulette->text().toStdString() != toDisplay) {
+                    this->ui.labelLastResultsRoulette->setText(QString(toDisplay.c_str()));
+                }
+            }
+            // roulette name label
+            if(this->ui.labelRouletteName->text().toStdString() != currentGame->getName()) {
+                this->ui.labelRouletteName->setText(QString(currentGame->getName().c_str()));
+            }
         }
             break;
         case GamePage::GAME_JACKPOT: {
@@ -373,6 +505,17 @@ void CasinoWindow::texasHoldemRaise() {
         if (this->gameManager.getPlayer()->getCurrentGame()->getGameType() == TEXAS_HOLDEM) {
             int toRaise = CasinoWindow::getIntFromLineEdit(this->ui.lineEditRaise);
             if (toRaise != 0 && this->gameManager.texasHoldemRaise(toRaise)) {
+                this->refreshUI();
+            }
+        }
+    }
+}
+
+void CasinoWindow::rouletteBet(RouletteBetType betType, int number) {
+    if (this->gameManager.getPlayer()->getCurrentGame() != nullptr) {
+        if (this->gameManager.getPlayer()->getCurrentGame()->getGameType() == ROULETTE) {
+            int toBet = CasinoWindow::getIntFromLineEdit(this->ui.lineEditBetRoulette);
+            if (toBet != 0 && this->gameManager.rouletteBet(betType, number, toBet)) {
                 this->refreshUI();
             }
         }

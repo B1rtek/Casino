@@ -57,6 +57,8 @@ class CasinoWindow: public QMainWindow {
     void texasHoldemCall();
 
     void texasHoldemRaise();
+
+    void rouletteBet(RouletteBetType betType, int number);
 public:
     explicit CasinoWindow(QWidget *parent = nullptr);
 

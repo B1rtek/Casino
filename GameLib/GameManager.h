@@ -41,6 +41,8 @@ public:
 
     bool texasHoldemRaise(int amount);
 
+    bool rouletteBet(RouletteBetType betType, int number, int amount);
+
     std::vector<Game*> getGames() const noexcept;
 
     Gambler* getPlayer() const noexcept;

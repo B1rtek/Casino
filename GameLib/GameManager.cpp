@@ -144,3 +144,7 @@ bool GameManager::texasHoldemCall() {
 bool GameManager::texasHoldemRaise(int amount) {
     return dynamic_cast<TexasHoldem*>(this->player->getCurrentGame())->raise(this->player, amount);
 }
+
+bool GameManager::rouletteBet(RouletteBetType betType, int number, int amount) {
+    return dynamic_cast<Roulette*>(this->player->getCurrentGame())->rouletteBet(this->player, betType, amount, number);
+}
