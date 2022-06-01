@@ -837,3 +837,7 @@ std::string TexasHoldem::getLastWinningHandString() const noexcept {
 int TexasHoldem::getCurrentHighest() const noexcept {
     return this->currentHighest;
 }
+
+Gambler *TexasHoldem::getCurrentDealer() const noexcept {
+    return this->dealer;
+}

@@ -151,6 +151,8 @@ public:
     std::string getLastWinningHandString() const noexcept;
 
     int getCurrentHighest() const noexcept;
+
+    Gambler* getCurrentDealer() const noexcept;
 };
 
 
