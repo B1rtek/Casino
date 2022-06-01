@@ -21,40 +21,47 @@ struct RouletteBet {
     int number, amount;
     bool successful = false;
 
-    std::string getBetStringRepresentation() {
-        std::string representation = this->gambler->getName() + ": ";
+    std::string getBetTypeString() {
         switch (type) {
             case COLOR: {
-                representation += number % 2 == 1 ? "Black, " : "Red, ";
+                return number % 2 == 1 ? "Black" : "Red";
             }
-                break;
             case EVENODD: {
-                representation += number % 2 == 1 ? "Odd, " : "Even, ";
+                return number % 2 == 1 ? "Odd" : "Even";
             }
-                break;
             case HALF: {
-                representation += number <= 18 ? "1 to 18, " : "19 to 36, ";
+                return number <= 18 ? "1 to 18" : "19 to 36";
             }
-                break;
             case TWELVE: {
-                if (number <= 12) representation += "1st 12, ";
-                else if (number >= 25) representation += "3rd 12, ";
-                else representation += "2nd 12, ";
+                if (number <= 12) return "1st 12";
+                else if (number >= 25) return "3rd 12";
+                else return "2nd 12";
             }
-                break;
             case COLUMN: {
-                if (number %3 == 1) representation += "Column 1, ";
-                if (number %3 == 2) representation += "Column 2, ";
-                if (number %3 == 0) representation += "Column 3, ";
+                if (number % 3 == 1) return "Column 1";
+                if (number % 3 == 2) return "Column 2";
+                if (number % 3 == 0) return "Column 3";
             }
-                break;
             case NUMBER: {
-                representation += "Number " + std::to_string(number) + ", ";
+                return "Number " + std::to_string(number);
             }
-                break;
         }
+        return {};
+    }
+
+    std::string getAmountString() {
+        return std::to_string(amount);
+    }
+
+    std::string getSuccessString() {
+        return successful ? "WON" : "LOST";
+    }
+
+    std::string getBetStringRepresentation() {
+        std::string representation = this->gambler->getName() + ": ";
+        representation += this->getBetTypeString() + ", ";
         representation += std::to_string(amount);
-        if(successful) {
+        if (successful) {
             representation += " [WON]";
         }
         return representation;
