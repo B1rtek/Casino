@@ -133,8 +133,8 @@ int Roulette::getLastRolledNumber() const noexcept {
 
 void Roulette::removeBankruptPlayers() noexcept {
     for(auto &gambler: this->gamblersPlaying) {
+        this->currentBets[gambler] = 0;
         if (this->inGameMoney[gambler] == 0) {
-            this->currentBets[gambler] = 0;
             gambler->leaveGame();
             gambler->spectate(this);
         }
