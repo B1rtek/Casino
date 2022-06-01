@@ -19,14 +19,14 @@ JackpotBot::JackpotBot(int balance, Game *game, const std::string &name) : Gambl
 void JackpotBot::makeAMove(int millisecondsPassed) noexcept {
     if (this->gamePlayed->isInProgress()) {
         if (!this->moveScheduled) {
-            this->targetTime = millisecondsPassed + rand() % 5000;
+            this->targetTime = millisecondsPassed + rand() % 1000;
             this->moveScheduled = true;
-        } else {
-            bool willBet = !(rand() % 8);
+        } else if (this->targetTime <= millisecondsPassed) {
+            bool willBet = !(rand() % 2);
             if (this->gamePlayed->getTotalBet() > this->gamePlayed->getCurrentBets()[this] * 20) { // chances less than 5%
                 willBet = true;
             }
-            if(willBet) {
+            if (willBet) {
                 int maxPart = 50;
                 if (this->gamePlayed->getInGameMoney()[this] <= 10) {
                     maxPart = 1;
