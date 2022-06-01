@@ -51,7 +51,6 @@ void Jackpot::calculatePercent() {
  * Chooses a winner randomly based on the calculated chances
  */
 std::vector<Gambler*> Jackpot::chooseTheWinners() noexcept {
-    srand(time(nullptr));
     double random = double(rand()) / double(RAND_MAX);
     int i = 0;
     while (random > preorderPercentages[i] && i < preorderPercentages.size()) {
