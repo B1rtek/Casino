@@ -9,6 +9,7 @@
 #include <QStyleFactory>
 #include "UICasino.h"
 #include "GameManager.h"
+#include "TexasHoldemGUITableItem.h"
 
 enum GamePage {
     MAIN_MENU,
@@ -23,6 +24,8 @@ class CasinoWindow: public QMainWindow {
     Ui_CasinoWindow ui;
     GameManager gameManager;
     QTimer *timer;
+    std::vector<TexasHoldemGUITableItem> texasHoldemCardDisplays;
+    std::vector<QLabel*> texasHoldemTable;
     std::chrono::time_point<std::chrono::steady_clock> chronoTimeStart;
 
     void linkButtons();
@@ -48,6 +51,12 @@ class CasinoWindow: public QMainWindow {
     void spectateGame();
 
     void jackpotBet();
+
+    void texasHoldemFold();
+
+    void texasHoldemCall();
+
+    void texasHoldemRaise();
 public:
     explicit CasinoWindow(QWidget *parent = nullptr);
 

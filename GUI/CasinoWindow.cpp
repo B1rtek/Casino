@@ -24,6 +24,11 @@ void CasinoWindow::linkButtons() {
     // jackpot
     connect(this->ui.buttonLeaveJackpot, &QPushButton::clicked, this, &CasinoWindow::leaveGame);
     connect(this->ui.buttonBetJackpot, &QPushButton::clicked, this, &CasinoWindow::jackpotBet);
+    // texas holdem
+    connect(this->ui.buttonLeaveTexas, &QPushButton::clicked, this, &CasinoWindow::leaveGame);
+    connect(this->ui.buttonFold, &QPushButton::clicked, this, &CasinoWindow::texasHoldemFold);
+    connect(this->ui.buttonCall, &QPushButton::clicked, this, &CasinoWindow::texasHoldemCall);
+    connect(this->ui.buttonRaise, &QPushButton::clicked, this, &CasinoWindow::texasHoldemRaise);
 }
 
 void CasinoWindow::setDarkMode() {
@@ -45,12 +50,15 @@ void CasinoWindow::setDarkMode() {
     darkPalette.setColor(QPalette::Button, QColor(53, 53, 53));
     darkPalette.setColor(QPalette::ButtonText, Qt::white);
     darkPalette.setColor(QPalette::Disabled, QPalette::ButtonText, QColor(127, 127, 127));
-    darkPalette.setColor(QPalette::BrightText, Qt::red);
+    darkPalette.setColor(QPalette::BrightText, Qt::black);
     darkPalette.setColor(QPalette::Link, QColor(42, 130, 218));
     darkPalette.setColor(QPalette::Highlight, QColor(42, 130, 218));
     darkPalette.setColor(QPalette::Disabled, QPalette::Highlight, QColor(80, 80, 80));
     darkPalette.setColor(QPalette::HighlightedText, Qt::white);
     darkPalette.setColor(QPalette::Disabled, QPalette::HighlightedText, QColor(127, 127, 127));
+    darkPalette.setColor(QPalette::Light, QColor(53, 53, 53));
+    darkPalette.setColor(QPalette::Midlight, QColor(192, 192, 192));
+    darkPalette.setColor(QPalette::Mid, QColor(127, 127, 127));
     QApplication::setPalette(darkPalette);
 }
 
@@ -65,6 +73,21 @@ void CasinoWindow::setupObjects() {
 
 void CasinoWindow::setupUI() {
     this->ui.stackedWidget->setCurrentIndex(MAIN_MENU);
+    this->texasHoldemCardDisplays.emplace_back(this->ui.labelGambler1Name, this->ui.labelGambler1Balance, this->ui.labelGambler1Bet, this->ui.labelGambler1Card1, this->ui.labelGambler1Card2);
+    this->texasHoldemCardDisplays.emplace_back(this->ui.labelGambler2Name, this->ui.labelGambler2Balance, this->ui.labelGambler2Bet, this->ui.labelGambler2Card1, this->ui.labelGambler2Card2);
+    this->texasHoldemCardDisplays.emplace_back(this->ui.labelGambler3Name, this->ui.labelGambler3Balance, this->ui.labelGambler3Bet, this->ui.labelGambler3Card1, this->ui.labelGambler3Card2);
+    this->texasHoldemCardDisplays.emplace_back(this->ui.labelGambler4Name, this->ui.labelGambler4Balance, this->ui.labelGambler4Bet, this->ui.labelGambler4Card1, this->ui.labelGambler4Card2);
+    this->texasHoldemCardDisplays.emplace_back(this->ui.labelGambler5Name, this->ui.labelGambler5Balance, this->ui.labelGambler5Bet, this->ui.labelGambler5Card1, this->ui.labelGambler5Card2);
+    this->texasHoldemCardDisplays.emplace_back(this->ui.labelGambler6Name, this->ui.labelGambler6Balance, this->ui.labelGambler6Bet, this->ui.labelGambler6Card1, this->ui.labelGambler6Card2);
+    this->texasHoldemCardDisplays.emplace_back(this->ui.labelGambler7Name, this->ui.labelGambler7Balance, this->ui.labelGambler7Bet, this->ui.labelGambler7Card1, this->ui.labelGambler7Card2);
+    this->texasHoldemCardDisplays.emplace_back(this->ui.labelGambler8Name, this->ui.labelGambler8Balance, this->ui.labelGambler8Bet, this->ui.labelGambler8Card1, this->ui.labelGambler8Card2);
+    this->texasHoldemCardDisplays.emplace_back(this->ui.labelGambler9Name, this->ui.labelGambler9Balance, this->ui.labelGambler9Bet, this->ui.labelGambler9Card1, this->ui.labelGambler9Card2);
+    this->texasHoldemCardDisplays.emplace_back(this->ui.labelGambler10Name, this->ui.labelGambler10Balance, this->ui.labelGambler10Bet, this->ui.labelGambler10Card1, this->ui.labelGambler10Card2);
+    this->texasHoldemTable.push_back(this->ui.labelTexasTableCard1);
+    this->texasHoldemTable.push_back(this->ui.labelTexasTableCard2);
+    this->texasHoldemTable.push_back(this->ui.labelTexasTableCard3);
+    this->texasHoldemTable.push_back(this->ui.labelTexasTableCard4);
+    this->texasHoldemTable.push_back(this->ui.labelTexasTableCard5);
 }
 
 CasinoWindow::CasinoWindow(CasinoWindow const &window) {
@@ -125,8 +148,59 @@ void CasinoWindow::refreshUI() {
             } else {
                 currentGame = dynamic_cast<TexasHoldem *>(this->gameManager.getPlayer()->getSpectatedGame()); // same here
             }
-            // refresh players "table"
-
+            // players "table"
+            int displayNumber = 0;
+            for(auto &gambler: currentGame->getPlayers()) {
+                this->texasHoldemCardDisplays[displayNumber++].updateItem(currentGame, gambler, this->gameManager.getPlayer());
+            }
+            while(displayNumber < 10) {
+                this->texasHoldemCardDisplays[displayNumber++].updateItem();
+            }
+            // table cards "table"
+            displayNumber = 0;
+            for(auto &card: currentGame->getCurrentDealtCards()) {
+                std::string cardRepresentation = Card::toString(*card);
+                if(this->texasHoldemTable[displayNumber]->text().toStdString() != cardRepresentation) {
+                    this->texasHoldemTable[displayNumber]->setText(QString(cardRepresentation.c_str()));
+                }
+                ++displayNumber;
+            }
+            // texas holdem last winner label
+            std::string toDisplay;
+            if (!currentGame->getLastGameWinners().empty() && !currentGame->isInProgress()) {
+                toDisplay = "Last game winners: ";
+                for(auto &gambler: currentGame->getLastGameWinners()) {
+                    toDisplay += gambler->getName() + ", ";
+                }
+                toDisplay.pop_back();
+                toDisplay.pop_back();
+                toDisplay += " with " + currentGame->getLastWinningHandString();
+                if(!currentGame->getLastWinningHand().empty()) {
+                    toDisplay += ": ";
+                    for(auto &card: currentGame->getLastWinningHand()) {
+                        toDisplay += Card::toString(*card) + ", ";
+                    }
+                    toDisplay.pop_back();
+                    toDisplay.pop_back();
+                }
+                if (this->ui.labelLastResultsTexas->text().toStdString() != toDisplay) {
+                    this->ui.labelLastResultsTexas->setText(QString(toDisplay.c_str()));
+                }
+            }
+            // texas holdem countdown label
+            toDisplay = currentGame->getGameSituationDescription();
+            if(this->ui.labelCountdownTexas->text().toStdString() != toDisplay) {
+                this->ui.labelCountdownTexas->setText(QString(toDisplay.c_str()));
+            }
+            // texas holdem state label
+            toDisplay = currentGame->getGameStateString();
+            if(this->ui.labelTexasGameState->text().toStdString() != toDisplay) {
+                this->ui.labelTexasGameState->setText(QString(toDisplay.c_str()));
+            }
+            // texas holdem name label
+            if(this->ui.labelTexasHoldemName->text().toStdString() != currentGame->getName()) {
+                this->ui.labelTexasHoldemName->setText(QString(currentGame->getName().c_str()));
+            }
         }
             break;
         case GamePage::GAME_ROULETTE: {
@@ -272,4 +346,35 @@ int CasinoWindow::getIntFromLineEdit(QLineEdit *lineEdit) {
         }
     }
     return 0;
+}
+
+void CasinoWindow::texasHoldemFold() {
+    if (this->gameManager.getPlayer()->getCurrentGame() != nullptr) {
+        if (this->gameManager.getPlayer()->getCurrentGame()->getGameType() == TEXAS_HOLDEM) {
+            if (this->gameManager.texasHoldemFold()) {
+                this->refreshUI();
+            }
+        }
+    }
+}
+
+void CasinoWindow::texasHoldemCall() {
+    if (this->gameManager.getPlayer()->getCurrentGame() != nullptr) {
+        if (this->gameManager.getPlayer()->getCurrentGame()->getGameType() == TEXAS_HOLDEM) {
+            if (this->gameManager.texasHoldemCall()) {
+                this->refreshUI();
+            }
+        }
+    }
+}
+
+void CasinoWindow::texasHoldemRaise() {
+    if (this->gameManager.getPlayer()->getCurrentGame() != nullptr) {
+        if (this->gameManager.getPlayer()->getCurrentGame()->getGameType() == TEXAS_HOLDEM) {
+            int toRaise = CasinoWindow::getIntFromLineEdit(this->ui.lineEditRaise);
+            if (toRaise != 0 && this->gameManager.texasHoldemRaise(toRaise)) {
+                this->refreshUI();
+            }
+        }
+    }
 }

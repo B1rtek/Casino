@@ -132,3 +132,15 @@ bool GameManager::stopSpectating() {
 bool GameManager::jackpotBet(int amount) {
     return dynamic_cast<Jackpot*>(this->player->getCurrentGame())->bet(this->player, amount);
 }
+
+bool GameManager::texasHoldemFold() {
+    return dynamic_cast<TexasHoldem*>(this->player->getCurrentGame())->fold(this->player);
+}
+
+bool GameManager::texasHoldemCall() {
+    return dynamic_cast<TexasHoldem*>(this->player->getCurrentGame())->call(this->player);
+}
+
+bool GameManager::texasHoldemRaise(int amount) {
+    return dynamic_cast<TexasHoldem*>(this->player->getCurrentGame())->raise(this->player, amount);
+}

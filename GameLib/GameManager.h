@@ -35,6 +35,12 @@ public:
 
     bool jackpotBet(int amount);
 
+    bool texasHoldemFold();
+
+    bool texasHoldemCall();
+
+    bool texasHoldemRaise(int amount);
+
     std::vector<Game*> getGames() const noexcept;
 
     Gambler* getPlayer() const noexcept;
