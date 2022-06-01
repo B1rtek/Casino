@@ -83,6 +83,7 @@ bool Game::bet(Gambler *gambler, int amount) noexcept {
         this->inGameMoney[gambler] -= amount;
         this->currentBets[gambler] += amount;
         this->totalBet += amount;
+        gambler->addTransaction(-amount, this->name);
         return true;
     }
     return false;
@@ -95,6 +96,7 @@ void Game::payTheWinners(const std::vector<Gambler *> &winners) noexcept {
     int toPay = this->totalBet / int(winners.size());
     for (auto &gambler: winners) {
         this->inGameMoney[gambler] += toPay;
+        gambler->addTransaction(toPay, this->name);
     }
     for (auto &gambler: this->gamblersPlaying) {
         this->currentBets[gambler] = 0;

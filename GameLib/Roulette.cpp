@@ -65,6 +65,7 @@ void Roulette::checkAndPayBets() noexcept {
             case EVENODD: {
                 if (this->lastNumberRolled % 2 == bet.number % 2 && this->lastNumberRolled != 0) {
                     this->inGameMoney[bet.gambler] += 2 * bet.amount;
+                    bet.gambler->addTransaction(2 * bet.amount, this->name);
                     bet.successful = true;
                 }
             }
@@ -73,6 +74,7 @@ void Roulette::checkAndPayBets() noexcept {
                 if ((this->lastNumberRolled >= 1 && this->lastNumberRolled <= 18 && bet.number >= 1 && bet.number <= 18) ||
                     (this->lastNumberRolled > 18 && bet.number > 18)) {
                     this->inGameMoney[bet.gambler] += 2 * bet.amount;
+                    bet.gambler->addTransaction(2 * bet.amount, this->name);
                     bet.successful = true;
                 }
             }
@@ -82,6 +84,8 @@ void Roulette::checkAndPayBets() noexcept {
                     (this->lastNumberRolled >= 13 && this->lastNumberRolled <= 24 && bet.number >= 13 && bet.number <= 24) ||
                     (this->lastNumberRolled >= 25 && bet.number >= 25)) {
                     this->inGameMoney[bet.gambler] += 3 * bet.amount;
+                    bet.gambler->addTransaction(3 * bet.amount, this->name);
+
                     bet.successful = true;
                 }
             }
@@ -89,6 +93,7 @@ void Roulette::checkAndPayBets() noexcept {
             case COLUMN: {
                 if (this->lastNumberRolled % 3 == bet.number % 3 && this->lastNumberRolled != 0) {
                     this->inGameMoney[bet.gambler] += 3 * bet.amount;
+                    bet.gambler->addTransaction(3 * bet.amount, this->name);
                     bet.successful = true;
                 }
             }
@@ -96,9 +101,11 @@ void Roulette::checkAndPayBets() noexcept {
             case NUMBER: {
                 if (this->lastNumberRolled == bet.number) {
                     this->inGameMoney[bet.gambler] += 36 * bet.amount;
+                    bet.gambler->addTransaction(36 * bet.amount, this->name);
                     bet.successful = true;
                 } else if (this->lastNumberRolled == 0) {
                     this->inGameMoney[bet.gambler] += bet.amount / 2;
+                    bet.gambler->addTransaction(bet.amount / 2, this->name);
                 }
             }
                 break;

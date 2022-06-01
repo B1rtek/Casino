@@ -44,6 +44,8 @@ public:
 
     void subtractBalance(int amount) noexcept;
 
+    void addTransaction(int amount, std::string description) noexcept;
+
     virtual void depositBalance(int amount) noexcept;
 
     virtual void withdrawBalance(int amount) noexcept;

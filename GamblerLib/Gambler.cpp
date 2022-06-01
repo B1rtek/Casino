@@ -40,8 +40,6 @@ void Gambler::makeAMove(int millisecondsPassed) noexcept {}
  * @param amount amount of balance to add
  */
 void Gambler::addBalance(int amount) noexcept {
-    std::string gameName = this->gamePlayed == nullptr ? "Balance added" : this->gamePlayed->getName();
-    this->transactions.emplace_back(amount, gameName);
     this->balance += amount;
 }
 
@@ -50,8 +48,6 @@ void Gambler::addBalance(int amount) noexcept {
  * @param amount amount of balance to remove, the balance will be subtracted until it reaches zero
  */
 void Gambler::subtractBalance(int amount) noexcept {
-    std::string gameName = this->gamePlayed == nullptr ? "Joined Game" : this->gamePlayed->getName();
-    this->transactions.emplace_back(-std::min(amount, this->balance), gameName);
     this->balance = std::max(this->balance - amount, 0);
 }
 
@@ -211,6 +207,10 @@ bool Gambler::isBot() const noexcept {
 
 GamblerType Gambler::getGamblerType() const noexcept {
     return this->gamblerType;
+}
+
+void Gambler::addTransaction(int amount, std::string description) noexcept {
+    this->transactions.emplace_back(amount, description);
 }
 
 // Guest
