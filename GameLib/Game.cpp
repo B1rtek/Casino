@@ -84,6 +84,7 @@ bool Game::bet(Gambler *gambler, int amount) noexcept {
         this->currentBets[gambler] += amount;
         this->totalBet += amount;
         gambler->addTransaction(-amount, this->name);
+        this->lastMoveMillis = this->lastMillis;
         return true;
     }
     return false;
@@ -240,4 +241,20 @@ std::string Game::getGameSituationDescription() const noexcept {
         return "In progress";
     }
     return "Next game starts in " + std::to_string((this->targetTime - this->lastMillis) / 1000) + " seconds...";
+}
+
+bool Game::unjammingPerformed(Gambler *player) noexcept {
+    if(this->lastMoveMillis + 120000 < this->lastMillis) { // jam detection - no moves since 2 minutes (a bad sign)
+        this->inProgress = false;
+        for(auto &gambler: this->gamblersPlaying) {
+            gambler->addBalance(this->currentBets[gambler]);
+            this->currentBets[gambler] = 0;
+            gambler->leaveGame();
+        }
+        for(auto &gambler: this->spectators) {
+            gambler->stopSpectating();
+        }
+        return true;
+    }
+    return false;
 }

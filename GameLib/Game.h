@@ -25,7 +25,7 @@ protected:
     std::vector<Gambler *> gamblersPlaying;
     std::set<Gambler *> spectators;
     std::map<Gambler *, int> currentBets, inGameMoney;
-    int minimumEntry = 0, totalBet = 0, targetTime = 30000, maxPlayers = 100, minPlayers = 2, lastMillis = 0; // game starts 30 seconds after manager starts
+    int minimumEntry = 0, totalBet = 0, targetTime = 30000, maxPlayers = 100, minPlayers = 2, lastMillis = 0, lastMoveMillis = 0; // game starts 30 seconds after manager starts
     std::string name;
     bool inProgress = false;
     std::vector<Gambler*> lastGameWinners;
@@ -83,6 +83,8 @@ public:
     std::string getPlayerCountStr() const noexcept;
 
     std::string getGameSituationDescription() const noexcept;
+
+    virtual bool unjammingPerformed(Gambler *player) noexcept;
 };
 
 

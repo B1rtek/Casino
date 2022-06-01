@@ -125,6 +125,7 @@ bool Roulette::rouletteBet(Gambler *gambler, RouletteBetType betType, int amount
     if(amount == 0) return false;
     if(this->inProgress && this->bet(gambler, amount)) {
         this->bets.emplace_back(betType, number, amount, gambler);
+        this->lastMoveMillis = this->lastMillis;
         return true;
     }
     return false;

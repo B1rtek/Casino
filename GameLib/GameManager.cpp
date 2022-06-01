@@ -63,44 +63,67 @@ void GameManager::start() {
             new RouletteBot(15000, "Darius")
     };
     this->player = new Gambler(15000, "YOU");
-    for(auto &bot: bots) {
+    for (auto &bot: bots) {
         this->assignGameToBot(bot);
     }
 }
 
 void GameManager::assignGameToBot(GamblerBot *bot) noexcept {
     int gameNumber;
-    switch(bot->getGamblerType()) {
-        case ROULETTE_BOT: gameNumber = rand() % 3 + 6;
+    switch (bot->getGamblerType()) {
+        case ROULETTE_BOT:
+            gameNumber = rand() % 3 + 6;
             break;
-        case JACKPOT_BOT: gameNumber = rand() % 3;
+        case JACKPOT_BOT:
+            gameNumber = rand() % 3;
             break;
-        case TEXAS_BOT: gameNumber = rand() % 3 + 3;
+        case TEXAS_BOT:
+            gameNumber = rand() % 3 + 3;
             break;
     }
     bot->scheduleGameJoin(this->games[gameNumber]);
 }
 
 void GameManager::advanceCasino(int millisecondsPassed) {
-    for(auto &bot: this->bots) {
-        if(bot->getCurrentGame() == nullptr) {
-            if(bot->isMoveScheduled()) {
+    for (auto &bot: this->bots) {
+        if (bot->getCurrentGame() == nullptr) {
+            if (bot->isMoveScheduled()) {
                 bot->leaveOrJoin(millisecondsPassed);
             } else {
                 this->assignGameToBot(bot);
             }
         }
     }
-    for(auto &game: this->games) {
+    for (auto &game: this->games) {
         game->advanceGame(millisecondsPassed);
+        if (game->unjammingPerformed(this->player)) { // game had jammed, so it ended itself, and now it'll be restarted
+            GameType gameType = game->getGameType();
+            int entry = game->getMinimumEntry();
+            std::string name = game->getName();
+            delete game;
+            switch (gameType) {
+                case TEXAS_HOLDEM: {
+                    game = new TexasHoldem(entry, name);
+                }
+                    break;
+                case ROULETTE: {
+                    game = new Roulette(entry, name);
+                }
+                    break;
+                case JACKPOT: {
+                    game = new Jackpot(entry, name);
+                }
+                    break;
+            }
+        }
     }
 }
 
 GameManager::~GameManager() {
-    for(auto &bot: this->bots) {
+    for (auto &bot: this->bots) {
         delete bot;
     }
-    for(auto &game: this->games) {
+    for (auto &game: this->games) {
         delete game;
     }
 }
@@ -130,21 +153,21 @@ bool GameManager::stopSpectating() {
 }
 
 bool GameManager::jackpotBet(int amount) {
-    return dynamic_cast<Jackpot*>(this->player->getCurrentGame())->bet(this->player, amount);
+    return dynamic_cast<Jackpot *>(this->player->getCurrentGame())->bet(this->player, amount);
 }
 
 bool GameManager::texasHoldemFold() {
-    return dynamic_cast<TexasHoldem*>(this->player->getCurrentGame())->fold(this->player);
+    return dynamic_cast<TexasHoldem *>(this->player->getCurrentGame())->fold(this->player);
 }
 
 bool GameManager::texasHoldemCall() {
-    return dynamic_cast<TexasHoldem*>(this->player->getCurrentGame())->call(this->player);
+    return dynamic_cast<TexasHoldem *>(this->player->getCurrentGame())->call(this->player);
 }
 
 bool GameManager::texasHoldemRaise(int amount) {
-    return dynamic_cast<TexasHoldem*>(this->player->getCurrentGame())->raise(this->player, amount);
+    return dynamic_cast<TexasHoldem *>(this->player->getCurrentGame())->raise(this->player, amount);
 }
 
 bool GameManager::rouletteBet(RouletteBetType betType, int number, int amount) {
-    return dynamic_cast<Roulette*>(this->player->getCurrentGame())->rouletteBet(this->player, betType, amount, number);
+    return dynamic_cast<Roulette *>(this->player->getCurrentGame())->rouletteBet(this->player, betType, amount, number);
 }
