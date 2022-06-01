@@ -199,6 +199,10 @@ void CasinoWindow::refreshUI() {
             } else {
                 currentGame = dynamic_cast<TexasHoldem *>(this->gameManager.getPlayer()->getSpectatedGame()); // same here
             }
+            if(currentGame == nullptr) { // if both were nullptr we force quit
+                this->ui.stackedWidget->setCurrentIndex(GAME_SELECT);
+                this->refreshUI();
+            }
             // players "table"
             int displayNumber = 0;
             for(auto &gambler: currentGame->getPlayers()) {
@@ -260,6 +264,10 @@ void CasinoWindow::refreshUI() {
                 currentGame = dynamic_cast<Roulette *>(this->gameManager.getPlayer()->getCurrentGame()); // if this cast fails something went horribly wrong
             } else {
                 currentGame = dynamic_cast<Roulette *>(this->gameManager.getPlayer()->getSpectatedGame()); // same here
+            }
+            if(currentGame == nullptr) { // if both were nullptr we force quit
+                this->ui.stackedWidget->setCurrentIndex(GAME_SELECT);
+                this->refreshUI();
             }
             // tables - gamblers table
             CasinoWindow::adjustTableSize(this->ui.tableGamblersRoulette, currentGame->getPlayers().size(), 3);
@@ -345,6 +353,10 @@ void CasinoWindow::refreshUI() {
                 currentGame = dynamic_cast<Jackpot *>(this->gameManager.getPlayer()->getCurrentGame()); // if this cast fails something went horribly wrong
             } else {
                 currentGame = dynamic_cast<Jackpot *>(this->gameManager.getPlayer()->getSpectatedGame()); // same here
+            }
+            if(currentGame == nullptr) { // if both were nullptr we force quit
+                this->ui.stackedWidget->setCurrentIndex(GAME_SELECT);
+                this->refreshUI();
             }
             // tables - gamblers table
             CasinoWindow::adjustTableSize(this->ui.tableGamblersJackpot, currentGame->getPlayers().size(), 3);
