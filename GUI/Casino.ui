@@ -24,7 +24,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>5</number>
+     <number>3</number>
     </property>
     <widget class="QWidget" name="pageMainMenu">
      <layout class="QHBoxLayout" name="horizontalLayout_2">
@@ -384,6 +384,7 @@ p, li { white-space: pre-wrap; }
         <property name="font">
          <font>
           <pointsize>15</pointsize>
+          <underline>true</underline>
          </font>
         </property>
         <property name="text">
@@ -399,6 +400,13 @@ p, li { white-space: pre-wrap; }
        </widget>
       </item>
       <item>
+       <widget class="Line" name="line">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+       </widget>
+      </item>
+      <item>
        <layout class="QHBoxLayout" name="horizontalLayout_28">
         <item>
          <layout class="QVBoxLayout" name="verticalLayout_17">
@@ -406,6 +414,12 @@ p, li { white-space: pre-wrap; }
            <layout class="QVBoxLayout" name="verticalLayout_8">
             <item alignment="Qt::AlignHCenter">
              <widget class="QLabel" name="labelGambler1Name">
+              <property name="font">
+               <font>
+                <weight>75</weight>
+                <bold>true</bold>
+               </font>
+              </property>
               <property name="text">
                <string>&lt;empty&gt;</string>
               </property>
@@ -457,9 +471,22 @@ p, li { white-space: pre-wrap; }
            </layout>
           </item>
           <item>
+           <widget class="Line" name="line_3">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+           </widget>
+          </item>
+          <item>
            <layout class="QVBoxLayout" name="verticalLayout_9">
             <item alignment="Qt::AlignHCenter">
              <widget class="QLabel" name="labelGambler2Name">
+              <property name="font">
+               <font>
+                <weight>75</weight>
+                <bold>true</bold>
+               </font>
+              </property>
               <property name="text">
                <string>&lt;empty&gt;</string>
               </property>
@@ -495,7 +522,7 @@ p, li { white-space: pre-wrap; }
                  </widget>
                 </item>
                 <item>
-                 <widget class="QLabel" name="llabelGambler2Card2">
+                 <widget class="QLabel" name="labelGambler2Card2">
                   <property name="text">
                    <string>[]</string>
                   </property>
@@ -508,9 +535,22 @@ p, li { white-space: pre-wrap; }
            </layout>
           </item>
           <item>
+           <widget class="Line" name="line_4">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+           </widget>
+          </item>
+          <item>
            <layout class="QVBoxLayout" name="verticalLayout_11">
             <item alignment="Qt::AlignHCenter">
              <widget class="QLabel" name="labelGambler3Name">
+              <property name="font">
+               <font>
+                <weight>75</weight>
+                <bold>true</bold>
+               </font>
+              </property>
               <property name="text">
                <string>&lt;empty&gt;</string>
               </property>
@@ -559,9 +599,22 @@ p, li { white-space: pre-wrap; }
            </layout>
           </item>
           <item>
+           <widget class="Line" name="line_5">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+           </widget>
+          </item>
+          <item>
            <layout class="QVBoxLayout" name="verticalLayout_13">
             <item alignment="Qt::AlignHCenter">
              <widget class="QLabel" name="labelGambler4Name">
+              <property name="font">
+               <font>
+                <weight>75</weight>
+                <bold>true</bold>
+               </font>
+              </property>
               <property name="text">
                <string>&lt;empty&gt;</string>
               </property>
@@ -610,9 +663,22 @@ p, li { white-space: pre-wrap; }
            </layout>
           </item>
           <item>
+           <widget class="Line" name="line_6">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+           </widget>
+          </item>
+          <item>
            <layout class="QVBoxLayout" name="verticalLayout_15">
             <item alignment="Qt::AlignHCenter">
              <widget class="QLabel" name="labelGambler5Name">
+              <property name="font">
+               <font>
+                <weight>75</weight>
+                <bold>true</bold>
+               </font>
+              </property>
               <property name="text">
                <string>&lt;empty&gt;</string>
               </property>
@@ -785,6 +851,12 @@ p, li { white-space: pre-wrap; }
            <layout class="QVBoxLayout" name="verticalLayout_19">
             <item alignment="Qt::AlignHCenter">
              <widget class="QLabel" name="labelGambler6Name">
+              <property name="font">
+               <font>
+                <weight>75</weight>
+                <bold>true</bold>
+               </font>
+              </property>
               <property name="text">
                <string>&lt;empty&gt;</string>
               </property>
@@ -833,9 +905,22 @@ p, li { white-space: pre-wrap; }
            </layout>
           </item>
           <item>
+           <widget class="Line" name="line_7">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+           </widget>
+          </item>
+          <item>
            <layout class="QVBoxLayout" name="verticalLayout_21">
             <item alignment="Qt::AlignHCenter">
              <widget class="QLabel" name="labelGambler7Name">
+              <property name="font">
+               <font>
+                <weight>75</weight>
+                <bold>true</bold>
+               </font>
+              </property>
               <property name="text">
                <string>&lt;empty&gt;</string>
               </property>
@@ -884,9 +969,22 @@ p, li { white-space: pre-wrap; }
            </layout>
           </item>
           <item>
+           <widget class="Line" name="line_8">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+           </widget>
+          </item>
+          <item>
            <layout class="QVBoxLayout" name="verticalLayout_23">
             <item alignment="Qt::AlignHCenter">
              <widget class="QLabel" name="labelGambler8Name">
+              <property name="font">
+               <font>
+                <weight>75</weight>
+                <bold>true</bold>
+               </font>
+              </property>
               <property name="text">
                <string>&lt;empty&gt;</string>
               </property>
@@ -935,9 +1033,22 @@ p, li { white-space: pre-wrap; }
            </layout>
           </item>
           <item>
+           <widget class="Line" name="line_9">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+           </widget>
+          </item>
+          <item>
            <layout class="QVBoxLayout" name="verticalLayout_25">
             <item alignment="Qt::AlignHCenter">
              <widget class="QLabel" name="labelGambler9Name">
+              <property name="font">
+               <font>
+                <weight>75</weight>
+                <bold>true</bold>
+               </font>
+              </property>
               <property name="text">
                <string>&lt;empty&gt;</string>
               </property>
@@ -986,9 +1097,22 @@ p, li { white-space: pre-wrap; }
            </layout>
           </item>
           <item>
+           <widget class="Line" name="line_10">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+           </widget>
+          </item>
+          <item>
            <layout class="QVBoxLayout" name="verticalLayout_27">
             <item alignment="Qt::AlignHCenter">
              <widget class="QLabel" name="labelGambler10Name">
+              <property name="font">
+               <font>
+                <weight>75</weight>
+                <bold>true</bold>
+               </font>
+              </property>
               <property name="text">
                <string>&lt;empty&gt;</string>
               </property>
@@ -1039,6 +1163,13 @@ p, li { white-space: pre-wrap; }
          </layout>
         </item>
        </layout>
+      </item>
+      <item>
+       <widget class="Line" name="line_2">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+       </widget>
       </item>
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_30">
@@ -1169,6 +1300,7 @@ p, li { white-space: pre-wrap; }
         <property name="font">
          <font>
           <pointsize>15</pointsize>
+          <underline>true</underline>
          </font>
         </property>
         <property name="text">
@@ -1747,6 +1879,7 @@ p, li { white-space: pre-wrap; }
         <property name="font">
          <font>
           <pointsize>15</pointsize>
+          <underline>true</underline>
          </font>
         </property>
         <property name="text">

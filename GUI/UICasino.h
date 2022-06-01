@@ -11,6 +11,7 @@
 
 #include <QtCore/QVariant>
 #include <QtWidgets/QApplication>
+#include <QtWidgets/QFrame>
 #include <QtWidgets/QGridLayout>
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QHeaderView>
@@ -77,6 +78,7 @@ public:
     QSpacerItem *horizontalSpacer_9;
     QLabel *labelTexasHoldemName;
     QLabel *labelLastResultsTexas;
+    QFrame *line;
     QHBoxLayout *horizontalLayout_28;
     QVBoxLayout *verticalLayout_17;
     QVBoxLayout *verticalLayout_8;
@@ -88,6 +90,7 @@ public:
     QHBoxLayout *horizontalLayout_6;
     QLabel *labelGambler1Card1;
     QLabel *labelGambler1Card2;
+    QFrame *line_3;
     QVBoxLayout *verticalLayout_9;
     QLabel *labelGambler2Name;
     QHBoxLayout *horizontalLayout_10;
@@ -96,7 +99,8 @@ public:
     QLabel *labelGambler2Bet;
     QHBoxLayout *horizontalLayout_11;
     QLabel *labelGambler2Card1;
-    QLabel *llabelGambler2Card2;
+    QLabel *labelGambler2Card2;
+    QFrame *line_4;
     QVBoxLayout *verticalLayout_11;
     QLabel *labelGambler3Name;
     QHBoxLayout *horizontalLayout_12;
@@ -106,6 +110,7 @@ public:
     QHBoxLayout *horizontalLayout_13;
     QLabel *labelGambler3Card1;
     QLabel *labelGambler3Card2;
+    QFrame *line_5;
     QVBoxLayout *verticalLayout_13;
     QLabel *labelGambler4Name;
     QHBoxLayout *horizontalLayout_14;
@@ -115,6 +120,7 @@ public:
     QHBoxLayout *horizontalLayout_15;
     QLabel *labelGambler4Card1;
     QLabel *labelGambler4Card2;
+    QFrame *line_6;
     QVBoxLayout *verticalLayout_15;
     QLabel *labelGambler5Name;
     QHBoxLayout *horizontalLayout_16;
@@ -146,6 +152,7 @@ public:
     QHBoxLayout *horizontalLayout_19;
     QLabel *labelGambler6Card1;
     QLabel *labelGambler6Card2;
+    QFrame *line_7;
     QVBoxLayout *verticalLayout_21;
     QLabel *labelGambler7Name;
     QHBoxLayout *horizontalLayout_20;
@@ -155,6 +162,7 @@ public:
     QHBoxLayout *horizontalLayout_21;
     QLabel *labelGambler7Card1;
     QLabel *labelGambler7Card2;
+    QFrame *line_8;
     QVBoxLayout *verticalLayout_23;
     QLabel *labelGambler8Name;
     QHBoxLayout *horizontalLayout_22;
@@ -164,6 +172,7 @@ public:
     QHBoxLayout *horizontalLayout_23;
     QLabel *labelGambler8Card1;
     QLabel *labelGambler8Card2;
+    QFrame *line_9;
     QVBoxLayout *verticalLayout_25;
     QLabel *labelGambler9Name;
     QHBoxLayout *horizontalLayout_24;
@@ -173,6 +182,7 @@ public:
     QHBoxLayout *horizontalLayout_25;
     QLabel *labelGambler9Card1;
     QLabel *labelGambler9Card2;
+    QFrame *line_10;
     QVBoxLayout *verticalLayout_27;
     QLabel *labelGambler10Name;
     QHBoxLayout *horizontalLayout_26;
@@ -182,6 +192,7 @@ public:
     QHBoxLayout *horizontalLayout_27;
     QLabel *labelGambler10Card1;
     QLabel *labelGambler10Card2;
+    QFrame *line_2;
     QHBoxLayout *horizontalLayout_30;
     QLabel *labelCountdownTexas;
     QSpacerItem *horizontalSpacer_10;
@@ -513,6 +524,7 @@ public:
         labelTexasHoldemName->setObjectName(QString::fromUtf8("labelTexasHoldemName"));
         QFont font2;
         font2.setPointSize(15);
+        font2.setUnderline(true);
         labelTexasHoldemName->setFont(font2);
 
         verticalLayout_30->addWidget(labelTexasHoldemName, 0, Qt::AlignHCenter);
@@ -522,6 +534,13 @@ public:
 
         verticalLayout_30->addWidget(labelLastResultsTexas);
 
+        line = new QFrame(pageTexasHoldem);
+        line->setObjectName(QString::fromUtf8("line"));
+        line->setFrameShape(QFrame::HLine);
+        line->setFrameShadow(QFrame::Sunken);
+
+        verticalLayout_30->addWidget(line);
+
         horizontalLayout_28 = new QHBoxLayout();
         horizontalLayout_28->setObjectName(QString::fromUtf8("horizontalLayout_28"));
         verticalLayout_17 = new QVBoxLayout();
@@ -530,6 +549,10 @@ public:
         verticalLayout_8->setObjectName(QString::fromUtf8("verticalLayout_8"));
         labelGambler1Name = new QLabel(pageTexasHoldem);
         labelGambler1Name->setObjectName(QString::fromUtf8("labelGambler1Name"));
+        QFont font3;
+        font3.setBold(true);
+        font3.setWeight(75);
+        labelGambler1Name->setFont(font3);
 
         verticalLayout_8->addWidget(labelGambler1Name, 0, Qt::AlignHCenter);
 
@@ -571,10 +594,18 @@ public:
 
         verticalLayout_17->addLayout(verticalLayout_8);
 
+        line_3 = new QFrame(pageTexasHoldem);
+        line_3->setObjectName(QString::fromUtf8("line_3"));
+        line_3->setFrameShape(QFrame::HLine);
+        line_3->setFrameShadow(QFrame::Sunken);
+
+        verticalLayout_17->addWidget(line_3);
+
         verticalLayout_9 = new QVBoxLayout();
         verticalLayout_9->setObjectName(QString::fromUtf8("verticalLayout_9"));
         labelGambler2Name = new QLabel(pageTexasHoldem);
         labelGambler2Name->setObjectName(QString::fromUtf8("labelGambler2Name"));
+        labelGambler2Name->setFont(font3);
 
         verticalLayout_9->addWidget(labelGambler2Name, 0, Qt::AlignHCenter);
 
@@ -602,10 +633,10 @@ public:
 
         horizontalLayout_11->addWidget(labelGambler2Card1);
 
-        llabelGambler2Card2 = new QLabel(pageTexasHoldem);
-        llabelGambler2Card2->setObjectName(QString::fromUtf8("llabelGambler2Card2"));
+        labelGambler2Card2 = new QLabel(pageTexasHoldem);
+        labelGambler2Card2->setObjectName(QString::fromUtf8("labelGambler2Card2"));
 
-        horizontalLayout_11->addWidget(llabelGambler2Card2);
+        horizontalLayout_11->addWidget(labelGambler2Card2);
 
 
         horizontalLayout_10->addLayout(horizontalLayout_11);
@@ -616,10 +647,18 @@ public:
 
         verticalLayout_17->addLayout(verticalLayout_9);
 
+        line_4 = new QFrame(pageTexasHoldem);
+        line_4->setObjectName(QString::fromUtf8("line_4"));
+        line_4->setFrameShape(QFrame::HLine);
+        line_4->setFrameShadow(QFrame::Sunken);
+
+        verticalLayout_17->addWidget(line_4);
+
         verticalLayout_11 = new QVBoxLayout();
         verticalLayout_11->setObjectName(QString::fromUtf8("verticalLayout_11"));
         labelGambler3Name = new QLabel(pageTexasHoldem);
         labelGambler3Name->setObjectName(QString::fromUtf8("labelGambler3Name"));
+        labelGambler3Name->setFont(font3);
 
         verticalLayout_11->addWidget(labelGambler3Name, 0, Qt::AlignHCenter);
 
@@ -661,10 +700,18 @@ public:
 
         verticalLayout_17->addLayout(verticalLayout_11);
 
+        line_5 = new QFrame(pageTexasHoldem);
+        line_5->setObjectName(QString::fromUtf8("line_5"));
+        line_5->setFrameShape(QFrame::HLine);
+        line_5->setFrameShadow(QFrame::Sunken);
+
+        verticalLayout_17->addWidget(line_5);
+
         verticalLayout_13 = new QVBoxLayout();
         verticalLayout_13->setObjectName(QString::fromUtf8("verticalLayout_13"));
         labelGambler4Name = new QLabel(pageTexasHoldem);
         labelGambler4Name->setObjectName(QString::fromUtf8("labelGambler4Name"));
+        labelGambler4Name->setFont(font3);
 
         verticalLayout_13->addWidget(labelGambler4Name, 0, Qt::AlignHCenter);
 
@@ -706,10 +753,18 @@ public:
 
         verticalLayout_17->addLayout(verticalLayout_13);
 
+        line_6 = new QFrame(pageTexasHoldem);
+        line_6->setObjectName(QString::fromUtf8("line_6"));
+        line_6->setFrameShape(QFrame::HLine);
+        line_6->setFrameShadow(QFrame::Sunken);
+
+        verticalLayout_17->addWidget(line_6);
+
         verticalLayout_15 = new QVBoxLayout();
         verticalLayout_15->setObjectName(QString::fromUtf8("verticalLayout_15"));
         labelGambler5Name = new QLabel(pageTexasHoldem);
         labelGambler5Name->setObjectName(QString::fromUtf8("labelGambler5Name"));
+        labelGambler5Name->setFont(font3);
 
         verticalLayout_15->addWidget(labelGambler5Name, 0, Qt::AlignHCenter);
 
@@ -814,6 +869,7 @@ public:
         verticalLayout_19->setObjectName(QString::fromUtf8("verticalLayout_19"));
         labelGambler6Name = new QLabel(pageTexasHoldem);
         labelGambler6Name->setObjectName(QString::fromUtf8("labelGambler6Name"));
+        labelGambler6Name->setFont(font3);
 
         verticalLayout_19->addWidget(labelGambler6Name, 0, Qt::AlignHCenter);
 
@@ -855,10 +911,18 @@ public:
 
         verticalLayout_18->addLayout(verticalLayout_19);
 
+        line_7 = new QFrame(pageTexasHoldem);
+        line_7->setObjectName(QString::fromUtf8("line_7"));
+        line_7->setFrameShape(QFrame::HLine);
+        line_7->setFrameShadow(QFrame::Sunken);
+
+        verticalLayout_18->addWidget(line_7);
+
         verticalLayout_21 = new QVBoxLayout();
         verticalLayout_21->setObjectName(QString::fromUtf8("verticalLayout_21"));
         labelGambler7Name = new QLabel(pageTexasHoldem);
         labelGambler7Name->setObjectName(QString::fromUtf8("labelGambler7Name"));
+        labelGambler7Name->setFont(font3);
 
         verticalLayout_21->addWidget(labelGambler7Name, 0, Qt::AlignHCenter);
 
@@ -900,10 +964,18 @@ public:
 
         verticalLayout_18->addLayout(verticalLayout_21);
 
+        line_8 = new QFrame(pageTexasHoldem);
+        line_8->setObjectName(QString::fromUtf8("line_8"));
+        line_8->setFrameShape(QFrame::HLine);
+        line_8->setFrameShadow(QFrame::Sunken);
+
+        verticalLayout_18->addWidget(line_8);
+
         verticalLayout_23 = new QVBoxLayout();
         verticalLayout_23->setObjectName(QString::fromUtf8("verticalLayout_23"));
         labelGambler8Name = new QLabel(pageTexasHoldem);
         labelGambler8Name->setObjectName(QString::fromUtf8("labelGambler8Name"));
+        labelGambler8Name->setFont(font3);
 
         verticalLayout_23->addWidget(labelGambler8Name, 0, Qt::AlignHCenter);
 
@@ -945,10 +1017,18 @@ public:
 
         verticalLayout_18->addLayout(verticalLayout_23);
 
+        line_9 = new QFrame(pageTexasHoldem);
+        line_9->setObjectName(QString::fromUtf8("line_9"));
+        line_9->setFrameShape(QFrame::HLine);
+        line_9->setFrameShadow(QFrame::Sunken);
+
+        verticalLayout_18->addWidget(line_9);
+
         verticalLayout_25 = new QVBoxLayout();
         verticalLayout_25->setObjectName(QString::fromUtf8("verticalLayout_25"));
         labelGambler9Name = new QLabel(pageTexasHoldem);
         labelGambler9Name->setObjectName(QString::fromUtf8("labelGambler9Name"));
+        labelGambler9Name->setFont(font3);
 
         verticalLayout_25->addWidget(labelGambler9Name, 0, Qt::AlignHCenter);
 
@@ -990,10 +1070,18 @@ public:
 
         verticalLayout_18->addLayout(verticalLayout_25);
 
+        line_10 = new QFrame(pageTexasHoldem);
+        line_10->setObjectName(QString::fromUtf8("line_10"));
+        line_10->setFrameShape(QFrame::HLine);
+        line_10->setFrameShadow(QFrame::Sunken);
+
+        verticalLayout_18->addWidget(line_10);
+
         verticalLayout_27 = new QVBoxLayout();
         verticalLayout_27->setObjectName(QString::fromUtf8("verticalLayout_27"));
         labelGambler10Name = new QLabel(pageTexasHoldem);
         labelGambler10Name->setObjectName(QString::fromUtf8("labelGambler10Name"));
+        labelGambler10Name->setFont(font3);
 
         verticalLayout_27->addWidget(labelGambler10Name, 0, Qt::AlignHCenter);
 
@@ -1040,6 +1128,13 @@ public:
 
 
         verticalLayout_30->addLayout(horizontalLayout_28);
+
+        line_2 = new QFrame(pageTexasHoldem);
+        line_2->setObjectName(QString::fromUtf8("line_2"));
+        line_2->setFrameShape(QFrame::HLine);
+        line_2->setFrameShadow(QFrame::Sunken);
+
+        verticalLayout_30->addWidget(line_2);
 
         horizontalLayout_30 = new QHBoxLayout();
         horizontalLayout_30->setObjectName(QString::fromUtf8("horizontalLayout_30"));
@@ -1627,7 +1722,7 @@ public:
 
         retranslateUi(CasinoWindow);
 
-        stackedWidget->setCurrentIndex(5);
+        stackedWidget->setCurrentIndex(3);
 
 
         QMetaObject::connectSlotsByName(CasinoWindow);
@@ -1673,7 +1768,7 @@ public:
         labelGambler2Balance->setText(QCoreApplication::translate("CasinoWindow", "0", nullptr));
         labelGambler2Bet->setText(QCoreApplication::translate("CasinoWindow", "0", nullptr));
         labelGambler2Card1->setText(QCoreApplication::translate("CasinoWindow", "[]", nullptr));
-        llabelGambler2Card2->setText(QCoreApplication::translate("CasinoWindow", "[]", nullptr));
+        labelGambler2Card2->setText(QCoreApplication::translate("CasinoWindow", "[]", nullptr));
         labelGambler3Name->setText(QCoreApplication::translate("CasinoWindow", "<empty>", nullptr));
         labelGambler3Balance->setText(QCoreApplication::translate("CasinoWindow", "0", nullptr));
         labelGambler3Bet->setText(QCoreApplication::translate("CasinoWindow", "0", nullptr));
