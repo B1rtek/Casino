@@ -40,7 +40,7 @@ void GameManager::start() {
             new TexasBot(15000, "Ho Seun"),
             new TexasBot(15000, "Isabel Diaz"),
             new TexasBot(15000, "Jack Rourke"),
-            new TexasBot(15000, "Taz"),
+            new TexasBot(15000, "Vince Kilic"),
             new TexasBot(15000, "Sal Mustela"),
             new TexasBot(15000, "Rachel Teller"),
             new TexasBot(15000, "Nate Denver"),
@@ -60,7 +60,37 @@ void GameManager::start() {
             new RouletteBot(15000, "Toru Sato"),
             new RouletteBot(15000, "Ryo Watanabe"),
             new RouletteBot(15000, "Nikki"),
-            new RouletteBot(15000, "Darius")
+            new RouletteBot(15000, "Darius"),
+            new JackpotBot(15000, "Amy"),
+            new TexasBot(15000, "Mia Townsend"),
+            new JackpotBot(15000, "Dino Brewster"),
+            new RouletteBot(15000, "JessicaMiller"),
+            new TexasBot(15000, "Rog"),
+            new JackpotBot(15000, "Ravindra Chaudhry"),
+            new RouletteBot(15000, "Shinichi Morohoshi"),
+            new JackpotBot(15000, "Robyn"),
+            new TexasBot(15000, "Jaimin Shah"),
+            new RouletteBot(15000, "Rose Largo"),
+            new TexasBot(15000, "Wes Allen"),
+            new RouletteBot(15000, "Travis"),
+            new JackpotBot(15000, "Tobey Marshall"),
+            new TexasBot(15000, "Keira Harrison"),
+            new RouletteBot(15000, "Mitko Vasilev"),
+            new TexasBot(15000, "Ronald McCrea"),
+            new JackpotBot(15000, "Colin"),
+            new RouletteBot(15000, "Zack Maio"),
+            new JackpotBot(15000, "Izzy"),
+            new TexasBot(15000, "Caleb Reece"),
+            new JackpotBot(15000, "Danny Shaw"),
+            new TexasBot(15000, "Victor Vasquez"),
+            new RouletteBot(15000, "Alex Strachan"),
+            new JackpotBot(15000, "Angie"),
+            new RouletteBot(15000, "Spike"),
+            new JackpotBot(15000, "Sean McAlister"),
+            new TexasBot(15000, "Karl Smit"),
+            new RouletteBot(15000, "Frankie Beaumont"),
+            new RouletteBot(15000, "Rebecca Dawson"),
+            new TexasBot(15000, "Kira Nakazato")
     };
     this->player = new Gambler(15000, "YOU");
     for (auto &bot: bots) {
@@ -81,10 +111,11 @@ void GameManager::assignGameToBot(GamblerBot *bot) noexcept {
             gameNumber = rand() % 3 + 3;
             break;
     }
-    bot->scheduleGameJoin(this->games[gameNumber]);
+    bot->scheduleGameJoin(this->games[gameNumber], this->lastMillis);
 }
 
 void GameManager::advanceCasino(int millisecondsPassed) {
+    this->lastMillis = millisecondsPassed;
     for (auto &bot: this->bots) {
         if (bot->getCurrentGame() == nullptr) {
             if (bot->isMoveScheduled()) {

@@ -1,8 +1,6 @@
 #ifndef CASINOGAME_GAMEMANAGER_H
 #define CASINOGAME_GAMEMANAGER_H
 
-#include <vector>
-
 #include "Game.h"
 #include "Jackpot.h"
 #include "TexasHoldem.h"
@@ -15,6 +13,7 @@ class GameManager {
     std::vector<Game*> games;
     std::vector<GamblerBot*> bots;
     Gambler *player;
+    int lastMillis = 0;
 
     void assignGameToBot(GamblerBot *bot) noexcept;
 

@@ -244,7 +244,7 @@ std::string Game::getGameSituationDescription() const noexcept {
 }
 
 bool Game::unjammingPerformed(Gambler *player) noexcept {
-    if(this->lastMoveMillis + 120000 < this->lastMillis) { // jam detection - no moves since 2 minutes (a bad sign)
+    if(this->lastMoveMillis + 120000 < this->lastMillis && this->inProgress) { // jam detection - no moves since 2 minutes (a bad sign)
         this->inProgress = false;
         for(auto &gambler: this->gamblersPlaying) {
             gambler->addBalance(this->currentBets[gambler]);

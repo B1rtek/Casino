@@ -20,14 +20,14 @@ int GamblerBot::getTargetTime() const noexcept {
     return this->targetTime;
 }
 
-void GamblerBot::scheduleGameJoin(Game *game) noexcept {
+void GamblerBot::scheduleGameJoin(Game *game, int millisecondsPassed) noexcept {
     this->gameToJoin = game;
-    this->targetTime = rand() % 20000;
+    this->targetTime = millisecondsPassed + rand() % 30000;
     this->moveScheduled = true;
 }
 
 void GamblerBot::leaveOrJoin(int millisecondsPassed) noexcept {
-    if(this->gamePlayed == nullptr && this->gameToJoin != nullptr && this->targetTime <= millisecondsPassed) {
+    if(this->gamePlayed == nullptr && this->gameToJoin != nullptr && this->targetTime <= millisecondsPassed && rand() % 2 == 0) {
         this->joinGame(gameToJoin);
     } else if (this->gamePlayed != nullptr && !this->gamePlayed->isInProgress()) {
         if(rand() % 100 == 0) {

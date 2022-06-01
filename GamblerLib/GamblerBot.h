@@ -20,7 +20,7 @@ public:
 
     int getTargetTime() const noexcept;
 
-    void scheduleGameJoin(Game *game) noexcept;
+    void scheduleGameJoin(Game *game, int millisecondsPassed) noexcept;
 
     void withdrawBalance(int amount) noexcept override {}
 
