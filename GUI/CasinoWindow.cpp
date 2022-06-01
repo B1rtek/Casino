@@ -119,6 +119,13 @@ void CasinoWindow::refreshUI() {
         }
             break;
         case GamePage::GAME_TEXAS: {
+            TexasHoldem *currentGame;
+            if(this->gameManager.getPlayer()->getCurrentGame() != nullptr) {
+                currentGame = dynamic_cast<TexasHoldem *>(this->gameManager.getPlayer()->getCurrentGame()); // if this cast fails something went horribly wrong
+            } else {
+                currentGame = dynamic_cast<TexasHoldem *>(this->gameManager.getPlayer()->getSpectatedGame()); // same here
+            }
+            // refresh players "table"
 
         }
             break;
@@ -187,6 +194,10 @@ void CasinoWindow::refreshUI() {
                 if (this->ui.labelLastResultsJackpot->text().toStdString() != toDisplay) {
                     this->ui.labelLastResultsJackpot->setText(QString(toDisplay.c_str()));
                 }
+            }
+            // jackpot name label
+            if(this->ui.labelJackpotName->text().toStdString() != currentGame->getName()) {
+                this->ui.labelJackpotName->setText(QString(currentGame->getName().c_str()));
             }
         }
             break;
