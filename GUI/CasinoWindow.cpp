@@ -266,7 +266,7 @@ void CasinoWindow::refreshUI() {
             }
             if(currentGame == nullptr) { // if both were nullptr we force quit
                 this->ui.stackedWidget->setCurrentIndex(GAME_SELECT);
-                this->refreshUI();
+                return;
             }
             // players "table"
             int displayNumber = 0;
@@ -332,7 +332,7 @@ void CasinoWindow::refreshUI() {
             }
             if(currentGame == nullptr) { // if both were nullptr we force quit
                 this->ui.stackedWidget->setCurrentIndex(GAME_SELECT);
-                this->refreshUI();
+                return;
             }
             // tables - gamblers table
             CasinoWindow::adjustTableSize(this->ui.tableGamblersRoulette, currentGame->getPlayers().size(), 3);
@@ -421,7 +421,7 @@ void CasinoWindow::refreshUI() {
             }
             if(currentGame == nullptr) { // if both were nullptr we force quit
                 this->ui.stackedWidget->setCurrentIndex(GAME_SELECT);
-                this->refreshUI();
+                return;
             }
             // tables - gamblers table
             CasinoWindow::adjustTableSize(this->ui.tableGamblersJackpot, currentGame->getPlayers().size(), 3);
