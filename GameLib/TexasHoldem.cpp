@@ -505,6 +505,9 @@ std::vector<Gambler *> TexasHoldem::chooseTheWinners() noexcept {
     return {gamblerWithMaxHand};
 }
 
+/**
+ * Assigns the next dealer by finding the player sitting on the right of the previous one
+ */
 void TexasHoldem::assignNewDealer() {
     if (unsigned(this->dealerIndex) >= this->gamblersPlaying.size()) { // players left
         this->dealerIndex = 0;
@@ -521,6 +524,10 @@ void TexasHoldem::shuffleCards() {
     std::shuffle(this->gameDeck.begin(), this->gameDeck.end(), std::mt19937(std::random_device()()));
 }
 
+/**
+ * Deals cards, placing the first 5 from the shuffled deck as the table cards,
+ * and then each next pair as Gambler's cards
+ */
 void TexasHoldem::deal() {
     this->dealtCards.clear();
     int cardIndex = 0;
@@ -534,7 +541,7 @@ void TexasHoldem::deal() {
 }
 
 /**
- * Returns the next playing gambler to the left of the current one
+ * Returns the next playing (who hasn't folded) gambler to the left of the current one
  */
 Gambler *TexasHoldem::nextGambler() {
     Gambler *next = this->current;
@@ -550,6 +557,9 @@ Gambler *TexasHoldem::nextGambler() {
     return next;
 }
 
+/**
+ * Starts the game by setting the state to SMALL_BLIND and resetting values that the game depends on
+ */
 void TexasHoldem::startGame() noexcept {
     Game::startGame();
     for (auto &gambler: this->gamblersPlaying) {
@@ -561,7 +571,7 @@ void TexasHoldem::startGame() noexcept {
 }
 
 /**
- * Advances the game
+ * Advances the game by changing its state and making bots move
  * @param millisecondsPassed milliseconds passed since the start of the casino
  */
 void TexasHoldem::advanceGame(int millisecondsPassed) {
@@ -726,14 +736,14 @@ bool TexasHoldem::call(Gambler *gambler) {
 }
 
 /**
- * Called when call == check (will be used to call updates in the UI)
+ * Called when call == check, wasn't used in the end but could be for a game log
  * @param gambler gambler who's checking
  */
 void TexasHoldem::check(Gambler *gambler) {}
 
 /**
  * Folds player's card, effectively making them give up
- * @param gambler
+ * @param gambler gambler who's folding
  * @return
  */
 bool TexasHoldem::fold(Gambler *gambler) {
@@ -747,8 +757,8 @@ bool TexasHoldem::fold(Gambler *gambler) {
 
 /**
  * Raises the highest bet, forcing other players to either call or fold
- * @param gambler
- * @param amount
+ * @param gambler gambler who's raising
+ * @param amount amount by which they raised compared to their current bet (NOT the current highest!!!)
  * @return
  */
 bool TexasHoldem::raise(Gambler *gambler, int amount) {
@@ -785,6 +795,10 @@ Gambler *TexasHoldem::getCurrentPlayer() const noexcept {
     return this->current;
 }
 
+/**
+ * Returns table cards, hiding ones which shouldn't be visible in the state in which the game is at that point
+ * @return vector of Card* (s) from players' perspective
+ */
 std::vector<Card *> TexasHoldem::getCurrentDealtCards() const noexcept {
     std::vector<Card *> currentCards = {CardGame::noneCard, CardGame::noneCard, CardGame::noneCard, CardGame::noneCard,
                                         CardGame::noneCard};
@@ -811,6 +825,11 @@ std::map<Gambler *, bool> TexasHoldem::getNotFolded() const noexcept {
     return this->notFolded;
 }
 
+/**
+ * Adds a player to the game by creating fields in the maps used for gambler's bets, balance and cards
+ * @param gambler gambler who is joining the game
+ * @return true if the gambler successfully joined
+ */
 bool TexasHoldem::addPlayer(Gambler *gambler) noexcept {
     if (this->gamblersPlaying.size() < this->maxPlayers && CardGame::addPlayer(gambler)) {
         this->notFolded[gambler] = true;
@@ -834,6 +853,9 @@ std::string TexasHoldem::getGameStateString() const noexcept {
     return this->texasHoldemStateStrings[this->state];
 }
 
+/**
+ * Returns the string representation of the last winning hand type, or a message about all players folding
+ */
 std::string TexasHoldem::getLastWinningHandString() const noexcept {
     if (this->lastWinningHand.size() == 5) {
         return this->texasHoldemHandStrings[TexasHoldem::calculateHand(this->lastWinningHand).first];
@@ -854,6 +876,9 @@ bool TexasHoldem::unjammingPerformed(Gambler *player) noexcept {
     return Game::unjammingPerformed(player);
 }
 
+/**
+ * Removes all players who can't afford to pay the big blind
+ */
 void TexasHoldem::removeBankruptPlayers() noexcept {
     for (auto &gambler: this->gamblersPlaying) {
         if (this->inGameMoney[gambler] < this->minimumEntry / 500) {

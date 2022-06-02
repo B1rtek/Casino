@@ -3,6 +3,9 @@
 
 #include "CardGame.h"
 
+/**
+ * Enum representing the state of the Texas Holdem game
+ */
 enum TexasHoldemState {
     SMALL_BLIND,
     BIG_BLIND,
@@ -13,6 +16,9 @@ enum TexasHoldemState {
     SHOWDOWN
 };
 
+/**
+ * Enum representing the strength of a hand in Texas Holdem
+ */
 enum TexasHoldemHand {
     HIGH_CARD,
     ONE_PAIR,
@@ -25,6 +31,9 @@ enum TexasHoldemHand {
     STRAIGHT_FLUSH
 };
 
+/**
+ * The TexasHoldem class, manages and represents a Texas Hold'em game
+ */
 class TexasHoldem : public CardGame {
     std::vector<Card *> dealtCards;
     Gambler *current = nullptr, *dealer = nullptr;
