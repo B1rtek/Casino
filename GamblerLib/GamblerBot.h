@@ -4,7 +4,8 @@
 #include "Gambler.h"
 
 /**
- * Class adding features used exclusively by bots to the Gambler class
+ * Class adding features used exclusively by bots to the Gambler class, defines methods which
+ * let bots perform moves and join or leave games
  */
 class GamblerBot : public Gambler {
 protected:
