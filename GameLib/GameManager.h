@@ -9,6 +9,9 @@
 #include "TexasBot.h"
 #include "RouletteBot.h"
 
+/**
+ * The GameManager class, keeps the whole casino logic running
+ */
 class GameManager {
     std::vector<Game*> games;
     std::vector<GamblerBot*> bots;

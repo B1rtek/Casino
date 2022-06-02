@@ -1,7 +1,18 @@
 #include "GameManager.h"
 
+/**
+ * Default constructor, objects are initialized in the start() method
+ */
 GameManager::GameManager() = default;
 
+/**
+ * Creates all objects (bots, the gambler and games) and immediately schedules joining games for all bots
+ * in a way that makes them gradually join games at the start of the casino
+ *
+ * Bots' names are taken from various games, mostly from the Need For Speed franchise because the test bots in
+ * the first versions of Texas Holdem were called Marcus Weir, Tyler Morgan and Lina Navarro, and these are the
+ * names of the main characters in the game Need For Speed: Payback, where Marcus Weir is a gambler
+ */
 void GameManager::start() {
     this->games = {
             new Jackpot(1000, "Jackpot"),
@@ -98,6 +109,11 @@ void GameManager::start() {
     }
 }
 
+/**
+ * Assigns a game to schedule for joining for the given bot based on the bots' class (and therefore their
+ * ability to play certain games)
+ * @param bot bot to assign a game to
+ */
 void GameManager::assignGameToBot(GamblerBot *bot) noexcept {
     int gameNumber;
     switch (bot->getGamblerType()) {
@@ -114,6 +130,13 @@ void GameManager::assignGameToBot(GamblerBot *bot) noexcept {
     bot->scheduleGameJoin(this->games[gameNumber], this->lastMillis);
 }
 
+/**
+ * Receives the current time passed since the application has initialized from the CasinoWindow class
+ * every 100 milliseconds and passes that time to every game and bot, advancing the state of the games and
+ * making bots move in their games or making them join or leave the game
+ * @param millisecondsPassed milliseconds passed since the initialization of the CasinoWindow, which also
+ * marks the starting time of the GameManager
+ */
 void GameManager::advanceCasino(int millisecondsPassed) {
     this->lastMillis = millisecondsPassed;
     for (auto &bot: this->bots) {
@@ -127,7 +150,8 @@ void GameManager::advanceCasino(int millisecondsPassed) {
     }
     for (auto &game: this->games) {
         game->advanceGame(millisecondsPassed);
-        if (game->unjammingPerformed(this->player)) { // game had jammed, so it ended itself, and now it'll be restarted
+        if (game->unjammingPerformed(this->player)) {
+            // the game unjamming code, forcefully ends the game and starts it again
             GameType gameType = game->getGameType();
             int entry = game->getMinimumEntry();
             std::string name = game->getName();
@@ -150,6 +174,9 @@ void GameManager::advanceCasino(int millisecondsPassed) {
     }
 }
 
+/**
+ * Destructor, removes all objects allocated with new in this GameManager object
+ */
 GameManager::~GameManager() {
     for (auto &bot: this->bots) {
         delete bot;
@@ -167,6 +194,10 @@ Gambler *GameManager::getPlayer() const noexcept {
     return this->player;
 }
 
+/**
+ * The following methods are called by the CasinoWindow as a result of the user clicking the
+ * corresponding action's button in the UI, GameManager passes them to the correct object
+ */
 bool GameManager::joinGame(int gameIndex) {
     return this->player->joinGame(this->games[gameIndex]);
 }
