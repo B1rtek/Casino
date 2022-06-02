@@ -14,7 +14,7 @@ include_directories(Casino GameLib GamblerLib GUI)
 add_library(GameLib GameLib/Game.cpp GameLib/Game.h GameLib/CardGame.cpp GameLib/CardGame.h GameLib/Card.cpp GameLib/Card.h GameLib/TexasHoldem.cpp GameLib/TexasHoldem.h GameLib/Jackpot.cpp GameLib/Jackpot.h GameLib/Roulette.cpp GameLib/Roulette.h GameLib/GameManager.h GameLib/GameManager.cpp)
 add_library(GamblerLib GamblerLib/Gambler.cpp GamblerLib/Gambler.h GamblerLib/JackpotBot.cpp GamblerLib/JackpotBot.h GamblerLib/GamblerBot.cpp GamblerLib/GamblerBot.h GamblerLib/TexasBot.cpp GamblerLib/TexasBot.h GamblerLib/Shop.cpp GamblerLib/Shop.h GamblerLib/RouletteBot.cpp GamblerLib/RouletteBot.h)
 set(GUI_SOURCE_FILES GUI/CasinoWindow.h GUI/CasinoWindow.cpp GUI/TexasHoldemGUITableItem.cpp GUI/TexasHoldemGUITableItem.h)
-add_executable(GameExample GameExample/GameExample.cpp)
+add_executable(GameExample GameExample/TestTexasSimulation.cpp)
 target_link_libraries(GameExample PUBLIC GameLib GamblerLib)
 
 add_executable(GameManagerTest GameExample/GameManagerTest.cpp)

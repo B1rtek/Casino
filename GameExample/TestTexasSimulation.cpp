@@ -1,3 +1,8 @@
+/**
+ * Simulates a game of Texas Holdem played by gamblers with predefined moves
+ * Was used in the past to check if hand recognition and winner assignment was working
+ */
+
 #include <iostream>
 
 #include "Gambler.h"
