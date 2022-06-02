@@ -24,7 +24,6 @@
 #include <QtWidgets/QStackedWidget>
 #include <QtWidgets/QStatusBar>
 #include <QtWidgets/QTableWidget>
-#include <QtWidgets/QTextBrowser>
 #include <QtWidgets/QToolButton>
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
@@ -69,7 +68,7 @@ public:
     QSpacerItem *horizontalSpacer_3;
     QLabel *label_3;
     QSpacerItem *horizontalSpacer_4;
-    QTextBrowser *textBrowser;
+    QLabel *label_9;
     QPushButton *buttonBackFromHelp;
     QWidget *pageTexasHoldem;
     QVBoxLayout *verticalLayout_30;
@@ -475,6 +474,11 @@ public:
 
         label_3 = new QLabel(pageHelp);
         label_3->setObjectName(QString::fromUtf8("label_3"));
+        QSizePolicy sizePolicy2(QSizePolicy::Preferred, QSizePolicy::Fixed);
+        sizePolicy2.setHorizontalStretch(0);
+        sizePolicy2.setVerticalStretch(0);
+        sizePolicy2.setHeightForWidth(label_3->sizePolicy().hasHeightForWidth());
+        label_3->setSizePolicy(sizePolicy2);
         QFont font1;
         font1.setPointSize(40);
         label_3->setFont(font1);
@@ -488,11 +492,17 @@ public:
 
         verticalLayout_6->addLayout(horizontalLayout_5);
 
-        textBrowser = new QTextBrowser(pageHelp);
-        textBrowser->setObjectName(QString::fromUtf8("textBrowser"));
-        textBrowser->setOpenLinks(false);
+        label_9 = new QLabel(pageHelp);
+        label_9->setObjectName(QString::fromUtf8("label_9"));
+        QSizePolicy sizePolicy3(QSizePolicy::Preferred, QSizePolicy::Expanding);
+        sizePolicy3.setHorizontalStretch(0);
+        sizePolicy3.setVerticalStretch(0);
+        sizePolicy3.setHeightForWidth(label_9->sizePolicy().hasHeightForWidth());
+        label_9->setSizePolicy(sizePolicy3);
+        label_9->setTextFormat(Qt::MarkdownText);
+        label_9->setWordWrap(true);
 
-        verticalLayout_6->addWidget(textBrowser);
+        verticalLayout_6->addWidget(label_9);
 
         buttonBackFromHelp = new QPushButton(pageHelp);
         buttonBackFromHelp->setObjectName(QString::fromUtf8("buttonBackFromHelp"));
@@ -1184,11 +1194,11 @@ public:
 
         lineEditRaise = new QLineEdit(pageTexasHoldem);
         lineEditRaise->setObjectName(QString::fromUtf8("lineEditRaise"));
-        QSizePolicy sizePolicy2(QSizePolicy::Minimum, QSizePolicy::Fixed);
-        sizePolicy2.setHorizontalStretch(0);
-        sizePolicy2.setVerticalStretch(0);
-        sizePolicy2.setHeightForWidth(lineEditRaise->sizePolicy().hasHeightForWidth());
-        lineEditRaise->setSizePolicy(sizePolicy2);
+        QSizePolicy sizePolicy4(QSizePolicy::Minimum, QSizePolicy::Fixed);
+        sizePolicy4.setHorizontalStretch(0);
+        sizePolicy4.setVerticalStretch(0);
+        sizePolicy4.setHeightForWidth(lineEditRaise->sizePolicy().hasHeightForWidth());
+        lineEditRaise->setSizePolicy(sizePolicy4);
 
         horizontalLayout_9->addWidget(lineEditRaise);
 
@@ -1248,11 +1258,11 @@ public:
         QTableWidgetItem *__qtablewidgetitem6 = new QTableWidgetItem();
         tableGamblersRoulette->setHorizontalHeaderItem(2, __qtablewidgetitem6);
         tableGamblersRoulette->setObjectName(QString::fromUtf8("tableGamblersRoulette"));
-        QSizePolicy sizePolicy3(QSizePolicy::Minimum, QSizePolicy::Expanding);
-        sizePolicy3.setHorizontalStretch(0);
-        sizePolicy3.setVerticalStretch(0);
-        sizePolicy3.setHeightForWidth(tableGamblersRoulette->sizePolicy().hasHeightForWidth());
-        tableGamblersRoulette->setSizePolicy(sizePolicy3);
+        QSizePolicy sizePolicy5(QSizePolicy::Minimum, QSizePolicy::Expanding);
+        sizePolicy5.setHorizontalStretch(0);
+        sizePolicy5.setVerticalStretch(0);
+        sizePolicy5.setHeightForWidth(tableGamblersRoulette->sizePolicy().hasHeightForWidth());
+        tableGamblersRoulette->setSizePolicy(sizePolicy5);
         tableGamblersRoulette->setSizeAdjustPolicy(QAbstractScrollArea::AdjustToContents);
         tableGamblersRoulette->setSelectionBehavior(QAbstractItemView::SelectRows);
         tableGamblersRoulette->horizontalHeader()->setStretchLastSection(true);
@@ -1281,8 +1291,8 @@ public:
         QTableWidgetItem *__qtablewidgetitem10 = new QTableWidgetItem();
         tableBetsRoulette->setHorizontalHeaderItem(3, __qtablewidgetitem10);
         tableBetsRoulette->setObjectName(QString::fromUtf8("tableBetsRoulette"));
-        sizePolicy3.setHeightForWidth(tableBetsRoulette->sizePolicy().hasHeightForWidth());
-        tableBetsRoulette->setSizePolicy(sizePolicy3);
+        sizePolicy5.setHeightForWidth(tableBetsRoulette->sizePolicy().hasHeightForWidth());
+        tableBetsRoulette->setSizePolicy(sizePolicy5);
         tableBetsRoulette->setSizeAdjustPolicy(QAbstractScrollArea::AdjustToContents);
         tableBetsRoulette->setSelectionBehavior(QAbstractItemView::SelectRows);
         tableBetsRoulette->horizontalHeader()->setStretchLastSection(true);
@@ -1579,8 +1589,8 @@ public:
 
         lineEditBetRoulette = new QLineEdit(pageRoulette);
         lineEditBetRoulette->setObjectName(QString::fromUtf8("lineEditBetRoulette"));
-        sizePolicy2.setHeightForWidth(lineEditBetRoulette->sizePolicy().hasHeightForWidth());
-        lineEditBetRoulette->setSizePolicy(sizePolicy2);
+        sizePolicy4.setHeightForWidth(lineEditBetRoulette->sizePolicy().hasHeightForWidth());
+        lineEditBetRoulette->setSizePolicy(sizePolicy4);
 
         horizontalLayout_33->addWidget(lineEditBetRoulette);
 
@@ -1697,8 +1707,8 @@ public:
 
         lineEditBetJackpot = new QLineEdit(pageJackpot);
         lineEditBetJackpot->setObjectName(QString::fromUtf8("lineEditBetJackpot"));
-        sizePolicy2.setHeightForWidth(lineEditBetJackpot->sizePolicy().hasHeightForWidth());
-        lineEditBetJackpot->setSizePolicy(sizePolicy2);
+        sizePolicy4.setHeightForWidth(lineEditBetJackpot->sizePolicy().hasHeightForWidth());
+        lineEditBetJackpot->setSizePolicy(sizePolicy4);
         lineEditBetJackpot->setInputMethodHints(Qt::ImhDigitsOnly);
 
         horizontalLayout_39->addWidget(lineEditBetJackpot);
@@ -1727,7 +1737,7 @@ public:
 
         retranslateUi(CasinoWindow);
 
-        stackedWidget->setCurrentIndex(4);
+        stackedWidget->setCurrentIndex(2);
 
 
         QMetaObject::connectSlotsByName(CasinoWindow);
@@ -1754,12 +1764,33 @@ public:
         buttonJoin->setText(QCoreApplication::translate("CasinoWindow", "Join", nullptr));
         buttonSpectate->setText(QCoreApplication::translate("CasinoWindow", "Spectate", nullptr));
         label_3->setText(QCoreApplication::translate("CasinoWindow", "Help", nullptr));
-        textBrowser->setHtml(QCoreApplication::translate("CasinoWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:'Fira Sans'; font-size:10pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:'MS Shell Dlg 2'; font-size:8pt;\">Quia dolores labore odio recusandae reprehenderit veritatis. Ratione qui nemo rerum illum modi dolores praesentium. Dolores in rerum in vel consectetur occaecati. Dolorem nulla maxime ad. Fugiat voluptatem molestiae corporis ipsam voluptatem. Iste et fugiat et natus culpa. Et ullam voluptatum doloribus. Aliquam id ut blanditiis blanditiis fuga doloribus eos. Harum et excepturi sit doloribus quod suscipit quod. Quam doloremque laborum blanditiis iusto pariatur. Necessitatibus magni velit est. Sapiente"
-                        " voluptas ipsam mollitia quam porro repudiandae. Voluptatem eos ducimus quam nobis et voluptas non. Aliquid quis ut sit repudiandae non. Nostrum ab temporibus et odio molestiae. Et dolorum fugiat ipsum et maiores facere. Voluptate odit eaque occaecati in. Necessitatibus provident debitis modi sed enim quia. Architecto voluptas deserunt nisi ut asperiores. Beatae expedita quod repellat est voluptas ducimus sunt iste. Sed cumque nostrum repellat quis commodi quae. Doloremque facere quis qui voluptas sequi qui fugit repellat. Quasi facilis non alias qui aliquam. Ullam qui fugiat qui porro. Soluta aut vero eum qui earum corrupti quasi rerum. Ea veritatis voluptatem praesentium quo harum necessitatibus. Quos dolorum voluptas rerum sit est iure.</span></p></body></html>", nullptr));
+        label_9->setText(QCoreApplication::translate("CasinoWindow", "# Game selection screen\n"
+"\n"
+"\n"
+"You can join any game that is not `In Progress`, or spectate even those in progress to watch bots play\n"
+"\n"
+"\n"
+"# Games\n"
+"\n"
+"\n"
+"## Texas Holdem\n"
+"\n"
+"\n"
+"One of the most popular Poker variants, gambler with the highest hand wins.\n"
+"\n"
+"\n"
+"## Roulette\n"
+"\n"
+"\n"
+"The classic casino game, where you can place multiple bets of many types and win a lot of money\n"
+"\n"
+"\n"
+"## Jackpot\n"
+"\n"
+"\n"
+"A lottery where betting more increases your chances\n"
+"\n"
+"", nullptr));
         buttonBackFromHelp->setText(QCoreApplication::translate("CasinoWindow", "Back", nullptr));
         buttonLeaveTexas->setText(QCoreApplication::translate("CasinoWindow", "Leave", nullptr));
         labelTexasHoldemName->setText(QCoreApplication::translate("CasinoWindow", "Texas Holdem", nullptr));
