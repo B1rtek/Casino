@@ -16,7 +16,7 @@ void TexasBot::makeAMove(int millisecondsPassed) noexcept {
     if (this->gamePlayed != nullptr) {
         if (dynamic_cast<TexasHoldem *>(this->gamePlayed)->getCurrentPlayer() != this) return;
         if (!this->moveScheduled) {
-            this->targetTime = millisecondsPassed + 300;
+            this->targetTime = millisecondsPassed + 500;
             this->moveScheduled = true;
         } else if (this->targetTime <= millisecondsPassed) {
             if (dynamic_cast<TexasHoldem *>(this->gamePlayed)->getGameState() < PREFLOP) {

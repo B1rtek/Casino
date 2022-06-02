@@ -1,7 +1,3 @@
-//
-// Created by skrze on 01.05.2022.
-//
-
 #include "GamblerBot.h"
 
 GamblerBot::GamblerBot(const std::string &name) noexcept: Gambler(name) {
@@ -22,7 +18,7 @@ int GamblerBot::getTargetTime() const noexcept {
 
 void GamblerBot::scheduleGameJoin(Game *game, int millisecondsPassed) noexcept {
     this->gameToJoin = game;
-    this->targetTime = millisecondsPassed + rand() % 30000;
+    this->targetTime = millisecondsPassed + rand() % 20000;
     this->moveScheduled = true;
 }
 
