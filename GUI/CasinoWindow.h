@@ -11,6 +11,9 @@
 #include "GameManager.h"
 #include "TexasHoldemGUITableItem.h"
 
+/**
+ * Enum representing the names of the corresponding stackedWidget's page
+ */
 enum GamePage {
     MAIN_MENU,
     GAME_SELECT,
@@ -20,6 +23,9 @@ enum GamePage {
     GAME_JACKPOT
 };
 
+/**
+ * CasinoWindow class, manages all objects and the UI of the game itself
+ */
 class CasinoWindow: public QMainWindow {
     Ui_CasinoWindow ui;
     GameManager gameManager;

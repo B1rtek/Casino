@@ -1,5 +1,9 @@
 #include "CasinoWindow.h"
 
+/**
+ * Initializes all objects and sets up all UI elements
+ * @param parent Qt5 thing, unused but needed
+ */
 CasinoWindow::CasinoWindow(QWidget *parent) {
     this->ui = Ui_CasinoWindow();
     this->ui.setupUi(this);
@@ -10,6 +14,9 @@ CasinoWindow::CasinoWindow(QWidget *parent) {
     this->setupUI();
 }
 
+/**
+ * Links buttons to their corresponding actions
+ */
 void CasinoWindow::linkButtons() {
     // main menu
     connect(this->ui.buttonPlay, &QPushButton::clicked, [this]() { this->ui.stackedWidget->setCurrentIndex(GAME_SELECT); });
@@ -29,7 +36,7 @@ void CasinoWindow::linkButtons() {
     connect(this->ui.buttonFold, &QPushButton::clicked, this, &CasinoWindow::texasHoldemFold);
     connect(this->ui.buttonCall, &QPushButton::clicked, this, &CasinoWindow::texasHoldemCall);
     connect(this->ui.buttonRaise, &QPushButton::clicked, this, &CasinoWindow::texasHoldemRaise);
-    // roulette
+    // roulette (I'm sorry for this)
     connect(this->ui.buttonLeaveRoulette, &QPushButton::clicked, this, &CasinoWindow::leaveGame);
     connect(this->ui.toolButtonRouletteBet0, &QToolButton::clicked, [this](){this->rouletteBet(NUMBER, 0);});
     connect(this->ui.toolButtonRouletteBet1, &QToolButton::clicked, [this](){this->rouletteBet(NUMBER, 1);});
@@ -82,6 +89,9 @@ void CasinoWindow::linkButtons() {
     connect(this->ui.buttonBetColor2, &QPushButton::clicked, [this](){this->rouletteBet(COLOR, 1);});
 }
 
+/**
+ * Sets the window theme to am upgraded dark mode
+ */
 void CasinoWindow::setDarkMode() {
     // Thank you Jorgen (https://stackoverflow.com/users/6847516/jorgen) for sharing your dark mode palette ^^
     // https://stackoverflow.com/questions/15035767/is-the-qt-5-dark-fusion-theme-available-for-windows
@@ -113,6 +123,10 @@ void CasinoWindow::setDarkMode() {
     QApplication::setPalette(darkPalette);
 }
 
+/**
+ * Initializes crucial application components, which are GameManager and the timer which periodically
+ * refreshes the UI and triggers updates in all casino games and bots
+ */
 void CasinoWindow::setupObjects() {
     this->gameManager = GameManager();
     this->gameManager.start();
@@ -122,6 +136,11 @@ void CasinoWindow::setupObjects() {
     this->timer->start(100);
 }
 
+/**
+ * Changes state of some elements of the UI compared to their state in the compiled layout, for example sets
+ * the current stackedWidget page to MAIN_MENU and populates vectors of the custom displays from the Texas
+ * Holdem page
+ */
 void CasinoWindow::setupUI() {
     this->ui.stackedWidget->setCurrentIndex(MAIN_MENU);
     this->texasHoldemCardDisplays.emplace_back(this->ui.labelGambler1Name, this->ui.labelGambler1Balance, this->ui.labelGambler1Bet, this->ui.labelGambler1Card1, this->ui.labelGambler1Card2);
@@ -141,10 +160,16 @@ void CasinoWindow::setupUI() {
     this->texasHoldemTable.push_back(this->ui.labelTexasTableCard5);
 }
 
+/**
+ * Copy constructor, needed because QMainWindow is implicitly deleted for some reason
+ */
 CasinoWindow::CasinoWindow(CasinoWindow const &window) {
     this->ui = window.ui;
 }
 
+/**
+ * Triggered on every timer timeout, causes updates in the whole Casino and the UI
+ */
 void CasinoWindow::sendClockSignal() {
     auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - this->chronoTimeStart);
     this->gameManager.advanceCasino(elapsed.count());
@@ -423,6 +448,10 @@ void CasinoWindow::refreshUI() {
     }
 }
 
+/**
+ * The following methods correspond to actions triggered by pressing the buttons, they are called
+ * according to the connect()ionns performed in the window setup
+ */
 void CasinoWindow::joinGame() {
     QList<QTableWidgetSelectionRange> selected = this->ui.tableGames->selectedRanges();
     if (!selected.empty()) {
@@ -443,6 +472,12 @@ void CasinoWindow::spectateGame() {
     }
 }
 
+/**
+ * Adjusts the provided table row count to the target one
+ * @param table table to resize
+ * @param targetSize target row count of the table
+ * @param columns column count
+ */
 void CasinoWindow::adjustTableSize(QTableWidget *table, int targetSize, int columns) {
     if (targetSize != table->rowCount()) { // fix the row count
         while (targetSize < table->rowCount()) {
@@ -478,6 +513,11 @@ void CasinoWindow::jackpotBet() {
     }
 }
 
+/**
+ * Reads an integet from a QLineEdit and catches all exceptions that might occur while doing that
+ * @param lineEdit QLineEdit to read the number from
+ * @return A number read or 0 if the read failed
+ */
 int CasinoWindow::getIntFromLineEdit(QLineEdit *lineEdit) {
     std::string intAsString = lineEdit->text().toStdString();
     if (!intAsString.empty()) {
