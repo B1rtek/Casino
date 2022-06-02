@@ -24,8 +24,10 @@ Poniżej znajduje się krótkie podsumowanie wszystkich klas, szczegółowa doku
     - Gambler - klasa reprezentująca podstawowego gracza kasynowego
     - GamblerBot - klasa reprezentujące bota grającego w kasynie z metodami umożliwiającymi mu wykonywanie ruchów i dołączanie do gier tak jak sam zarządzi
     - JackpotBot, RouletteBot, TexasBot - klasy botów wyspecjalizowanych do grania w daną grę
-    - Shop - @kmichal4 uzupełnij
-    - (inne też)
+    - Shop - sklep umożliwiający VIPowi kupowanie nagród rzeczowych o wyznaczonej wartości, gracz może nimi obstawiać, automatycznie wtedy przedmiot zostaje sprzedany za pomniejszoną o prowizję sklepu kwotę
+    - Guest - klasa reprezentująca gracza z różnymi ograniczeniami związanymi z dostępnością do statystyk i ilością środków możliwych do wypłaty w jednej transakcji
+    - VIP - klasa reprezentująca gracza z dostępem do wielu ekskluzywnych metod i możliwości, VIP ma dostęp do sejfu, sklepu, może czyścić swoje statystyki, a także podglądać balans innych graczy
+    - SafeGambler - klasa reprezentująca gracza, który stara się grać spokojnie, ma ograniczone wysokości stawek, ale zarówno i dostęp do statystyk i wypłat
 - **GamblerTest**:
     - Folder zawierający testy dla klasy gracza oraz jego pochodnych
 - **GameExample**:
