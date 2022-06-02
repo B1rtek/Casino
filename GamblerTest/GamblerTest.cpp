@@ -69,10 +69,6 @@ TEST(GamblerTest, GamblerAddAndSubstractBalance) {
     ASSERT_EQ(gambler.getBalance(), 14);
     gambler.subtractBalance(250);
     ASSERT_EQ(gambler.getBalance(), 0);
-    ASSERT_EQ(gambler.getTransactions()[1].first, 3);
-    ASSERT_EQ(gambler.getTransactions()[1].second, "Game 1");
-    ASSERT_EQ(gambler.getTransactions()[2].first, -12);
-    ASSERT_EQ(gambler.getTransactions()[3].first, -14);
     ASSERT_EQ(gambler.totalProfit(), -23);
 
     gambler.leaveGame();
@@ -80,8 +76,6 @@ TEST(GamblerTest, GamblerAddAndSubstractBalance) {
     gambler.joinGame(game2);
     gambler.addBalance(4);
     ASSERT_EQ(gambler.getBalance(), 9);
-    ASSERT_EQ(gambler.specificTransactions(game1->getName())[1], -12);
-    ASSERT_EQ(gambler.specificTransactions(game2->getName())[0], 4);
 
     delete game1;
     delete game2;
