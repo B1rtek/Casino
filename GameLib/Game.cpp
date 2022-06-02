@@ -265,12 +265,16 @@ bool Game::unjammingPerformed(Gambler *player) noexcept {
     if(this->lastMoveMillis + 120000 < this->lastMillis && this->inProgress) { // jam detection - no moves since 2 minutes (a bad sign)
         this->inProgress = false;
         for(auto &gambler: this->gamblersPlaying) {
-            gambler->addBalance(this->currentBets[gambler]);
-            this->currentBets[gambler] = 0;
-            gambler->leaveGame();
+            if(gambler != nullptr) {
+                gambler->addBalance(this->currentBets[gambler]);
+                this->currentBets[gambler] = 0;
+                gambler->leaveGame();
+            }
         }
         for(auto &gambler: this->spectators) {
-            gambler->stopSpectating();
+            if(gambler != nullptr) {
+                gambler->stopSpectating();
+            }
         }
         return true;
     }
