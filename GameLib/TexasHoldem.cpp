@@ -589,8 +589,9 @@ void TexasHoldem::advanceGame(int millisecondsPassed) {
                 this->shuffleCards();
                 this->deal();
                 this->current = this->dealer;
+                this->currentPlayerIndex = 1;
                 if (this->gamblersPlaying.size() != 2) {
-                    this->currentPlayerIndex = 1;
+                    this->currentPlayerIndex = this->dealerIndex + 1;
                     this->current = this->nextGambler();
                 }
                 // no new target time is assigned, players can take their time to choose what they do
