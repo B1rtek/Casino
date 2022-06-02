@@ -229,10 +229,18 @@ GameType Game::getGameType() const noexcept {
     return this->gameType;
 }
 
+/**
+ * Used to display the current player count in the UI on the game selection page
+ * @return string like "7/10", indicating that 7 out of 10 slots in the game are occupied
+ */
 std::string Game::getPlayerCountStr() const noexcept {
     return std::to_string(this->gamblersPlaying.size()) + '/' + std::to_string(this->maxPlayers);
 }
 
+/**
+ * Used to display the current game state in the UI on the game selection page
+ * @return string with a description of the current game state
+ */
 std::string Game::getGameSituationDescription() const noexcept {
     if (this->gamblersPlaying.size() < this->minPlayers) {
         return "Waiting for players...";
@@ -243,6 +251,16 @@ std::string Game::getGameSituationDescription() const noexcept {
     return "Next game starts in " + std::to_string((this->targetTime - this->lastMillis) / 1000) + " seconds...";
 }
 
+/**
+ * Method called by the GameManager to check whether the game has "jammed"
+ * In case of an unknown bug occurring which makes the game "jam" (which means that making a move is not
+ * possible, or the bot keeps trying to execute a move that is not valid at that time), for two minutes,
+ * the game will end itself, kick all players and spectators and then deleted and created again by the
+ * GameManager. This method returns all gamblers' in-game balance to their main balance before removing them
+ * @param player the human player, check against their move is performed in games in which a move can take more
+ * than 2 minutes, for example Texas Holdem, which overrides this method
+ * @return true if the game had to unjam itself, false otherwise
+ */
 bool Game::unjammingPerformed(Gambler *player) noexcept {
     if(this->lastMoveMillis + 120000 < this->lastMillis && this->inProgress) { // jam detection - no moves since 2 minutes (a bad sign)
         this->inProgress = false;

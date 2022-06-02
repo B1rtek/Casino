@@ -11,6 +11,9 @@ class Gambler;
 
 #include "Gambler.h"
 
+/**
+ * Enum used to identify the type of the game in the GameManager
+ */
 enum GameType {
     TEXAS_HOLDEM,
     ROULETTE,
