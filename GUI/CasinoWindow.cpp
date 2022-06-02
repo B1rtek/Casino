@@ -158,6 +158,46 @@ void CasinoWindow::setupUI() {
     this->texasHoldemTable.push_back(this->ui.labelTexasTableCard3);
     this->texasHoldemTable.push_back(this->ui.labelTexasTableCard4);
     this->texasHoldemTable.push_back(this->ui.labelTexasTableCard5);
+    std::string styleSheetRed = "color: white; font-size: 20px; font-style: bold; background-color: red";
+    std::string styleSheetBlack = "color: white; font-size: 20px; font-style: bold; background-color: black";
+    std::string styleSheetGreen = "color: white; font-size: 20px; font-style: bold; background-color: green";
+    this->ui.toolButtonRouletteBet0->setStyleSheet(QString(styleSheetGreen.c_str()));
+    this->ui.toolButtonRouletteBet1->setStyleSheet(QString(styleSheetRed.c_str()));
+    this->ui.toolButtonRouletteBet2->setStyleSheet(QString(styleSheetBlack.c_str()));
+    this->ui.toolButtonRouletteBet3->setStyleSheet(QString(styleSheetRed.c_str()));
+    this->ui.toolButtonRouletteBet4->setStyleSheet(QString(styleSheetBlack.c_str()));
+    this->ui.toolButtonRouletteBet5->setStyleSheet(QString(styleSheetRed.c_str()));
+    this->ui.toolButtonRouletteBet6->setStyleSheet(QString(styleSheetBlack.c_str()));
+    this->ui.toolButtonRouletteBet7->setStyleSheet(QString(styleSheetRed.c_str()));
+    this->ui.toolButtonRouletteBet8->setStyleSheet(QString(styleSheetBlack.c_str()));
+    this->ui.toolButtonRouletteBet9->setStyleSheet(QString(styleSheetRed.c_str()));
+    this->ui.toolButtonRouletteBet10->setStyleSheet(QString(styleSheetBlack.c_str()));
+    this->ui.toolButtonRouletteBet11->setStyleSheet(QString(styleSheetRed.c_str()));
+    this->ui.toolButtonRouletteBet12->setStyleSheet(QString(styleSheetBlack.c_str()));
+    this->ui.toolButtonRouletteBet13->setStyleSheet(QString(styleSheetRed.c_str()));
+    this->ui.toolButtonRouletteBet14->setStyleSheet(QString(styleSheetBlack.c_str()));
+    this->ui.toolButtonRouletteBet15->setStyleSheet(QString(styleSheetRed.c_str()));
+    this->ui.toolButtonRouletteBet16->setStyleSheet(QString(styleSheetBlack.c_str()));
+    this->ui.toolButtonRouletteBet17->setStyleSheet(QString(styleSheetRed.c_str()));
+    this->ui.toolButtonRouletteBet18->setStyleSheet(QString(styleSheetBlack.c_str()));
+    this->ui.toolButtonRouletteBet19->setStyleSheet(QString(styleSheetRed.c_str()));
+    this->ui.toolButtonRouletteBet20->setStyleSheet(QString(styleSheetBlack.c_str()));
+    this->ui.toolButtonRouletteBet21->setStyleSheet(QString(styleSheetRed.c_str()));
+    this->ui.toolButtonRouletteBet22->setStyleSheet(QString(styleSheetBlack.c_str()));
+    this->ui.toolButtonRouletteBet23->setStyleSheet(QString(styleSheetRed.c_str()));
+    this->ui.toolButtonRouletteBet24->setStyleSheet(QString(styleSheetBlack.c_str()));
+    this->ui.toolButtonRouletteBet25->setStyleSheet(QString(styleSheetRed.c_str()));
+    this->ui.toolButtonRouletteBet26->setStyleSheet(QString(styleSheetBlack.c_str()));
+    this->ui.toolButtonRouletteBet27->setStyleSheet(QString(styleSheetRed.c_str()));
+    this->ui.toolButtonRouletteBet28->setStyleSheet(QString(styleSheetBlack.c_str()));
+    this->ui.toolButtonRouletteBet29->setStyleSheet(QString(styleSheetRed.c_str()));
+    this->ui.toolButtonRouletteBet30->setStyleSheet(QString(styleSheetBlack.c_str()));
+    this->ui.toolButtonRouletteBet31->setStyleSheet(QString(styleSheetRed.c_str()));
+    this->ui.toolButtonRouletteBet32->setStyleSheet(QString(styleSheetBlack.c_str()));
+    this->ui.toolButtonRouletteBet33->setStyleSheet(QString(styleSheetRed.c_str()));
+    this->ui.toolButtonRouletteBet34->setStyleSheet(QString(styleSheetBlack.c_str()));
+    this->ui.toolButtonRouletteBet35->setStyleSheet(QString(styleSheetRed.c_str()));
+    this->ui.toolButtonRouletteBet36->setStyleSheet(QString(styleSheetBlack.c_str()));
 }
 
 /**
@@ -226,7 +266,7 @@ void CasinoWindow::refreshUI() {
             }
             if(currentGame == nullptr) { // if both were nullptr we force quit
                 this->ui.stackedWidget->setCurrentIndex(GAME_SELECT);
-                this->refreshUI();
+                return;
             }
             // players "table"
             int displayNumber = 0;
@@ -292,7 +332,7 @@ void CasinoWindow::refreshUI() {
             }
             if(currentGame == nullptr) { // if both were nullptr we force quit
                 this->ui.stackedWidget->setCurrentIndex(GAME_SELECT);
-                this->refreshUI();
+                return;
             }
             // tables - gamblers table
             CasinoWindow::adjustTableSize(this->ui.tableGamblersRoulette, currentGame->getPlayers().size(), 3);
@@ -325,11 +365,11 @@ void CasinoWindow::refreshUI() {
                 if(this->ui.tableBetsRoulette->item(rowCounter, 0)->text() != updated.text()) {
                     *this->ui.tableBetsRoulette->item(rowCounter, 0) = updated;
                 }
-                updated = QTableWidgetItem(QString(bet.getBetTypeString().c_str()));
+                updated = QTableWidgetItem(QString(bet.getAmountString().c_str()));
                 if(this->ui.tableBetsRoulette->item(rowCounter, 1)->text() != updated.text()) {
                     *this->ui.tableBetsRoulette->item(rowCounter, 1) = updated;
                 }
-                updated = QTableWidgetItem(QString(bet.getAmountString().c_str()));
+                updated = QTableWidgetItem(QString(bet.getBetTypeString().c_str()));
                 if(this->ui.tableBetsRoulette->item(rowCounter, 2)->text() != updated.text()) {
                     *this->ui.tableBetsRoulette->item(rowCounter, 2) = updated;
                 }
@@ -381,7 +421,7 @@ void CasinoWindow::refreshUI() {
             }
             if(currentGame == nullptr) { // if both were nullptr we force quit
                 this->ui.stackedWidget->setCurrentIndex(GAME_SELECT);
-                this->refreshUI();
+                return;
             }
             // tables - gamblers table
             CasinoWindow::adjustTableSize(this->ui.tableGamblersJackpot, currentGame->getPlayers().size(), 3);
