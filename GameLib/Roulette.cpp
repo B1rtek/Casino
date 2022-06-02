@@ -2,6 +2,10 @@
 
 #include <random>
 
+/**
+ * All constructors are inherited from the base Game class, Roulette constructors additionally set the gameType
+ * field to ROULETTE, it's used by the GameManager to assign games of the correct types to bots
+ */
 Roulette::Roulette(int minimumEntry, const std::string &name) noexcept: Game(minimumEntry, name) {
     this->gameType = ROULETTE;
 }
@@ -16,6 +20,11 @@ Roulette::Roulette(const std::vector<Gambler *> &gamblers, int minimumEntry, con
     this->gameType = ROULETTE;
 }
 
+/**
+ * Method that gets called from the GameManager and changes the state of the game and triggers moves from all
+ * bots who are playing
+ * @param millisecondsPassed millisecondsPassed since the start of the Casino
+ */
 void Roulette::advanceGame(int millisecondsPassed) {
     Game::advanceGame(millisecondsPassed);
     if (this->inProgress) {
@@ -49,6 +58,10 @@ void Roulette::rollTheNumber() noexcept {
     this->lastNumberRolled = rand() % 37;
 }
 
+/**
+ * Iterates through all bets placed during the betting time and pays out winnings from the ones who were won
+ * Before it does that though it places a random bet for everyone who failed to bet in the provided time
+ */
 void Roulette::checkAndPayBets() noexcept {
     // if someone didn't bet, bet a random amount of their balance as a fee for playing the game :)
     for(auto &gambler: this->gamblersPlaying) {
@@ -113,6 +126,9 @@ void Roulette::checkAndPayBets() noexcept {
     }
 }
 
+/**
+ * Starts the game by zeroing out the bets and calling the base class' startGame() method
+ */
 void Roulette::startGame() noexcept {
     Game::startGame();
     this->bets.clear();
@@ -121,6 +137,18 @@ void Roulette::startGame() noexcept {
     }
 }
 
+/**
+ * Places a bet in the Roulette game according to the given parameters
+ * @param gambler gambler who is placing the bet
+ * @param betType type of the bet placed (Color, Column, Number etc)
+ * @param amount amount of money bet
+ * @param number number that was selected to represent the bet
+ * @return true if the bet was successfully placed, false otherwise
+ *
+ * @param number is interpreted later in the win checking process as the correct bet - for example bet
+ * of type Half for number 5 indicates that this bet was a 1:1 bet for the 1st half of the board,
+ * another example would be a Column bet for 22, which indicates a 2:1 bet placed for the second column
+ */
 bool Roulette::rouletteBet(Gambler *gambler, RouletteBetType betType, int amount, int number) {
     if(amount == 0) return false;
     if(this->inProgress && this->bet(gambler, amount)) {
@@ -139,6 +167,9 @@ int Roulette::getLastRolledNumber() const noexcept {
     return this->lastNumberRolled;
 }
 
+/**
+ * Removes all players who ran out of money (with the threshold being 0)
+ */
 void Roulette::removeBankruptPlayers() noexcept {
     for(auto &gambler: this->gamblersPlaying) {
         this->currentBets[gambler] = 0;

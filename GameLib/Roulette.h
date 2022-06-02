@@ -3,6 +3,9 @@
 
 #include "Game.h"
 
+/**
+ * Enum identifying the type of a bet placed in the Roulette
+ */
 enum RouletteBetType {
     COLOR,
     EVENODD,
@@ -12,6 +15,9 @@ enum RouletteBetType {
     NUMBER
 };
 
+/**
+ * Struct representing a bet placed in the Roulette
+ */
 struct RouletteBet {
     RouletteBet(RouletteBetType type, int number, int amount, Gambler *gambler) : type(type), number(number),
                                                                                   amount(amount), gambler(gambler), successful(false) {};
@@ -21,6 +27,10 @@ struct RouletteBet {
     int number, amount;
     bool successful = false;
 
+    /**
+     * Method used by the CasinoWindow to display bets in the table on the right side of the Roulette game page
+     * @return type of the bet according to the bet's data
+     */
     std::string getBetTypeString() {
         switch (type) {
             case COLOR: {
@@ -49,14 +59,26 @@ struct RouletteBet {
         return {};
     }
 
+    /**
+     * Method used by the CasinoWindow to display bets in the table on the right side of the Roulette game page
+     * @return bet amount in the string form
+     */
     std::string getAmountString() {
         return std::to_string(amount);
     }
 
+    /**
+     * Method used by the CasinoWindow to display bets in the table on the right side of the Roulette game page
+     * @return state of the best after the number was rolled
+     */
     std::string getSuccessString() {
         return successful ? "WON" : "LOST";
     }
 
+    /**
+     * Method used by the test Roulette UI application to display bets in the list widget
+     * @return string containing all information about the bet
+     */
     std::string getBetStringRepresentation() {
         std::string representation = this->gambler->getName() + ": ";
         representation += this->getBetTypeString() + ", ";
@@ -68,6 +90,9 @@ struct RouletteBet {
     }
 };
 
+/**
+ * The Roulette class, manages and represents a Roulette game
+ */
 class Roulette : public Game {
     std::vector<RouletteBet> bets;
 
