@@ -1,3 +1,7 @@
+/**
+ * Program with a test UI which lets the user play Jackpot, used for UI and Jackpot testing
+ */
+
 #include <QApplication>
 #include <QtWidgets/QMainWindow>
 #include <QTimer>
@@ -8,6 +12,9 @@
 
 using namespace std;
 
+/**
+ * Test class representing a Jackpot window, parts of it were later incorporated into the CasinoWindow class
+ */
 class JackpotUITest : public QMainWindow {
     Ui_MainWindow ui;
     Jackpot *jackpot;
@@ -16,6 +23,10 @@ class JackpotUITest : public QMainWindow {
     int time = 25000;
     chrono::time_point<chrono::steady_clock> chronoTime;
 
+    /**
+     * Method that refreshes the UI by getting all data needed to display and updating the content
+     * of the displayed widgets according to the newest data
+     */
     void refreshUI() {
         this->ui.advanceTimeLineEdit->setText(QString(to_string(this->time++).c_str()));
         this->ui.playerBalanceBetList->clear();
@@ -76,6 +87,9 @@ class JackpotUITest : public QMainWindow {
         connect(this->ui.botBetButton, &QPushButton::clicked, this, &JackpotUITest::botBet);
     }
 
+    /**
+     * Initializes objects used in the game
+     */
     void setupObjects() {
         this->ui.advanceTimeLineEdit->setText("30000");
         this->gambler = new Gambler(1001, "B1rtek");
@@ -85,6 +99,9 @@ class JackpotUITest : public QMainWindow {
         this->chronoTime = chrono::steady_clock::now();
     }
 
+    /**
+     * Method that allows the gambler to bet in the game through the interaction with the "Bet" button
+     */
     void jackpotBet() {
         string toRaiseAmount = this->ui.betLineEdit->text().toStdString();
         if (!toRaiseAmount.empty()) {
@@ -94,6 +111,9 @@ class JackpotUITest : public QMainWindow {
         }
     }
 
+    /**
+     * Method that was used to simulate passing of time in the game to manually trigger refreshes
+     */
     void advanceGame() {
         string newTime = this->ui.advanceTimeLineEdit->text().toStdString();
         if (!newTime.empty()) {
@@ -103,12 +123,20 @@ class JackpotUITest : public QMainWindow {
         }
     }
 
+    /**
+     * Method linked to the "BotBet" button, was used to force test bots to bet
+     * Doesn't work with the current version of the bots because their actions are no longer
+     * determined by the time passed, but by their own algorithm
+     */
     void botBet() {
         this->time = ((this->time / 10000) + 1) * 10000;
         this->jackpot->advanceGame(this->time++);
         this->refreshUI();
     }
 
+    /**
+     * A very useful method that sets the color theme of the window to a nice looking dark mode
+     */
     void setDarkMode() {
         // Thank you Jorgen (https://stackoverflow.com/users/6847516/jorgen) for sharing your dark mode palette ^^
         // https://stackoverflow.com/questions/15035767/is-the-qt-5-dark-fusion-theme-available-for-windows
@@ -138,6 +166,11 @@ class JackpotUITest : public QMainWindow {
     }
 
 public:
+    /**
+     * Sets up the UI and calls all methods needed to set up all objects that the game needs to work,
+     * afterwards it starts the timer that calls game and UI refreshes
+     * @param parent Qt5 thing, unused but needed
+     */
     explicit JackpotUITest(QWidget *parent = nullptr) {
         this->ui = Ui_MainWindow();
         this->ui.setupUi(this);
@@ -151,12 +184,18 @@ public:
         timer->start(100);
     }
 
+    /**
+     * Copy constructor, needed because by default QMainWindow is implicitly deleted after its creation
+     */
     JackpotUITest(JackpotUITest const &test) {
         this->ui = test.ui;
     }
 
 public slots:
 
+    /**
+     * Method called when the timer times out (which is every 100 milliseconds) that refreshes the game and the UI
+     */
     void sendClockSignal() {
         auto elapsed = chrono::duration_cast<chrono::milliseconds>(chrono::steady_clock::now() - this->chronoTime);
         this->time = elapsed.count();

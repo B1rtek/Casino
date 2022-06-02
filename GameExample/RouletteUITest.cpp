@@ -1,3 +1,7 @@
+/**
+ * Program with a test UI which lets the user play Roulette, used for UI and Roulette testing
+ */
+
 #include <QApplication>
 #include <QtWidgets/QMainWindow>
 #include <QTimer>
@@ -8,6 +12,9 @@
 
 using namespace std;
 
+/**
+ * Test class representing a Roulette window, parts of it were later incorporated into the CasinoWindow class
+ */
 class RouletteUITest : public QMainWindow {
     Ui_MainWindow ui;
     Roulette *roulette;
@@ -16,6 +23,10 @@ class RouletteUITest : public QMainWindow {
     int time = 25000;
     chrono::time_point<chrono::steady_clock> chronoTime;
 
+    /**
+     * Method that refreshes the UI by getting all data needed to display and updating the content
+     * of the displayed widgets according to the newest data
+     */
     void refreshUI() {
         this->ui.playerBalanceBetList->clear();
         this->ui.percentagesList->clear();
@@ -112,6 +123,9 @@ class RouletteUITest : public QMainWindow {
         connect(this->ui.betColor2Button, &QPushButton::clicked, [this]() {this->rouletteBetEvenOdd(1);});
     }
 
+    /**
+     * Initializes objects used in the game
+     */
     void setupObjects() {
         this->gambler = new Gambler(1001, "B1rtek");
         this->bots = {this->gambler, new RouletteBot(1001, "Marcus"), new RouletteBot(1001, "Tyler"),
@@ -120,6 +134,11 @@ class RouletteUITest : public QMainWindow {
         this->chronoTime = chrono::steady_clock::now();
     }
 
+    /**
+     * Method that allows the gambler to place a straight bet in the game through
+     * an interaction with any of the buttons with a number, it and the next similar methods
+     * were later merged into one in the final CasinoWindow class
+     */
     void rouletteBetNumber(const QString& toolButtonContent) {
         string betText = this->ui.betLineEdit->text().toStdString();
         if(!betText.empty()) {
@@ -174,6 +193,9 @@ class RouletteUITest : public QMainWindow {
         }
     }
 
+    /**
+     * A very useful method that sets the color theme of the window to a nice looking dark mode
+     */
     void setDarkMode() {
         // Thank you Jorgen (https://stackoverflow.com/users/6847516/jorgen) for sharing your dark mode palette ^^
         // https://stackoverflow.com/questions/15035767/is-the-qt-5-dark-fusion-theme-available-for-windows
@@ -203,6 +225,11 @@ class RouletteUITest : public QMainWindow {
     }
 
 public:
+    /**
+     * Sets up the UI and calls all methods needed to set up all objects that the game needs to work,
+     * afterwards it starts the timer that calls game and UI refreshes
+     * @param parent Qt5 thing, unused but needed
+     */
     explicit RouletteUITest(QWidget *parent = nullptr) {
         this->ui = Ui_MainWindow();
         this->ui.setupUi(this);
@@ -215,13 +242,18 @@ public:
         connect(timer, &QTimer::timeout, this, &RouletteUITest::sendClockSignal);
         timer->start(100);
     }
-
+    /**
+     * Copy constructor, needed because by default QMainWindow is implicitly deleted after its creation
+     */
     RouletteUITest(RouletteUITest const &test) {
         this->ui = test.ui;
     }
 
 public slots:
 
+    /**
+     * Method called when the timer times out (which is every 100 milliseconds) that refreshes the game and the UI
+     */
     void sendClockSignal() {
         auto elapsed = chrono::duration_cast<chrono::milliseconds>(chrono::steady_clock::now() - this->chronoTime);
         this->time = elapsed.count();

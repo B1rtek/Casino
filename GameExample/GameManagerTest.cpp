@@ -1,3 +1,9 @@
+/**
+ * Test program that was used to check if GameManager and its objects don't cause a crash
+ * after running for a long time, it was also used to check if the whole concept of many games
+ * being played simultaneously by bots works or not
+ */
+
 #include <iostream>
 #include <chrono>
 #include <thread>

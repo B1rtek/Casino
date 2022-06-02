@@ -1,3 +1,7 @@
+/**
+ * Program with a test UI which lets the user play Texas Holdem, used for UI and Roulette testing
+ */
+
 #include <QApplication>
 #include <QtWidgets/QMainWindow>
 #include <QTimer>
@@ -8,6 +12,9 @@
 
 using namespace std;
 
+/**
+ * Test class representing a Texas Holdem window, parts of it were later incorporated into the CasinoWindow class
+ */
 class TexasHoldemUITest : public QMainWindow {
     Ui_MainWindow ui;
     TexasHoldem *texasHoldem;
@@ -16,6 +23,10 @@ class TexasHoldemUITest : public QMainWindow {
     int time = 25000;
     chrono::time_point<chrono::steady_clock> chronoTime;
 
+    /**
+     * Method that refreshes the UI by getting all data needed to display and updating the content
+     * of the displayed widgets according to the newest data
+     */
     void refreshUI() {
         this->ui.advanceTimeLineEdit->setText(QString(to_string(this->time++).c_str()));
         this->ui.playerBalanceBetList->clear();
@@ -131,6 +142,9 @@ class TexasHoldemUITest : public QMainWindow {
         connect(this->ui.botRaiseButton, &QPushButton::clicked, this, &TexasHoldemUITest::botRaise);
     }
 
+    /**
+     * Initializes objects used in the game
+     */
     void setupObjects() {
         this->ui.advanceTimeLineEdit->setText("30000");
         this->gambler = new Gambler(1001, "B1rtek");
@@ -150,16 +164,25 @@ class TexasHoldemUITest : public QMainWindow {
         this->chronoTime = chrono::steady_clock::now();
     }
 
+    /**
+     * Method that allows the gambler to fold in the game through the interaction with the "Fold" button
+     */
     void texasHoldemFold() {
         this->texasHoldem->fold(this->gambler);
         this->refreshUI();
     }
 
+    /**
+     * Method that allows the gambler to call and check in the game through the interaction with the "Check/Call" button
+     */
     void texasHoldemCall() {
         this->texasHoldem->call(this->gambler);
         this->refreshUI();
     }
 
+    /**
+     * Method that allows the gambler to raise in the game through the interaction with the "Raise" button
+     */
     void texasHoldemRaise() {
         string toRaiseAmount = this->ui.raiseLineEdit->text().toStdString();
         if(!toRaiseAmount.empty()) {
@@ -169,6 +192,9 @@ class TexasHoldemUITest : public QMainWindow {
         }
     }
 
+    /**
+     * Method that was used to simulate passing of time in the game to manually trigger refreshes
+     */
     void advanceGame() {
         string newTime = this->ui.advanceTimeLineEdit->text().toStdString();
         if(!newTime.empty()) {
@@ -178,6 +204,10 @@ class TexasHoldemUITest : public QMainWindow {
         }
     }
 
+    /**
+     * Method based on the advanceTime() method that was used to force test Texas Holdem bots
+     * to fold using the "BotFold" button from the test UI
+     */
     void botFold() {
         while(this->time % 21 != 0) {
             ++this->time;
@@ -186,6 +216,10 @@ class TexasHoldemUITest : public QMainWindow {
         this->refreshUI();
     }
 
+    /**
+     * Method based on the advanceTime() method that was used to force test Texas Holdem bots
+     * to call or check using the "BotCheck" button from the test UI
+     */
     void botCall() {
         while(this->time % 3 != 1) {
             ++this->time;
@@ -194,6 +228,10 @@ class TexasHoldemUITest : public QMainWindow {
         this->refreshUI();
     }
 
+    /**
+     * Method based on the advanceTime() method that was used to force test Texas Holdem bots
+     * to raise using the "BotRaise" button from the test UI
+     */
     void botRaise() {
         while(this->time % 3 != 2) {
             ++this->time;
@@ -202,6 +240,9 @@ class TexasHoldemUITest : public QMainWindow {
         this->refreshUI();
     }
 
+    /**
+     * A very useful method that sets the color theme of the window to a nice looking dark mode
+     */
     void setDarkMode() {
         // Thank you Jorgen (https://stackoverflow.com/users/6847516/jorgen) for sharing your dark mode palette ^^
         // https://stackoverflow.com/questions/15035767/is-the-qt-5-dark-fusion-theme-available-for-windows
@@ -231,6 +272,11 @@ class TexasHoldemUITest : public QMainWindow {
     }
 
 public:
+    /**
+     * Sets up the UI and calls all methods needed to set up all objects that the game needs to work,
+     * afterwards it starts the timer that calls game and UI refreshes
+     * @param parent Qt5 thing, unused but needed
+     */
     explicit TexasHoldemUITest(QWidget *parent = nullptr) {
         this->ui = Ui_MainWindow();
         this->ui.setupUi(this);
@@ -244,11 +290,17 @@ public:
         timer->start(100);
     }
 
+    /**
+     * Copy constructor, needed because by default QMainWindow is implicitly deleted after its creation
+     */
     TexasHoldemUITest(TexasHoldemUITest const &test) {
         this->ui = test.ui;
     }
 
 public slots:
+    /**
+     * Method called when the timer times out (which is every 100 milliseconds) that refreshes the game and the UI
+     */
     void sendClockSignal() {
         auto elapsed = chrono::duration_cast<chrono::milliseconds>(chrono::steady_clock::now() - this->chronoTime);
         this->time = elapsed.count();
