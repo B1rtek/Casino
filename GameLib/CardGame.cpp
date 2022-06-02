@@ -2,6 +2,9 @@
 
 #include <utility>
 
+/**
+ * Defines the 52-card french deck used in many games, including the implemented TexasHoldem class
+ */
 const std::vector<Card *> CardGame::deck = {
         new Card(ACE, CLUBS), new Card(N2, CLUBS), new Card(N3, CLUBS), new Card(N4, CLUBS), new Card(N5, CLUBS),
         new Card(N6, CLUBS), new Card(N7, CLUBS), new Card(N8, CLUBS), new Card(N9, CLUBS), new Card(N10, CLUBS),
@@ -19,6 +22,9 @@ const std::vector<Card *> CardGame::deck = {
         new Card(JACK, HEARTS), new Card(QUEEN, HEARTS), new Card(KING, HEARTS)
 };
 
+/**
+ * A subset of the french deck with all cards needed to play Russian Schnapsen
+ */
 const std::vector<Card *> CardGame::russianSchnapsenDeck = {
         deck[0], deck[8], deck[9], deck[10], deck[11], deck[12],
         deck[13], deck[21], deck[22], deck[23], deck[24], deck[25],
@@ -26,6 +32,9 @@ const std::vector<Card *> CardGame::russianSchnapsenDeck = {
         deck[39], deck[47], deck[48], deck[49], deck[50], deck[51],
 };
 
+/**
+ * Not-a-card, used in the TexasHoldem to indicate that a card does not exist or is currently not visible to the player
+ */
 Card* CardGame::noneCard = new Card(NOVALUE, NOCOLOR);
 
 /**

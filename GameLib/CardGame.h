@@ -5,9 +5,8 @@
 #include "Card.h"
 
 /**
- * CardGame class, represents a game which is played with cards, subclass of Game
+ * A deck of cards without colors, used to determine strength of a given hand in TexasHoldem
  */
-
 const std::vector<Card *> uncoloredDeck = {
         new Card(), new Card(N2, NOCOLOR), new Card(N3, NOCOLOR), new Card(N4, NOCOLOR), new Card(N5, NOCOLOR),
         new Card(N6, NOCOLOR), new Card(N7, NOCOLOR), new Card(N8, NOCOLOR), new Card(N9, NOCOLOR),
@@ -15,17 +14,17 @@ const std::vector<Card *> uncoloredDeck = {
         new Card(ACE, NOCOLOR)
 };
 
+/**
+ * CardGame class, represents a game which is played with cards, subclass of Game
+ */
 class CardGame : public Game {
 protected:
     // this instance's deck
     std::vector<Card *> gameDeck;
     std::map<Gambler *, std::vector<Card *>> gamblersCards;
 public:
-    // all cards
     const static std::vector<Card *> deck;
-    // game specific decks
     const static std::vector<Card *> russianSchnapsenDeck;
-    // none card
     static Card *noneCard;
 
     explicit CardGame(int minimumEntry, std::vector<Card *> gameDeck = deck, const std::string &name = "") noexcept;
