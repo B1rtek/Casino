@@ -61,6 +61,9 @@ std::ostream &operator<<(std::ostream &stream, Card card) {
     return stream;
 }
 
+/**
+ * Returns a string representation of the given card
+ */
 std::string Card::toString(Card card) noexcept {
     if(card.value == NOVALUE && card.color == NOCOLOR) {
         return "[Hidden]";
