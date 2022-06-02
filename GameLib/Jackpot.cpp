@@ -110,6 +110,11 @@ void Jackpot::removeBankruptPlayers() noexcept {
     }
 }
 
+/**
+ * Method used by the test Jackpot UI application to display current chances of winning for every gambler,
+ * further improved with the getSortedPercentages() method defined below, which is used in the final Casino UI
+ * @return map of Gambler* (s) and chances of winning corresponding to each of them in the game joining order
+ */
 std::map<Gambler *, double> Jackpot::getPercentages() noexcept {
     std::map<Gambler *, double> percentages;
     for (auto &gambler: this->gamblersPlaying) {
@@ -122,6 +127,11 @@ std::map<Gambler *, double> Jackpot::getPercentages() noexcept {
     return percentages;
 }
 
+/**
+ * Method used by the final Casino UI and CasinoWindow to display current chances of winning for every gambler,
+ * which sorts the map received from getPercentages() by the percentage descending
+ * @return vector of pairs of Gambler* (s) and their corresponding winning chances, sorted by percentage
+ */
 std::vector<std::pair<Gambler *, double>> Jackpot::getSortedPercentages() noexcept {
     std::map<Gambler *, double> percentages = this->getPercentages();
     std::vector<std::pair<Gambler*, double>> sortedPerecentages;

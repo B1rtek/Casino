@@ -3,6 +3,9 @@
 
 #include "Game.h"
 
+/**
+ * The Jackpot game class, manages and represents a game of jackpot between Gamblers
+ */
 class Jackpot : public Game {
     std::vector<double> preorderPercentages;
 
