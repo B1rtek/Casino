@@ -5,6 +5,9 @@
 
 #include "TexasHoldem.h"
 
+/**
+ * Class representing a custom display of players cards and balance used in the UI on the Texas Holdem page
+ */
 class TexasHoldemGUITableItem {
     QLabel *labelName, *labelBalance, *labelBet, *labelCard1, *labelCard2;
 

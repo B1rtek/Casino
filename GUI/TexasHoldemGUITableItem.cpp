@@ -1,9 +1,13 @@
 #include "TexasHoldemGUITableItem.h"
 
-TexasHoldemGUITableItem::TexasHoldemGUITableItem(QLabel *labelName, QLabel *labelBalance, QLabel *labelBet, QLabel *labelCard1, QLabel *labelCard2) : labelName(labelName), labelBalance(labelBalance), labelBet(labelBet), labelCard1(labelCard1), labelCard2(labelCard2) {
+TexasHoldemGUITableItem::TexasHoldemGUITableItem(QLabel *labelName, QLabel *labelBalance, QLabel *labelBet, QLabel *labelCard1, QLabel *labelCard2) : labelName(labelName), labelBalance(labelBalance), labelBet(labelBet), labelCard1(labelCard1), labelCard2(labelCard2) {}
 
-}
-
+/**
+ * Refreshes the display in the UI according to new data about the gambler from the Game
+ * @param game game the the gambler is playing
+ * @param gambler gambler that this display is corresponding to
+ * @param player application user, needed to identify cards of other gamblers and not display them
+ */
 void TexasHoldemGUITableItem::updateItem(TexasHoldem *game, Gambler *gambler, Gambler *player) {
     if(game == nullptr || gambler == nullptr || player == nullptr) {
         this->labelName->setText(QString());
